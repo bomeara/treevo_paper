@@ -1,7 +1,7 @@
-#install.packages("TreEvo", repos= c("http://R-Forge.R-project.org"), type="source")
-system("svn update ../../treevo")
-install.packages("/Users/bomeara/Documents/treevo/pkg",repos=NULL,type="source")
+rm(list=ls())
 library(TreEvo)
+library(ape)
+library(geiger)
 library(parallel)
 ntax<-30
 abcMethod<-"rejection"
@@ -49,7 +49,7 @@ char<-convertTaxonFrameToGeigerData(
 
 
 #for (loopID in sequence(nloops)) {
-	trial2<-doRun_rej2(
+	trial2<-doRun_rej(
 		phy=phy, 
 		traits=char,
 		intrinsicFn=intrinsicFn, 
@@ -62,7 +62,6 @@ char<-convertTaxonFrameToGeigerData(
 		extrinsicPriorsValues=extrinsicPriorsValues,
 		StartSims=nrepSims, 
 		jobName="trial2", 
-		abcMethod=abcMethod, 
 		abcTolerance=abcTolerance, 
 		multicore=T, 
 		coreLimit=detectCores(),
@@ -75,7 +74,7 @@ char<-convertTaxonFrameToGeigerData(
 #	print(paste("number of completed sims is",nsimsPerLoop*loopID))
 #	warnings()
 #	try(system("mv ntax30_bm_rej.RSave ntax30_bm_rej.previous.RSave"))
-	save(list=ls(),file="ntax30_bm_rej.RSave")
+	save(list=ls(),file="ntax30_bm_rej.rda")
 #}	
 
 
