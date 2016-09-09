@@ -27,7 +27,7 @@ TreeYears=1e+04
 timeStep<-1/TreeYears
 #nloops<-10000
 #nsimsPerLoop<-12*6
-nrepSims<-100
+nrepSims<-10000
 all.results<-list()
 
 
