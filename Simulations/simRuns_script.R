@@ -17,10 +17,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -35,10 +33,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -53,10 +49,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -71,10 +65,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -89,10 +81,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -107,10 +97,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = rexp_with_mean_*not*_at_true_sigmasq 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -125,10 +113,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -143,10 +129,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -161,10 +145,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -179,10 +161,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -197,10 +177,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -215,10 +193,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -233,10 +209,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -251,10 +225,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -269,10 +241,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -287,10 +257,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -305,10 +273,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -323,10 +289,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -341,10 +305,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -359,10 +321,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -377,10 +337,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -395,10 +353,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -413,10 +369,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -431,10 +385,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = rexp_with_mean_*not*_at_true_sigmasq 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -449,10 +401,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = rexp_with_mean_*not*_at_true_sigmasq 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -467,10 +417,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = rexp_with_mean_*not*_at_true_sigmasq 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -485,10 +433,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -503,10 +449,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -521,10 +465,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -539,10 +481,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -557,10 +497,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -575,10 +513,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -593,10 +529,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -611,10 +545,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -629,10 +561,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -647,10 +577,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -665,10 +593,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -683,10 +609,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -701,10 +625,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -719,10 +641,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -737,10 +657,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -755,10 +673,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -773,10 +689,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -791,10 +705,8 @@
    # doRun.Intrinsic = BM_w/_LowerBound 
    # doRun.Extrinsic = Displacement 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -809,10 +721,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -827,10 +737,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -845,10 +753,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -863,10 +769,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -881,10 +785,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -899,10 +801,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -917,10 +817,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -935,10 +833,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -953,10 +849,8 @@
    # doRun.Intrinsic = Time-AutoRegressive_Model 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -971,10 +865,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -989,10 +881,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1007,10 +897,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1025,10 +913,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1043,10 +929,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1061,10 +945,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1079,10 +961,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1097,10 +977,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1115,10 +993,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 3 
+   # Ntip = c(8,16,64) 
    # nSimTrait = 10 
-   # nDoRun = 30 
 
 
 
@@ -1133,10 +1009,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Budding 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -1151,10 +1025,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Bifurcating 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 1 
-   # nDoRun = 1 
 
 
 
@@ -1169,10 +1041,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Budding 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1187,10 +1057,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Bifurcating 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1205,10 +1073,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Budding 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1223,10 +1089,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Bifurcating 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1241,10 +1105,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1259,10 +1121,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1277,10 +1137,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Budding 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1295,10 +1153,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Bifurcating 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1313,10 +1169,8 @@
    # doRun.Intrinsic = Pure_BM 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1331,10 +1185,8 @@
    # doRun.Intrinsic = 3-Optima 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1349,10 +1201,8 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Budding 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
 
 
 
@@ -1367,7 +1217,5 @@
    # doRun.Intrinsic = 3-Optima;_Cladogenetic-Bifurcating 
    # doRun.Extrinsic = Null 
    # prior = standard_(uniform) 
-   # nTree = 1 
-   # n.Ntip = 1 
+   # Ntip = NA 
    # nSimTrait = 10 
-   # nDoRun = 10 
