@@ -1,2 +1,0 @@
-Originally from /Users/bomeara/Documents/MyDocuments/Ongoing/Talks/2012vii07_Evolution2012_TreEvo/Simulation_BMSimple2_runL
-
