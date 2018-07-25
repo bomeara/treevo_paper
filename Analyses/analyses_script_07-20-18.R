@@ -1,20 +1,46 @@
+###################################################
 # Individual Empirical Analyses and Simulations
 ##################################################
 
+setwd("d://dave//workspace//treevo_paper//")
+
+library(ape)
 library(TreEvo)
 
-# obtain anolis tree
+######################################
+# get empirical data
 
-# obtain anolis trait data
+# obtain anolis tree - from Poe et al. 2017 (SystBiol)
+	# their time-tree
+anolisTree<-read.tree(file="datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre")
 
-# obtain aquilegia tree
+# obtain anolis trait data - 
+	# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
+anolisTrait<-read.table("datasets//anolis_lntraits_matched_tabdelim_07-24-18.txt",
+	header=TRUE,row.names=1)
+anolisSize<-anolisTrait[,1]
 
-# obtain aquilegia trait data
+# obtain aquilegia tree (from Whittall and Hodges 2007?)
+aquilegiaTree<-read.tree("datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre")
+
+# obtain aquilegia trait data (from Whittall and Hodges 2007?)
+	# need both nectur spur lengths and regime data
+	#
+aquilegiaTrait<-read.table("aquilegia_traitData.txt", header=FALSE, row.names=1)
+
+# get just nectur spur length
+aquilegiaSpurLength<-aquilegiaTrait[,3]
+# and log it
+aquilegiaSpurLength<-ln(aquilegiaSpurLength)
+
+# aquilegia regimes
 
 
+###############################################################################
 # generate sets of ideal trees for doing simulations on
    # idealTreeSets = c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star") 
    # nTipSets = c(8, 16, 64)   
+   
 idealTrees<-list(
     #
     balanced_n8 = stree(n=8, type = "balanced", tip.label = NULL),
@@ -30,6 +56,12 @@ idealTrees<-list(
     star_n64 = stree(n=64, type = "star", tip.label = NULL)
     )
 
+	
+	
+	
+	
+#############################################################################
+# analyses
 
 
     
