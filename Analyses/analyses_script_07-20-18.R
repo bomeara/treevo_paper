@@ -29,11 +29,20 @@ aquilegiaTree<-read.tree("datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
 aquilegiaTrait<-read.table("aquilegia_traitData.txt", header=FALSE, row.names=1)
 
 # get just nectur spur length
-aquilegiaSpurLength<-aquilegiaTrait[,3]
-# and log it
+aquilegiaSpurLength<-aquilegiaTrait[,2]
+# and take the natural log
+	# (note that the third column of the table was already the natural log)
 aquilegiaSpurLength<-ln(aquilegiaSpurLength)
 
-# aquilegia regimes
+# aquilegia regimes - pollinator syndromes
+aquilegiaPollinators<-aquilegiaTrait[,14]
+# regimes coded 0, 1, 2
+	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
+	
+##############################################################################
+
+# need to reconstruct regimes down the tree
+
 
 
 ###############################################################################
@@ -55,18 +64,9 @@ idealTrees<-list(
     star_n16 = stree(n=16, type = "star", tip.label = NULL),
     star_n64 = stree(n=64, type = "star", tip.label = NULL)
     )
-
-	
-	
-	
 	
 #############################################################################
 # analyses
-
-
-    
-    
-    
 
 
 #############################################
@@ -78,7 +78,10 @@ idealTrees<-list(
    # prior = standard_(uniform) 
 
 
-
+intrinsicModel<-
+extrinsicModel<-
+   
+   
 
 
 
@@ -173,6 +176,18 @@ idealTrees<-list(
    # prior = standard_(uniform) 
 
 
+#' @rdname intrinsicModels
+#' @export
+autoregressiveMultOPtimaIntrinsic <- function(params, states, timefrompresent) {
+    #a discrete time OU, same sd, mean, and attraction for all chars
+    #params[1] is sd (sigma), params[2] is attractor (ie. character mean), params[3] is attraction (ie. alpha)
+    sd <- params[1]
+    attractor <- params[2]
+    attraction <- params[3]    #in this model, this should be between zero and one
+    newdisplacement <- rpgm::rpgm.rnorm(n = length(states), mean = (attractor-states)*attraction, sd = sd) #subtract current states because we want displacement
+    return(newdisplacement)
+    }   
+   
 
 
 
