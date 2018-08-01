@@ -1,40 +1,59 @@
-# actualistic bounds on function
-getTraitBounds<-function(x){
-	bounds <- c(
-		min(x)-((max(x) − min(x))/2),
-		min(x)+((max(x) - min(x))/2)
-		)
-	return(bounds)
-	}
-
-# equation for getting potential	
-potentialFun<-function(x,a,b,c){
-	# V(x)=ax4+bx2+cx 
-	Vres <- (a*(x^4))+(b*(x^2))+(c*x)
-	return(Vres)
-	}
-
-############################################
-
-# need traits to calculate bounds
-bounds<-getTraitBounds(trait)
-
-
-# parameters: a,b,c, rootState, sigma
-
-
-# a
-# b
-# c
-# rootState
-# sigma
-
-
-# sim controls
-grainscaleFPK = 100
 
 
 
+
+
+#' @rdname intrinsicModels
+#' @export
+landscapeFPK_Intrinsic <- function(params, states, timefrompresent) {
+	#a discrete time FPK
+
+		# actualistic bounds on function
+	getTraitBounds<-function(x){
+		bounds <- c(
+			min(x)-((max(x) − min(x))/2),
+			min(x)+((max(x) - min(x))/2)
+			)
+		return(bounds)
+		}
+
+	# equation for getting potential	
+	potentialFun<-function(x,a,b,c){
+		# V(x)=ax4+bx2+cx 
+		Vres <- (a*(x^4))+(b*(x^2))+(c*x)
+		return(Vres)
+		}
+
+	############################################
+
+	# need traits to calculate bounds
+	bounds<-getTraitBounds(trait)
+
+
+	# parameters: a,b,c, rootState, sigma
+
+
+	# a
+	# b
+	# c
+	# rootState
+	# sigma
+
+
+	# sim controls
+	grainscaleFPK = 100
+	
+	
+    sd <- params[1]
+    attractor <- params[2]
+    attraction <- params[3]    #in this model, this should be between zero and one
+	
+	
+	
+	
+	
+	
+	
 	
 
 
@@ -54,6 +73,9 @@ potentialVector<-potentialFun(
 	a=a,b=b,c=c)	
 
 
+	
+
+	
 
 # Coefficient of Diffusion of the Model
 dCoeff <- log((sigma)^2/2) 
@@ -98,6 +120,7 @@ diag_expD <- exp(dCoeff)/tau*diag(vDiag)
 for (i in 1:length(tree$edge.length)){
 				
 	x <- trait[tree$edge[i,1]]
+	t <- tree$edge.length[i]
 
 	# write to which point of the grid a given position belongs to, 'continuous' version
 	X <- rep(0,grainScale)  
@@ -115,7 +138,7 @@ for (i in 1:length(tree$edge.length)){
 	# get the probability density / likelihood of each future trait value given potentialVector and current trait value
 	# propagate the trait forward in time
 		
-	t <- tree$edge.length[i]
+	
 
 	# Convolution product over one branch
 	expD <- matrix(0,grainScale,grainScale)
@@ -125,7 +148,7 @@ for (i in 1:length(tree$edge.length)){
 	proptemp<-apply(a,1,function(x) max(x,0))
 					
 	# sample from this probability distribution	to get a descendent node value
-	trait[tree$edge[i,2]] <- sample(
+	trait <- sample(
 		x=seq(
 			from=bounds[1],
 			to=bounds[2],
@@ -141,3 +164,12 @@ names(res) <- tree$tip.label
 
 
 
+
+
+	
+	
+	#subtract current states because we want displacement
+    newdisplacement <- rpgm::rpgm.rnorm(n = length(states), mean = (attractor-states)*attraction, sd = sd) 
+
+    return(newdisplacement)
+    }	
