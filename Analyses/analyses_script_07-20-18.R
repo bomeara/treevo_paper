@@ -41,7 +41,7 @@ aquilegiaPollinators<-aquilegiaTrait[,14]
 	
 ##############################################################################
 
-# need to reconstruct regimes down the tree
+# need to reconstruct regimes down the aquilegia tree
 
 
 
