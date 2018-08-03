@@ -1,7 +1,7 @@
 
 
 # actualistic bounds on function
-getTraitBounds<-function(x){
+getTraitBoundsFPK<-function(x){
 	bounds <- c(
 		min(x)-((max(x) - min(x))/2),
 		max(x)+((max(x) - min(x))/2)
@@ -9,10 +9,35 @@ getTraitBounds<-function(x){
 	return(bounds)
 	}
 
+getTraitIntervalDensityFPK<-function(trait,origIntLength,origSequence,grainScale){
+	# need a vector, length = grainscale
+		# with zeroes in intervals far from current trait value
+	# and with density=1 distributed in interval=origIntLength
+		# centered around the original trait value
+	# for whatever reason, Boucher et al's code
+		# chooses the whole interval BEFORE the trait value
+		# unclear why you would do that...	
+	traitInterval<-c(trait-origIntLength/2, trait+origIntLength/2)
+	intDensity<-ifelse(trait>origSequence[-1],
+		origSequence[-1]-traitInterval[1],
+		traitInterval[2]-origSequence[-grainScale]
+		)
+	intDensity[intDensity<0]<-0
+	return(intDensity)
+	}
+
+# equation for getting potential under FPK	
+potentialFunFPK<-function(x,a,b,c){
+	# V(x)=ax4+bx2+cx 
+	Vres <- (a*(x^4))+(b*(x^2))+(c*x)
+	return(Vres)
+	}
+
+
 
 traitData<-rnorm(100,0,1)
 # need traits to calculate bounds
-bounds<-getTraitBounds(traitData)
+bounds<-getTraitBoundsFPK(traitData)
 
 # example from vignette for 
 	# should make two peak landscape
@@ -25,38 +50,38 @@ params<-c(
 trait<-traitData[1]
 
 
-#' @rdname intrinsicModels
+landscapeFPK_Intrinsic(params=params, states=trait, timefrompresent=NULL)
+
+#' @rdname 
 #' @export
 landscapeFPK_Intrinsic <- function(params, states, timefrompresent) {
-	#a discrete time FPK
-
-
-# From Boucher et al:
-# Finally, note that both BM and the OU model are special cases of the FPK
-# model: BM corresponds to V(x)=0 and OU to
-# V(x)=((alpha/sigma^2)*x^2)-((2*alpha*theta/(sigma^2))*x)
-
-	########################################################
-	# equation for getting potential	
-	potentialFun<-function(x,a,b,c){
+	#a discrete time Fokker–Planck–Kolmogorov model (FPK)
 		# V(x)=ax4+bx2+cx 
-		Vres <- (a*(x^4))+(b*(x^2))+(c*x)
-		return(Vres)
-		}
-
-	############################################
-
+	# describes a potential surface where height corresponds to
+		# tendency to change in that direction
+	# allows for multiple optima, different heights to those optima
+		#also collapses to BM and OU1
+	#
+	# From Boucher et al:
+	# Finally, note that both BM and the OU model are special cases of the FPK
+	# model: BM corresponds to V(x)=0 and OU to
+	# V(x)=((alpha/sigma^2)*x^2)-((2*alpha*theta/(sigma^2))*x)
+	#
+	# following code is loosely based on function Sim_FPK from package BBMV
+	#
+	########################################################
 	# parameters: a,b,c, rootState, sigma
 		# unnecc: rootState 
-	sigma <- params[4]
-	bounds <- params[5:6]
 
+	sigma <- params[4]
+
+	bounds <- params[5:6]
 	# sim controls
 	grainscaleFPK <- 10
-	
-grainScale<-grainscaleFPK
-# rename M
-# rename eigM
+
+	grainScale<-grainscaleFPK
+	# rename M
+	# rename eigM
 
 
 
@@ -65,13 +90,14 @@ grainScale<-grainscaleFPK
 # all of the following only need to be run
 	# when the parameters of FPK are changed
 # this can be pre-calculated for a single run with lexical scoping	
-	
+#	
 # landscape descriptor function
 # over the arbitrary interval (-1.5 : 1.5)
 arbSequence<-seq(from=-1.5,to=1.5,
 	length.out=grainScale)
 origSequence<-seq(from=bounds[1],to=bounds[2],
 	length.out=grainScale)
+origIntLength<-(grainScale-1)/(bounds[2]-bounds[1])
 # # potentialVector is numeric vector representing the potential
 	# length = grainScale
 # V(x)=ax4+bx2+cx 
@@ -125,80 +151,30 @@ diag(expD) <- exp(exp(dCoeff)/origScaler*eigM$values)
 potentialMatrix <- eigM$vectors%*%expD%*%solvedEigenvectors
 
 ###############################################
-
-
-
-###############################################
-
-	x <- trait
-	
-
-#t <- tree$edge.length[i]
-
-
-	origIntLength<-(grainScale-1)/(bounds[2]-bounds[1])
-	
+#######################################################
 
 	# need a vector, length = grainscale
 		# with zeroes in intervals far from current trait value
-		# and with density=1 distributed in interval=origIntLength
-			# around the original trait value
-
-
-	intDensity <- rep(0,grainScale)  
-	traitInterval<-c(trait-origIntLength/2, trait+origIntLength/2)
-	whichInts<-sapply(traitInterval,function(x) min(which(origSequence>=x),grainScale))
-
-	#if(length(whichInts)!=2){
-	#	stop("something that is length of one interval should be in two intervals")
-	#	}
-
-	origSequence[whichInts[1]]+traitInterval
-	intDensity<-ifelse(trait>origSequence[-1],
-		origSequence[-1]-traitInterval[1],
-		traitInterval[2]-origSequence[-grainScale]
-		)
-	intDensity[intDensity<0]<-0
-
-min(which(origSequence>=trait),grainScale)
-
-
-	if (x==bounds[2]){
-		X[grainScale] <- 1
-	}else{
-		nx <- (x-bounds[1])*origIntLength
-		ix <- floor(nx)
-		ux <- nx-ix
-		X[ix+2] <- ux
-		X[ix+1] <- 1-ux
-		}
-	X<-X*origIntLength	
-		
-
-		
-	
-
-
-	
-	probDivergence <- potentialMatrix %*% X
+	# and with density=1 distributed in interval=origIntLength
+		# centered around the original trait value
+	intDensity<-getTraitIntervalDensityFPK(
+		trait=states,
+		origIntLength=origIntLength,
+		origSequence=origSequence,
+		grainScale=grainScale)
+	#
+	probDivergence <- potentialMatrix %*% intDensity
 	# round all up to zero at least
 	probDivergence[probDivergence<0] <-	0
 	#					
 	# sample from this probability distribution
 		# to get divergence over a time-step
-	newdisplacement <- sample(
+	newTraitPosition <- sample(
 		x=origSequence,
 		size=1,
-		prob= proptemp/sum(proptemp))-states	
-
-
-
-
-
-	
-	
-	#subtract current states because we want displacement
-    newdisplacement <- rpgm::rpgm.rnorm(n = length(states), mean = (attractor-states)*attraction, sd = sd) 
-
-    return(newdisplacement)
-    }	
+		prob= proptemp/sum(proptemp))
+	# subtract the current trait position so to get divergence
+	newDisplacement<-newTraitPosition-states
+	return(newDisplacement)
+	}
+}	
