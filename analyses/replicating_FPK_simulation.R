@@ -17,7 +17,7 @@ bounds<-getTraitBounds(traitData)
 # example from vignette for 
 	# should make two peak landscape
 params<-c(
-	a=10,
+	a=1,
 	b=0.5,
 	c=0,
 	sigma=1,
@@ -68,12 +68,15 @@ grainScale<-grainscaleFPK
 	
 # landscape descriptor function
 # over the arbitrary interval (-1.5 : 1.5)
-seqInterval<-seq(from=-1.5,to=1.5,length.out=grainScale)
+arbSequence<-seq(from=-1.5,to=1.5,
+	length.out=grainScale)
+origSequence<-seq(from=bounds[1],to=bounds[2],
+	length.out=grainScale)
 # # potentialVector is numeric vector representing the potential
 	# length = grainScale
 # V(x)=ax4+bx2+cx 
 potentialVector<-potentialFun(
-	x=seqInterval,
+	x=arbSequence,
 	a=params[1],b=params[2],c=params[3])	
 #
 # Coefficient of Diffusion of the Model
@@ -106,15 +109,20 @@ eigM <- lapply(eigen(M),Re)
 # 			
 # solve the eigenvectors
 solvedEigenvectors <- solve(eigM$vectors,tol = 1e-30) 
-
-
-# Convolution product over one branch
-# what is this tau? depends on bounds, grainScale
-tau <- (((bounds[2]-bounds[1])/(grainScale-1))^2)
-# old time-dep version from Boucher et al's code
-#diag(expD) <- exp(t*diag_expD)
-diag(expD) <- exp(exp(dCoeff)/tau*eigM$values)
-
+#
+# get expected dispersion
+# scale expected dispersion to original trait scale
+	# (tau from Boucher et al.'s original code)
+origScaler <- (((bounds[2]-bounds[1])/(grainScale-1))^2)
+# assign dispersion to diagonal of expD
+diag(expD) <- exp(exp(dCoeff)/origScaler*eigM$values)
+# previous time-dep version from Boucher et al's code
+	# diag(expD) <- exp(t*diag_expD)
+#
+# take dot product of expD, eigenvectors and solved eigenvectors
+# get matrix of potential for future trait values
+	# given potentialVector alone, not yet considering previous values
+potentialMatrix <- eigM$vectors%*%expD%*%solvedEigenvectors
 
 ###############################################
 
@@ -123,48 +131,58 @@ diag(expD) <- exp(exp(dCoeff)/tau*eigM$values)
 ###############################################
 
 	x <- trait
-	#t <- tree$edge.length[i]
+	
 
-	# write to which point of the grid a given position belongs to, 'continuous' version
-	X <- rep(0,grainScale)  
+#t <- tree$edge.length[i]
+
+
+	origIntLength<-(grainScale-1)/(bounds[2]-bounds[1])
 	
-	
+
+	# need a vector, length = grainscale
+		# with zeroes in intervals far from current trait value
+		# and with density=1 distributed in interval=origIntLength
+			# around the original trait value
+
+
+	intDensity <- rep(0,grainScale)  
+	traitInterval<-c(trait-origIntLength/2, trait+origIntLength/2)
+	whichInts<-sapply(traitInterval,function(x) min(which(origSequence>=x),grainScale))
+	#if(length(whichInts)!=2){
+	#	stop("something that is length of one interval should be in two intervals")
+	#	}
+	intDensity[whichInts]<-ifelse(trait>origSequence,
+
+	intDensity[intDensity<0]<-0
+
+min(which(origSequence>=trait),grainScale)
 
 
 	if (x==bounds[2]){
 		X[grainScale] <- 1
 	}else{
-		nx <- (grainScale-1)*(x-bounds[1])/(bounds[2]-bounds[1])
+		nx <- (x-bounds[1])*origIntLength
 		ix <- floor(nx)
 		ux <- nx-ix
 		X[ix+2] <- ux
 		X[ix+1] <- 1-ux
 		}
-
-	X<-X*(grainScale-1)/(bounds[2]-bounds[1])	
+	X<-X*origIntLength	
 		
-	# get the probability density / likelihood of each future trait value
-		# given potentialVector and current trait value
-	# propagate the trait forward in time
+
 		
 	
 
 
-	proptemp2 <- passage%*%expD%*%solvedEigenvectors
-	proptemp2%*%X
-	proptemp <- passage%*%expD%*%solvedEigenvectors%*%X
-	proptemp
-
-	# prevent rounding errors for small numbers	
-	proptemp<-apply(proptemp,1,function(x) max(x,0))
-					
-	# sample from this probability distribution	to get a descendent node value
+	
+	probDivergence <- potentialMatrix %*% X
+	# round all up to zero at least
+	probDivergence[probDivergence<0] <-	0
+	#					
+	# sample from this probability distribution
+		# to get divergence over a time-step
 	newdisplacement <- sample(
-		x=seq(
-			from=bounds[1],
-			to=bounds[2],
-			length.out=grainScale
-			)-,
+		x=origSequence,
 		size=1,
 		prob= proptemp/sum(proptemp))-states	
 
