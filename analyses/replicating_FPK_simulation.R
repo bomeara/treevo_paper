@@ -148,11 +148,16 @@ potentialMatrix <- eigM$vectors%*%expD%*%solvedEigenvectors
 	intDensity <- rep(0,grainScale)  
 	traitInterval<-c(trait-origIntLength/2, trait+origIntLength/2)
 	whichInts<-sapply(traitInterval,function(x) min(which(origSequence>=x),grainScale))
+
 	#if(length(whichInts)!=2){
 	#	stop("something that is length of one interval should be in two intervals")
 	#	}
-	intDensity[whichInts]<-ifelse(trait>origSequence,
 
+	origSequence[whichInts[1]]+traitInterval
+	intDensity<-ifelse(trait>origSequence[-1],
+		origSequence[-1]-traitInterval[1],
+		traitInterval[2]-origSequence[-grainScale]
+		)
 	intDensity[intDensity<0]<-0
 
 min(which(origSequence>=trait),grainScale)
