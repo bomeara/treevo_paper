@@ -162,17 +162,19 @@ landscapeFPK_Intrinsic <- function(params, states, timefrompresent,
 		origSequence=origSequence,
 		grainScaleFPK=grainScaleFPK)
 	#
-	print(str(intDensity));print(str(potentialMatrix))
+	# take product to get potential with respect to position
 	probDivergence <- potentialMatrix %*% intDensity
 	# round all up to zero at least
 	probDivergence[probDivergence<0] <-	0
+	# convert potential to a probability
+	probDivergence<-probDivergence / sum(probDivergence)
 	#					
 	# sample from this probability distribution
 		# to get divergence over a time-step
 	newTraitPosition <- sample(
 		x=origSequence,
 		size=1,
-		prob= proptemp/sum(proptemp))
+		prob=probDivergence)
 	# subtract the current trait position so to get divergence
 	newDisplacement<-newTraitPosition-states
 	return(newDisplacement)
