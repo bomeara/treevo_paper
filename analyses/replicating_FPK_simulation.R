@@ -9,37 +9,9 @@ getTraitBoundsFPK<-function(x){
 	return(bounds)
 	}
 
-getTraitIntervalDensityFPK<-function(trait,origIntLength,
-		origSequence,grainScaleFPK){
-	# need a vector, length = grainScaleFPK
-		# with zeroes in intervals far from current trait value
-	# and with density=1 distributed in interval=origIntLength
-		# centered around the original trait value
-	# for whatever reason, Boucher et al's code
-		# chooses the whole interval BEFORE the trait value
-		# unclear why you would do that...	
-	traitInterval<-c(trait-origIntLength/2, trait+origIntLength/2)
-	intDensity<-ifelse(trait>origSequence[-1],
-		origSequence[-1]-traitInterval[1],
-		traitInterval[2]-origSequence[-grainScaleFPK]
-		)
-	if(trait==origSequence
-	intDensity[intDensity<0]<-0
-	if(length(intDensity)!=grainScaleFPK){
-		stop("intDensity is not calculated with correct length")
-		}
-	return(intDensity)
-	}
-
-
-
 
 getTraitIntervalDensityFPK<-function(trait,origIntLength,
 		origSequence,grainScaleFPK){
-
-
-
-
 	#### example dataset for testing
 	# grainScaleFPK<-100
 	# origIntLength<-0.23
@@ -67,55 +39,12 @@ getTraitIntervalDensityFPK<-function(trait,origIntLength,
 	}else{
 		intDensity[grainScaleFPK]<-0
 		}
-	
-
-
 	#
-	# make matrix with interval start and ends
-	intBounds<-cbind(
-		origSequence[-grainScaleFPK],
-		origSequence[-1]
-		)
-	intDensity<-rep(0,grainScaleFPK)
-	for(i in 1:(grainScaleFPK-1)){
-		# if the range-start is less than int-end 
-			# & range-end is more than int-start
-		if(traitRange[1]<intBounds[i,2] 
-				& traitRange[2]>intBounds[i,1]){
-			# there's overlap, so calculate total overlap
-			intDensity[i]<- min(intBounds[i,2],traitRange[2])-max(intBounds[i,1],traitRange[1])
-			}
-		}
-
-
-		#
-		
-
-		# if the range-start is less than int-end
-			# & range-end is greater than int-start - has START IN IT
-		if(traitRange[1]>=intBounds[i,1] & traitRange[1]<intBounds[i,2]){
-			intDensity[i]<- min(intBounds[i,2],traitRange[2])-traitRange[1]
-			}
-
-
-
-		}else{
-			
-			}
-		}
-
-	intDensity<-ifelse(trait>origSequence[-1],
-		origSequence[-1]-traitRange[1],
-		traitRange[2]-origSequence[-grainScaleFPK]
-		)
-	#if(trait==origSequence
-	intDensity[intDensity<0]<-0
-	if(length(intDensity)!=grainScaleFPK){
-		stop("intDensity is not calculated with correct length")
-		}
-
+	#if(length(intDensity)!=grainScaleFPK){
+	#	stop("intDensity is not calculated with correct length")
+	#	}
+	#
 	#sum(intDensity)==origIntLength
-
 	return(intDensity)
 	}
 
