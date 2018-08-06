@@ -50,14 +50,6 @@ getTraitIntervalDensityFPK<-function(trait,origIntLength,
 
 
 
-
-# equation for getting potential under FPK	
-potentialFunFPK<-function(x,a,b,c){
-	# V(x)=ax4+bx2+cx 
-	Vres <- (a*(x^4))+(b*(x^2))+(c*x)
-	return(Vres)
-	}
-
 #' @rdname 
 #' @export
 landscapeFPK_Intrinsic <- function(params, states, timefrompresent,	
@@ -180,24 +172,95 @@ landscapeFPK_Intrinsic <- function(params, states, timefrompresent,
 	return(newDisplacement)
 	}
 
+# equation for getting potential under FPK	
+potentialFunFPK<-function(x,a,b,c){
+	# V(x)=ax4+bx2+cx 
+	Vres <- (a*(x^4))+(b*(x^2))+(c*x)
+	return(Vres)
+	}
+
+plotFPKmodel<-function(params,
+		grainScaleFPK=1000,
+		traitName="Trait",
+		plotLandscape=TRUE
+		){
+	#
+	# get bounds from params
+	bounds <- params[5:6]
+	# get trait sequence
+	origSequence<-seq(from=bounds[1],to=bounds[2],
+		length.out=grainScaleFPK)
+	# V(x)=ax4+bx2+cx 
+	potentialVector<-potentialFunFPK(
+		a=params[1],b=params[2],c=params[3],
+		x=seq(from=-1.5,to=1.5,
+			length.out=grainScaleFPK))
+	#
+	if(plotLandscape){
+		#potentialVector<-1*exp(-potentialVector)
+		# equation from Boucher's BBMV tutorial (??)
+		potentialVector<-exp(-potentialVector)/sum(exp(-potentialVector)
+				*((bounds[2]-bounds[1])/grainScaleFPK))
+		yLabel<-"Macroevolutionary Landscape (N*exp(-V))"	
+	}else{
+		potentialVector<-potentialVector/max(potentialVector)
+		yLabel<-"Evolutionary Potential (Rescaled to Max Potential)"
+		}
+	#
+	plot(origSequence,potentialVector,type="l",
+		xlab=paste0(traitName," (Original Scale)"),
+		ylab=yLabel)
+	}
 
 
 
+set.seed(444)
 traitData<-rnorm(100,0,1)
 # need traits to calculate bounds
 bounds<-getTraitBoundsFPK(traitData)
+# pick a value at random
+trait<-0
 
-# example from vignette for 
-	# should make two peak landscape
+# two peak symmetric landscape example
 params<-c(
-	a=1,
-	b=0.5,
+	a=2,
+	b=-4,
 	c=0,
 	sigma=1,
 	bounds)
-trait<-traitData[1]
+plotFPKmodel(params)
 
-
+# simulate under this model - simulated trait DIVERGENCE
 landscapeFPK_Intrinsic(params=params, states=trait, timefrompresent=NULL)
 
+# simulate five time-steps, repeat many times, plot results
+repeatSimSteps<-function(params,trait,nSteps){
+	for(i in 1:nSteps){
+	# add to original trait value to get new trait value
+		trait<-trait+landscapeFPK_Intrinsic(
+			params=params, states=trait, timefrompresent=NULL)
+			}
+	trait
+	}
+
+repSim<-replicate(30,repeatSimSteps(params,trait,20))
+hist(repSim,main="Simulated Trait Values")
+
+
+
+
+# uneven two peak symmetric landscape example
+params<-c(
+	a=2,
+	b=-4,
+	c=0.3,
+	sigma=1,
+	bounds)
+plotFPKmodel(params)
+
+# simulate under this model - simulated trait DIVERGENCE
+landscapeFPK_Intrinsic(params=params, states=trait, timefrompresent=NULL)
+
+repSim<-replicate(30,repeatSimSteps(params,trait,20))
+hist(repSim,main="Simulated Trait Values")
 
