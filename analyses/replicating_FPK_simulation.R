@@ -1,4 +1,13 @@
 
+# FPK model is a four param intrinsic model
+	# three to describe landscape
+	# one to describe sigma (dispersion parameter)
+
+	# bounds are treated as two additional parameters
+		# but these are intended to be nuisance parameters 
+		# Boucher et al essentially fix these bounds
+			# at a distance far from observed trait values
+
 
 # actualistic bounds on function
 getTraitBoundsFPK<-function(x){
