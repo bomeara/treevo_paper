@@ -3,15 +3,7 @@
 
 
 # multi optima single evolutionary regime model
-# MOSER
-
-
-MOSER_intrinsic<-function(params,states,timefrompresent){
-
-
-
-
-	}
+# MOSER?
 
 
 #' @rdname intrinsicModels
