@@ -40,28 +40,68 @@ getTraitIntervalDensityFPK<-function(trait,origIntLength,
 
 
 
-
-grainScaleFPK<-100
-origIntLength<-0.23
-origSequence<-(-20:(-20+grainScaleFPK))*origIntLength
-
-trait<-(-1.84)
-
-
+	#### example dataset for testing
+	# grainScaleFPK<-100
+	# origIntLength<-0.23
+	# origSequence<-(-20:(-20+grainScaleFPK))*origIntLength
+	# trait<-(-1.83)
+	# trait<-max(origSequence)
+	# trait<-min(origSequence)
+	####################################################
 	traitRange<-c(trait-origIntLength/2,
 		trait+origIntLength/2)
+	#
+	intDensity<-rep(NA,grainScaleFPK)
+	intDensity[2:(grainScaleFPK-1)]<-sapply(2:(grainScaleFPK-1), function(i) max(0,
+		min(origSequence[i+1],traitRange[2])-max(origSequence[i],traitRange[1])))
+	#
+	# special calculations for first and last
+	if(traitRange[2]<origSequence[2]){
+		intDensity[1]<-origIntLength
+	}else{
+		intDensity[1]<-0
+		}
+	#
+	if(traitRange[1]>origSequence[grainScaleFPK-1]){
+		intDensity[grainScaleFPK]<-origIntLength
+	}else{
+		intDensity[grainScaleFPK]<-0
+		}
+	
+
+
 	#
 	# make matrix with interval start and ends
 	intBounds<-cbind(
 		origSequence[-grainScaleFPK],
 		origSequence[-1]
 		)
-	intDensity<-rep(NA,grainScaleFPK)
-	#
-	# if the range-start is more than or equal to int-start
-		# & less than int-end
+	intDensity<-rep(0,grainScaleFPK)
 	for(i in 1:(grainScaleFPK-1)){
-		if(traitRange[1]>=intBounds[i,1]
+		# if the range-start is less than int-end 
+			# & range-end is more than int-start
+		if(traitRange[1]<intBounds[i,2] 
+				& traitRange[2]>intBounds[i,1]){
+			# there's overlap, so calculate total overlap
+			intDensity[i]<- min(intBounds[i,2],traitRange[2])-max(intBounds[i,1],traitRange[1])
+			}
+		}
+
+
+		#
+		
+
+		# if the range-start is less than int-end
+			# & range-end is greater than int-start - has START IN IT
+		if(traitRange[1]>=intBounds[i,1] & traitRange[1]<intBounds[i,2]){
+			intDensity[i]<- min(intBounds[i,2],traitRange[2])-traitRange[1]
+			}
+
+
+
+		}else{
+			
+			}
 		}
 
 	intDensity<-ifelse(trait>origSequence[-1],
@@ -74,7 +114,7 @@ trait<-(-1.84)
 		stop("intDensity is not calculated with correct length")
 		}
 
-	sum(intDensity)==origIntLength
+	#sum(intDensity)==origIntLength
 
 	return(intDensity)
 	}
@@ -127,7 +167,7 @@ landscapeFPK_Intrinsic <- function(params, states, timefrompresent,
 	# translate  to original trait scale
 	origSequence<-seq(from=bounds[1],to=bounds[2],
 		length.out=grainScaleFPK)
-	origIntLength<-(bounds[2]-bounds[1])/(grainScaleFPK-1)
+	origIntLength<-abs((bounds[2]-bounds[1])/(grainScaleFPK-1))
 	# # potentialVector is numeric vector representing the potential
 		# length = grainScaleFPK
 	# V(x)=ax4+bx2+cx 
