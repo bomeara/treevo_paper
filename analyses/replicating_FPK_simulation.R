@@ -9,7 +9,8 @@ getTraitBoundsFPK<-function(x){
 	return(bounds)
 	}
 
-getTraitIntervalDensityFPK<-function(trait,origIntLength,origSequence,grainScaleFPK){
+getTraitIntervalDensityFPK<-function(trait,origIntLength,
+		origSequence,grainScaleFPK){
 	# need a vector, length = grainScaleFPK
 		# with zeroes in intervals far from current trait value
 	# and with density=1 distributed in interval=origIntLength
@@ -22,9 +23,64 @@ getTraitIntervalDensityFPK<-function(trait,origIntLength,origSequence,grainScale
 		origSequence[-1]-traitInterval[1],
 		traitInterval[2]-origSequence[-grainScaleFPK]
 		)
+	if(trait==origSequence
 	intDensity[intDensity<0]<-0
+	if(length(intDensity)!=grainScaleFPK){
+		stop("intDensity is not calculated with correct length")
+		}
 	return(intDensity)
 	}
+
+
+
+
+getTraitIntervalDensityFPK<-function(trait,origIntLength,
+		origSequence,grainScaleFPK){
+
+
+
+
+
+grainScaleFPK<-100
+origIntLength<-0.23
+origSequence<-(-20:(-20+grainScaleFPK))*origIntLength
+
+trait<-(-1.84)
+
+
+	traitRange<-c(trait-origIntLength/2,
+		trait+origIntLength/2)
+	#
+	# make matrix with interval start and ends
+	intBounds<-cbind(
+		origSequence[-grainScaleFPK],
+		origSequence[-1]
+		)
+	intDensity<-rep(NA,grainScaleFPK)
+	#
+	# if the range-start is more than or equal to int-start
+		# & less than int-end
+	for(i in 1:(grainScaleFPK-1)){
+		if(traitRange[1]>=intBounds[i,1]
+		}
+
+	intDensity<-ifelse(trait>origSequence[-1],
+		origSequence[-1]-traitRange[1],
+		traitRange[2]-origSequence[-grainScaleFPK]
+		)
+	#if(trait==origSequence
+	intDensity[intDensity<0]<-0
+	if(length(intDensity)!=grainScaleFPK){
+		stop("intDensity is not calculated with correct length")
+		}
+
+	sum(intDensity)==origIntLength
+
+	return(intDensity)
+	}
+
+
+
 
 # equation for getting potential under FPK	
 potentialFunFPK<-function(x,a,b,c){
@@ -36,7 +92,7 @@ potentialFunFPK<-function(x,a,b,c){
 #' @rdname 
 #' @export
 landscapeFPK_Intrinsic <- function(params, states, timefrompresent,	
-		grainscaleFPK <- 100	# sim controls
+		grainScaleFPK = 100	# sim controls
 		) {
 	#
 	#a discrete time Fokker–Planck–Kolmogorov model (FPK)
@@ -71,11 +127,11 @@ landscapeFPK_Intrinsic <- function(params, states, timefrompresent,
 	# translate  to original trait scale
 	origSequence<-seq(from=bounds[1],to=bounds[2],
 		length.out=grainScaleFPK)
-	origIntLength<-(grainScaleFPK-1)/(bounds[2]-bounds[1])
+	origIntLength<-(bounds[2]-bounds[1])/(grainScaleFPK-1)
 	# # potentialVector is numeric vector representing the potential
 		# length = grainScaleFPK
 	# V(x)=ax4+bx2+cx 
-	potentialVector<-potentialFun(
+	potentialVector<-potentialFunFPK(
 		x=arbSequence,
 		a=params[1],b=params[2],c=params[3])	
 	#
@@ -111,8 +167,9 @@ landscapeFPK_Intrinsic <- function(params, states, timefrompresent,
 	#
 	# get expected dispersion
 	# scale expected dispersion to original trait scale
+		# squared distance between points in resolution of trait scale
 		# (tau from Boucher et al.'s original code)
-	origScaler <- (((bounds[2]-bounds[1])/(grainScaleFPK-1))^2)
+	origScaler <- origIntLength^2
 	# assign dispersion to diagonal of expD
 	diag(expD) <- exp(exp(dCoeff)/origScaler*eigTranMatrix$values)
 	# previous time-dep version from Boucher et al's code
@@ -136,6 +193,7 @@ landscapeFPK_Intrinsic <- function(params, states, timefrompresent,
 		origSequence=origSequence,
 		grainScaleFPK=grainScaleFPK)
 	#
+	print(str(intDensity));print(str(potentialMatrix))
 	probDivergence <- potentialMatrix %*% intDensity
 	# round all up to zero at least
 	probDivergence[probDivergence<0] <-	0
