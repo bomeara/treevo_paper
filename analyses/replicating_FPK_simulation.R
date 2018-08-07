@@ -242,7 +242,7 @@ plotFPKmodel(params)
 # simulate under this model - simulated trait DIVERGENCE
 landscapeFPK_Intrinsic(params=params, states=trait, timefrompresent=NULL)
 
-# simulate five time-steps, repeat many times, plot results
+# simulate n time-steps, repeat many times, plot results
 repeatSimSteps<-function(params,trait,nSteps){
 	for(i in 1:nSteps){
 	# add to original trait value to get new trait value
@@ -251,7 +251,6 @@ repeatSimSteps<-function(params,trait,nSteps){
 			}
 	trait
 	}
-
 repSim<-replicate(30,repeatSimSteps(params,trait,20))
 hist(repSim,main="Simulated Trait Values")
 
