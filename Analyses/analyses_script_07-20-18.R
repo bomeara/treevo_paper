@@ -39,6 +39,86 @@ aquilegiaPollinators<-aquilegiaTrait[,14]
 # regimes coded 0, 1, 2
 	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
 	
+	
+######	
+oldCode<-'	
+setwd("/Users/bomeara/Documents/MyDocuments/Ongoing/Talks/2012vii07_Evolution2012_TreEvo/Aquilegia")
+library(TreEvo)
+phy<-read.tree("Aquilegia.phy")[[1]]
+data<-read.table("Aquilegia.txt",header=F,sep="\t")
+char<-log(data[,3]) #log spur length
+abcMethod<-"rejection"
+abcTolerance<-0.01
+library(doMC, quietly=T)
+library(foreach, quietly=T)
+library(parallel)
+registerDoMC()
+
+pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
+  #params[1] is sd for normal process, 
+  #params[2] is sd for jump size of shift, 
+  #params[3] is mean of shift (mean of normal process is zero), 
+  #params[4] is per generation probability of shift
+  background.process<-TRUE
+  if (runif(1,0,1)<params[4]) {
+    background.process<-FALSE 
+  }
+  if (background.process) {
+    newdisplacement<-rnorm(n=length(states),mean=0,sd=params[1])
+    return(newdisplacement)
+  }
+  else {
+    newdisplacement<-rnorm(n=length(states),mean=params[3],sd=params[2])
+    return(newdisplacement)
+  }
+}
+
+#assume generation time of 10 years (its a perennial plant), following Cooper et al. Plos ONe 2010 Genetic Variation at Nuclear loci fails to distinguish
+#group is about 3 MY, phy height is 3. So each unit = 1,000,000 years or thus 100,000 generations
+TreeYears=100000
+timeStep<-1/TreeYears
+
+totalTreeLength=TreeYears*sum(phy$edge.length) #how many generations are represented
+parsimonyShifts=7
+pollinatorShiftRate=parsimonyShifts/totalTreeLength
+
+maxPatristicDistance<-max(branching.times(phy))*TreeYears
+maxCharDistance<-max(char)-min(char)
+predictDistance<-function(x,maxPatristicDistance=maxPatristicDistance,nreps=20) {
+  return(mean(replicate(nreps,abs(sum(rnorm(round(maxPatristicDistance),mean=0,sd=x))))))
+}
+distanceDistance<-function(x,maxPatristicDistance=maxPatristicDistance,maxCharDistance,nreps=20) {
+   return(abs(maxCharDistance - predictDistance(x,maxPatristicDistance,nreps)))
+}
+
+
+#interval=c(0.0001,.05)
+#nreps=200
+#results.optimize<-optimize(f=distanceDistance,interval=interval,maxPatristicDistance=maxPatristicDistance,maxCharDistance=maxCharDistance,nreps=nreps)
+#sd.bestguess<-results.optimize$minimum
+sd.bestguess<-0.008 #it is estimated as this from above procedure. This way, all sims use same priors rather than reoptimizing
+
+#x<-seq(from=min(interval),to=max(interval),length.out=10)
+#plot(x,sapply(x,distanceDistance,maxPatristicDistance=maxPatristicDistance,maxCharDistance=maxCharDistance,nreps=nreps))
+
+intrinsicFn=pollinatorShiftIntrinsic
+extrinsicFn=nullExtrinsic
+startingPriorsFns="fixed"
+startingPriorsValues=matrix(rep(min(char),2),nrow=2,byrow=FALSE) #assume that the min value is the root state
+intrinsicPriorsFns=c("exponential","fixed","uniform","uniform") #do fixed for param2 b/c dont have a lot of data to use
+intrinsicPriorsValues=matrix(c(
+  rep(1/sd.bestguess , 2),
+  0, 0 ,
+  -maxCharDistance, maxCharDistance,
+  0, 0.00001
+  ), nrow=2, byrow=FALSE)
+extrinsicPriorsFns="fixed"
+extrinsicPriorsValues=matrix(c(0, 0), nrow=2, byrow=FALSE)
+	
+'	
+
+#####	
+	
 ##############################################################################
 
 # need to reconstruct regimes down the aquilegia tree
