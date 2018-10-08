@@ -152,3 +152,46 @@ multiOptima3IntrinsicMaxBoudary2 <- function(params, states, timefrompresent) {
     return(newdisplacement)
     }
 
+
+	
+# old aquilegia model from O'Meara, slightly reweirrten
+	# levy walk model
+pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
+  #params[1] is sd for normal process, 
+  #params[2] is sd for jump size of non-background shift 
+  #params[3] is mean of shift (mean of normal process is zero), 
+  #params[4] is per generation probability of a non-background shift/jump
+  if (runif(1,0,1) < params[4] ) {
+    # *not* background.process
+	newdisplacement<-rnorm(n=length(states),mean=params[3],sd=params[2])
+    return(newdisplacement)
+  }else{
+	# background process
+    newdisplacement<-rnorm(n=length(states),mean=0,sd=params[1])
+    return(newdisplacement)
+	}
+  }
+#
+#
+# designating priors for old aquilegia model from legacy code
+# from B O'Meara
+# 
+#do fixed for param2 b/c dont have a lot of data to use
+# intrinsicPriorsFns=c("exponential","fixed","uniform","uniform") 
+#
+#intrinsicPriorsValues=matrix(
+#	c(
+#		# regular rate/sd of change = 0.08 is based on best guess of average rate of change, it seems
+#		rep(1/0.08 , 2),
+#		# jump rate of change - fixed at zero because:
+#			#"do fixed for param2 b/c dont have a lot of data to use" ??
+#		c(0,0),
+#		# mean of shift (if not zero, then its a trend model)
+#		c(-maxCharDistance, maxCharDistance),
+#		# rate of a shift
+#		0, 0.00001
+#		)
+#	, nrow=2, byrow=FALSE)
+#
+# hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm no
+
