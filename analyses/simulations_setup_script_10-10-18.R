@@ -41,43 +41,26 @@ aquilegiaSpurLength<-aquilegiaTrait[,2]
 	# previous code from Brian had 'log(data[,3])' - log of a log
 aquilegiaSpurLength<-log(aquilegiaSpurLength)
 
-# aquilegia regimes - pollinator syndromes
-aquilegiaPollinators<-aquilegiaTrait[,14]
-# regimes coded 0, 1, 2
-	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
-# this probably won't be used?
-# could use for post-analysis comparisons? Hmm
-	
-	
-######	
-# old aquilegia code
-#assume generation time of 10 years (its a perennial plant), 
+# legacy aquilegia code from Brian O'Meara:
+# 
+# assume generation time of 10 years (its a perennial plant), 
 	# following Cooper et al. Plos ONe 2010 
 	# Genetic Variation at Nuclear loci fails to distinguish group is about 3 MY,
 		# phy height is 3. So each unit = 1,000,000 years or thus 100,000 generations
 # TreeYears=100000
 # timeStep<-1/TreeYears
 # totalTreeLength=TreeYears*sum(phy$edge.length) #how many generations are represented
-
 # number of expected polinator shifts based on parsimony is 7:
 # parsimonyShifts=7
 # pollinatorShiftRate=parsimonyShifts/totalTreeLength
 
+# aquilegia regimes - pollinator syndromes
+aquilegiaPollinators<-aquilegiaTrait[,14]
+# regimes coded 0, 1, 2
+	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
+# this probably won't be used directly?
+# could use for post-analysis comparisons? Hmm
 	
-
-	
-
-#####	
-	
-##############################################################################
-
-# need to reconstruct regimes down the aquilegia tree
-
-
-
-
-
-
 
 ###############################################################################
 # generate sets of ideal trees for doing simulations on
@@ -98,10 +81,6 @@ idealTrees<-list(
     star_n16 = stree(n=16, type = "star", tip.label = NULL),
     star_n64 = stree(n=64, type = "star", tip.label = NULL)
     )
-	
-	
-	
-	
 	
 	
 	
