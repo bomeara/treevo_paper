@@ -1,10 +1,12 @@
 
 	
-	# September 2018
-	# Make two more models for Aquilegia
-	# 1) trait values have three optima on gradient, with some rate of switching to next-largest optima, cannot reverse
-	# 2) trait values evolve in three regimes with  successive upper bounds on gradient (so only two upper-bounds, highest regime has no bounds) with some rate of switching to next-largest regime, cannot reverse
-	# addendum - maybe make rate of switching to next optima dependent on trait value?
+# September 2018
+# Make two more models for Aquilegia
+# 1) trait values have three optima on gradient, with some rate of switching to next-largest optima, cannot reverse
+# 2) trait values evolve in three regimes with  successive upper bounds on gradient
+	#(so only two upper-bounds, highest regime has no bounds) 
+	# with some rate of switching to next-largest regime, cannot reverse
+# addendum - maybe make rate of switching to next optima dependent on trait value?
 
 
 
@@ -154,7 +156,9 @@ multiOptima3IntrinsicMaxBoudary2 <- function(params, states, timefrompresent) {
 
 
 	
-# old aquilegia model from O'Meara, slightly reweirrten
+	
+	
+# old aquilegia model from O'Meara, slightly rewritten
 	# levy walk model
 pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
   #params[1] is sd for normal process, 
@@ -171,8 +175,8 @@ pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
     return(newdisplacement)
 	}
   }
-#
-#
+  
+
 # designating priors for old aquilegia model from legacy code
 # from B O'Meara
 # 
