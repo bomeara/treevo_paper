@@ -37,8 +37,8 @@ multiOptima3IntrinsicMaxBoudary3 <- function(params, states, timefrompresent) {
 	sigma<-params[1]
 	alpha<-params[2]
 	rho <- params[3]
-	maxBound<-params[4:6][i]
-	theta<-params[7:9][i]	
+	maxBound<-params[4:6]
+	theta<-params[7:9]	
 	#
 	# what regime does the lineage sit in?
 	# (1) cannot be in a regime whose max bound it has surpassed
@@ -95,7 +95,7 @@ multiOptima3IntrinsicMaxBoudary2 <- function(params, states, timefrompresent) {
 		# params[3] is rho, an exponent scaling the weighting of distance to optima
 			# this parameter will control switching optima
 		# params[4:5] is the max boundary, for the two lower regimes regimes
-		# params[7:9] describes theta (optima) values for each of the three regimes
+		# params[6:8] describes theta (optima) values for each of the three regimes
 	# In this model, optima represent fixed trait values conveying adaptive benefit
 		# the proximity of a population to an optima makes it more likely to be under that regime
 		# a point equidistant between multiple regimes may be drawn to any
@@ -110,7 +110,7 @@ multiOptima3IntrinsicMaxBoudary2 <- function(params, states, timefrompresent) {
 	rho <- params[3]
 	# add an infinite max bound to the last regime
 	maxBound<-c(params[4:5],Inf)
-	theta<-params[7:9]	
+	theta<-params[6:8]	
 	#
 	# what regime does the lineage sit in?
 	# (1) cannot be in a regime whose max bound it has surpassed
@@ -158,23 +158,7 @@ multiOptima3IntrinsicMaxBoudary2 <- function(params, states, timefrompresent) {
 	
 	
 	
-# old aquilegia model from O'Meara, slightly rewritten
-	# levy walk model
-pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
-  #params[1] is sd for normal process, 
-  #params[2] is sd for jump size of non-background shift 
-  #params[3] is mean of shift (mean of normal process is zero), 
-  #params[4] is per generation probability of a non-background shift/jump
-  if (runif(1,0,1) < params[4] ) {
-    # *not* background.process
-	newdisplacement<-rnorm(n=length(states),mean=params[3],sd=params[2])
-    return(newdisplacement)
-  }else{
-	# background process
-    newdisplacement<-rnorm(n=length(states),mean=0,sd=params[1])
-    return(newdisplacement)
-	}
-  }
+# old aquilegia model from O'Meara
   
 
 # designating priors for old aquilegia model from legacy code
@@ -199,3 +183,22 @@ pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
 #
 # hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm no
 
+
+# old aquilegia model from O'Meara, slightly rewritten
+	# levy walk model
+pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
+  #params[1] is sd for normal process, 
+  #params[2] is sd for jump size of non-background shift 
+  #params[3] is mean of shift (mean of normal process is zero), 
+  #params[4] is per generation probability of a non-background shift/jump
+  if (runif(1,0,1) < params[4] ) {
+    # *not* background.process
+	newdisplacement<-rnorm(n=length(states),mean=params[3],sd=params[2])
+    return(newdisplacement)
+  }else{
+	# background process
+    newdisplacement<-rnorm(n=length(states),mean=0,sd=params[1])
+    return(newdisplacement)
+	}
+  }
+  
