@@ -1,0 +1,25 @@
+runLabel,dependentPrevRun,treeSet,empiricalTraitData,simTrait.Intrinsic,simTrait.Extrinsic,doRun.Intrinsic,doRun.Extrinsic,prior,nTreeTypes,nTipNumbers,nSimTrait,nDoRun,purpose
+An_Emp-DispBound,FALSE,empirical-anolis_tree,Anolis_Size_Data,NA,NA,BM_w/_LowerBound,Displacement,standard_(uniform),1,1,1,1,Model of Interest for Anolis dataset
+An_Emp-Bound,FALSE,empirical-anolis_tree,Anolis_Size_Data,NA,NA,BM_w/_LowerBound,Null,standard_(uniform),1,1,1,1,Null/Neutral model to compare against model of interest for Anolis data
+An_SimDispBound-DispBound,TRUE,empirical-anolis_tree,SIMULATED,An_Emp-DispBound,An_Emp-DispBound,BM_w/_LowerBound,Displacement,standard_(uniform),1,1,10,10,Adequacy of model of interest (bound-disp) - on data generated under that model
+An_SimBound-DispBound,TRUE,empirical-anolis_tree,SIMULATED,An_Emp-Bound,Null,Pure_BM,Displacement,standard_(uniform),1,1,10,10,False detection of lower-bound-displacement from data with a lower bound but no displacement
+An_Emp-BrownMotion,FALSE,empirical-anolis_tree,Anolis_Size_Data,NA,NA,Pure_BM,Null,standard_(uniform),1,1,1,1,fitting pure BM to Anolis data - Necessary for getting parameters for simulations
+An_Emp-Disp,FALSE,empirical-anolis_tree,Anolis_Size_Data,NA,NA,Pure_BM,Displacement,standard_(uniform),1,1,1,1,fitting Displacement to Anolis data - Necessary for getting parameters for simulations
+An_Emp-TimeReg,FALSE,empirical-anolis_tree,Anolis_Size_Data,NA,NA,Pure_BM,Null,standard_(uniform),1,1,1,1,fitting Time Regressive to Anolis data - Necessary for getting parameters for simulations
+Aq_Emp-3Opt2Bound,FALSE,empirical-Aquilegia_tree,Aquilegia_Nectar_Spur_Data,NA,NA,3-Optima,Null,standard_(uniform),1,1,1,1,Model of Interest for Aquilegia dataset
+Aq_Emp-BrownMotion,FALSE,empirical-Aquilegia_tree,Aquilegia_Nectar_Spur_Data,NA,NA,Pure_BM,Null,standard_(uniform),1,1,1,1,Null/Neutral model to compare against model of interest
+Aq_Sim3Opt-3Opt,TRUE,empirical-Aquilegia_tree,SIMULATED,Aq_Emp-3Opt2Bound,Null,3-Optima,Null,standard_(uniform),1,1,10,10,Adequecy of 3 optima / 2 bound model of interest
+Aq_SimBM-3Opt2Bound,TRUE,empirical-Aquilegia_tree,SIMULATED,Aq_Emp-BrownMotion,Null,3-Optima,Null,standard_(uniform),1,1,10,10,False detection of 3 optima / 2 bound model from BM data
+Ideal_SimBM-BM,TRUE,Ideal-Simulated,SIMULATED,An_Emp-BrownMotion,Null,Pure_BM,Null,standard_(uniform),3,3,10,90,Adequecy of BM model in simulations
+Ideal_SimBMpriorBiased,TRUE,Ideal-Simulated,SIMULATED,An_Emp-BrownMotion,Null,Pure_BM,Null,rexp_with_mean_*not*_at_true_sigmasq,3,3,10,90,Adequecy of BM model in simulations with biased prior
+Ideal_SimBM-Disp,TRUE,Ideal-Simulated,SIMULATED,An_Emp-BrownMotion,Null,Pure_BM,Displacement,standard_(uniform),3,3,10,90,Adequecy of BM-Displacement model when that is the true model
+Ideal_SimDisp-Disp,TRUE,Ideal-Simulated,SIMULATED,An_Emp-Disp,An_Emp-Disp,Pure_BM,Displacement,standard_(uniform),3,3,10,90,Adequecy of BM-Displacement model for data simulated under that model
+Ideal_SimBound-DispBound,TRUE,Ideal-Simulated,SIMULATED,An_Emp-Bound,Null,BM_w/_LowerBound,Displacement,standard_(uniform),3,3,10,90,Adequecy of BM-Displacement model when that is the true model
+Ideal_SimDispBoundNear-DispBound,TRUE,Ideal-Simulated,SIMULATED,An_Emp-Bound_BoundByStartingState,An_Emp-Bound,BM_w/_LowerBound,Displacement,standard_(uniform),3,3,10,90,Testing adequecy of one-bound models under various simulated scenarios
+Ideal_SimDispBoundMod-DispBound,TRUE,Ideal-Simulated,SIMULATED,An_Emp-Bound_BoundByMinValue,An_Emp-Bound,BM_w/_LowerBound,Displacement,standard_(uniform),3,3,10,90,Testing adequecy of one-bound models under various simulated scenarios
+Ideal_SimDispBoundFar-DispBound,TRUE,Ideal-Simulated,SIMULATED,An_Emp-Bound_BoundOneRangeAway,An_Emp-Bound,BM_w/_LowerBound,Displacement,standard_(uniform),3,3,10,90,Testing adequecy of one-bound models under various simulated scenarios
+Ideal_SimDispBound-DispBound,TRUE,Ideal-Simulated,SIMULATED,An_Emp-DispBound,An_Emp-DispBound,BM_w/_LowerBound,Displacement,standard_(uniform),3,3,10,90,Adequecy of BM-Displacement model for data simulated under that model
+Ideal_SimBM-TimeReg,TRUE,Ideal-Simulated,SIMULATED,An_Emp-BrownMotion,Null,Time-AutoRegressive_Model,Null,standard_(uniform),3,3,10,90,Adequecy of time-regressive models when true model is time-regressive
+Ideal_SimTimeReg-TimeReg,TRUE,Ideal-Simulated,SIMULATED,An_Emp-TimeReg,Null,Time-AutoRegressive_Model,Null,standard_(uniform),3,3,10,90,Adequecy of time-regressive models when true model is time-regressive
+Ideal_SimBM-3Opt2Bound,TRUE,Ideal-Simulated,SIMULATED,Aq_Emp-BrownMotion,Null,3-Optima,Null,standard_(uniform),3,3,10,90,False detection of 3 optima / 2 bound model from BM data
+Ideal_Sim3Opt2Bound-3Opt2Bound,TRUE,Ideal-Simulated,SIMULATED,Aq_Emp-3Opt2Bound,Null,3-Optima,Null,standard_(uniform),3,3,10,90,Adequecy of 3-optima model for data simulated under 3-optima

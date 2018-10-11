@@ -196,22 +196,37 @@ for(i in 1:length(idealTreeSizes)){
 
 
 
-	
+# get simulation run table
+simRunTable<-read.csv(header=TRUE,
+	stringsAsFactors=FALSE,
+	file="simulation_sets_07-20-18.csv")
+
+
+# remove ID, remove comments
+simRunTable<-simRunTable[,-c(1,ncol(simRunTable))]
+
+nRepeatTraitSim<-10			
+simNtip<-"c(8, 16, 64)"
+idealTreeTypes<-'c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star")'
+
+#####################################################
+
+# convert the table
+simRunTable$nTipNumbers[simRunTable$nTipNumbers==1]<-NA
+simRunTable$nTipNumbers[simRunTable$nTipNumbers==3]<-simNtip
+colnames(simRunTable)[colnames(simRunTable)=="nTipNumbers"]<-"nTipSets"
+simRunTable$nTreeTypes[simRunTable$nTreeTypes==1]<-NA
+simRunTable$nTreeTypes[simRunTable$nTreeTypes==3]<-idealTreeTypes
+colnames(simRunTable)[colnames(simRunTable)=="nTreeTypes"]<-"idealTreeSets"
+
+simRunTable$nSimTrait[simRunTable$nSimTrait==1]<-NA
+
+#simRunTable<-simRunTable[,!(colnames(simRunTable)=="nTree")]
+simRunTable<-simRunTable[,!(colnames(simRunTable)=="nDoRun")]
+
+
 	
 	
 
-#' @rdname intrinsicModels
-#' @export
-autoregressiveMultOPtimaIntrinsic <- function(params, states, timefrompresent) {
-    #a discrete time OU, same sd, mean, and attraction for all chars
-    #params[1] is sd (sigma), params[2] is attractor (ie. character mean), params[3] is attraction (ie. alpha)
-    sd <- params[1]
-    attractor <- params[2]
-    attraction <- params[3]    #in this model, this should be between zero and one
-    newdisplacement <- rpgm::rpgm.rnorm(n = length(states), mean = (attractor-states)*attraction, sd = sd) #subtract current states because we want displacement
-    return(newdisplacement)
-    }   
-   	
-	
 	
 	

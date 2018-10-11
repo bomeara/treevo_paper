@@ -95,10 +95,10 @@ repSim<-replicate(300,
 hist(repSim,main="Simulated Trait Values",breaks=20)
 
 
-# same model above, with more switching between optima
+# same model above, with more switching between weak optima, high diffusion
 params<-c(
-	sigma=0.1,
-	alpha=0.3,
+	sigma=0.7,
+	alpha=0.1,
 	rho=0.5,
 	maxbounds=c(20,40),
 	theta=c(10,30,50)
