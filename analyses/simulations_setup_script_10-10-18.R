@@ -128,15 +128,15 @@ if(dependentPrevRun){
 # then the number of treeTypes and nTipNumbers is 3, other 1
 nTreeTypes<-nTipNumbers<-1
 #
-if(treeSet == "empirical-anolis_tree"){
+if(treeSet == "empirical_anolis_tree"){
 	treeList<-
 	}
 #
-if(treeSet == "empirical-Aquilegia_tree"){
+if(treeSet == "empirical_Aquilegia_tree"){
 	treeList<-
 	}
 #
-if(treeSet=="Ideal-Simulated"){
+if(treeSet=="Ideal_Simulated"){
 	treeList<-ideaTrees
 	nTreeTypes<-nTipNumbers<-3
 	}
@@ -159,91 +159,107 @@ if(empiricalTraitData == "SIMULATED"){
 	# simTrait.Intrinsic
 	#
 	if(is.na(simTrait.Intrinsic)){
-		stop()
+		stop("The intrinsic model for a simulated trait dataset is given as NA")
 	}else{
 		# ANOLIS BASED MODELS
-		if(simTrait.Intrinsic == "An_Emp-BrownMotion"){
+		if(simTrait.Intrinsic == "An_Emp_BrownMotion"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-Disp"){
+		if(simTrait.Intrinsic == "An_Emp_Disp"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-DispBound"){
+		if(simTrait.Intrinsic == "An_Emp_DispBound"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-Bound"){
+		if(simTrait.Intrinsic == "An_Emp_Bound"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-Bound_BoundByStartingState"){
+		if(simTrait.Intrinsic == "An_Emp_Bound_BoundByStartingState"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-Bound_BoundByMinValue"){
+		if(simTrait.Intrinsic == "An_Emp_Bound_BoundByMinValue"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-Bound_BoundOneRangeAway"){
+		if(simTrait.Intrinsic == "An_Emp_Bound_BoundOneRangeAway"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "An_Emp-TimeReg"){
+		if(simTrait.Intrinsic == "An_Emp_TimeReg"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "Aq_Emp-3Opt2Bound"){
+		if(simTrait.Intrinsic == "Aq_Emp_3Opt2Bound"){
 			
 			}	
 		#
-		if(simTrait.Intrinsic == "Aq_Emp-BrownMotion"){
+		if(simTrait.Intrinsic == "Aq_Emp_BrownMotion"){
 			
 			}	
 		#
 				
 			
 		}
+	#
+	# simTrait.Extrinsic
+	#
+	if(is.na(simTrait.Extrinsic)){
+		stop("The extrinsic model for a simulated trait dataset is given as NA")
+	}else{
+		
+		if(simTrait.Extrinsic == "Null"){
+			
+			}
+		#
+		if(simTrait.Extrinsic == "An_Emp_Bound"){
+			
+			}
+		#
+		if(simTrait.Extrinsic == "An_Emp_Disp"){
+			
+			}
+		#
+		if(simTrait.Extrinsic == "An_Emp_DispBound"){
+			
+			}
+		#
 	
+		
+		}
+
 	
 	
 	
 	}
 #
 #
- 
 
 
 
 
 
 
-
-
-
-
-
-simTrait.Extrinsic
-NA
-An_Emp-DispBound
-Null
-An_Emp-Disp
-An_Emp-Bound
 
 doRun.Intrinsic
-BM_w/_LowerBound
+
 Pure_BM
-3-Optima
-Time-AutoRegressive_Model
+BM_w/_LowerBound
+3Opt2Bound
+Time_AutoRegressive_Model
 
 doRun.Extrinsic
-Displacement
+
 Null
+Displacement
 
 prior
 standard_(uniform)
-rexp_with_mean_*not*_at_true_sigmasq
+rexp_with_mean_NOT_at_true_sigmasq
 
 
 
