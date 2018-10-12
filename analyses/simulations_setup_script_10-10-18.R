@@ -16,6 +16,9 @@ library(TreEvo)
 # obtain anolis tree - from Poe et al. 2017 (SystBiol)
 	# their time-tree
 anolisTree<-read.tree(file="datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre")
+# make into a multiPhylo list
+anolisTreeList <- list(anolisTree = anolisTree)
+class(anolisTreeList) <- "multiPhylo"
 
 # obtain anolis trait data - 
 	# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
@@ -81,69 +84,105 @@ idealTrees<-list(
     star_n16 = stree(n=16, type = "star", tip.label = NULL),
     star_n64 = stree(n=64, type = "star", tip.label = NULL)
     )
-	
-	
-	
-	
-	
-	
-### tree sets
-# unresolved question? tree sizes
-	# 10, 25, 50, 100, 200?, 500?
-	# for now let's do first four
-	# need to be power of two for balanced trees with stree
-idealTreeSizes<-c(10,20,50,100)
-nIdealTreeSet<-20
-# should these all be extant only trees? Hmm.
-makeExtantSTree<-function(tree){
-	tree@edge.length<-runif(Nedge(tree))
+# make multiPhylo	
+class(ideaTrees)<-"multiPhylo"
+# compress tip labels? No, I don't think that works for trees of different sizes
+	#	trees<-.compressTipLabel(trees)
+		
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+# does this analysis-run depend on previous runs or not?
+if(dependentPrevRun){
+
+}else{
 	
 	}
 
 
-testTree<-list()
-for(i in 1:length(idealTreeSizes)){
-	treesOneSize<-list()
-	# generate idealized trees
-	# idealized - balanced tree
-	treesOneSize[[1]]<-lapply(1:nIdealTreeSet,function(x) 
-		stree(idealTreeSizes,type="balanced"))
-	
-		
-	# idealized - pectinate tree
-	treesOneSize[[1]]<-lapply(1:nIdealTreeSet,function(x) 
-		stree(idealTreeSizes,type="left"))
-	
-	# idealized - star tree
-	
-	#
-	# convert to multiPhylo, compress
-	for(j in 1:length(treesOneSize)){
-		class(treesOneSize[[j]])<-"multiPhylo"
-		treesOneSize[[j]]<-.compressTipLabel(treesOneSize[[j]])
-		
-		}
-	# 
+
+
+treeSet
+empirical-anolis_tree
+empirical-Aquilegia_tree
+Ideal-Simulated
+
+
+# if the treeSet is "Ideal-Simulated"
+# then the number of treeTypes and nTipNumbers is 3, other 1
+
+nTreeTypes<-nTipNumbers<-1
+if(treeSet=="Ideal-Simulated"){
+	treeList<-
+	nTreeTypes<-nTipNumbers<-3
 	}
+
+empiricalTraitData
+Anolis_Size_Data
+SIMULATED
+Aquilegia_Nectar_Spur_Data
+
+nSimTrait
+1
+10
+10
+
+simTrait.Intrinsic
+NA
+An_Emp-DispBound
+An_Emp-Bound
+Aq_Emp-3Opt2Bound
+Aq_Emp-BrownMotion
+An_Emp-BrownMotion
+An_Emp-Disp
+An_Emp-Bound_BoundByStartingState
+An_Emp-Bound_BoundByMinValue
+An_Emp-Bound_BoundOneRangeAway
+An_Emp-TimeReg
+
+simTrait.Extrinsic
+NA
+An_Emp-DispBound
+Null
+An_Emp-Disp
+An_Emp-Bound
+
+doRun.Intrinsic
+BM_w/_LowerBound
+Pure_BM
+3-Optima
+Time-AutoRegressive_Model
+
+doRun.Extrinsic
+Displacement
+Null
+
+prior
+standard_(uniform)
+rexp_with_mean_*not*_at_true_sigmasq
+
+
+
+
+
+
+# calculate the number of doRun statements for this analysis-run
+# product of treeTypes and nTipNumbers and nSimTrait
+nDoRun <- treeTypes * nTipNumbers * nSimTrait
+# should be one 1, 10 or 90... probably
 		
-	
-	
-	
-	
-	
-	
-	
-	
-# realistic tree set
-	# empirical neo tree
-	# empirical paleo tree?
-
-	# multiple empirical trees of varying sizes?
-
-
-
-
-	
 	
 	
 ###################################################
