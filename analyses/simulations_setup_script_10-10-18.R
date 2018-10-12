@@ -2,6 +2,14 @@
 # Individual Empirical Analyses and Simulations
 ##################################################
 
+# Control Box
+
+# number of simulated trait datasets to do for simulated-trait runs
+nSimTrait <- 10
+
+
+##################################################
+
 setwd("d://dave//workspace//treevo_paper//")
 
 library(ape)
@@ -114,43 +122,107 @@ if(dependentPrevRun){
 
 
 
-treeSet
-empirical-anolis_tree
-empirical-Aquilegia_tree
-Ideal-Simulated
-
+#treeSet
 
 # if the treeSet is "Ideal-Simulated"
 # then the number of treeTypes and nTipNumbers is 3, other 1
-
 nTreeTypes<-nTipNumbers<-1
-if(treeSet=="Ideal-Simulated"){
+#
+if(treeSet == "empirical-anolis_tree"){
 	treeList<-
+	}
+#
+if(treeSet == "empirical-Aquilegia_tree"){
+	treeList<-
+	}
+#
+if(treeSet=="Ideal-Simulated"){
+	treeList<-ideaTrees
 	nTreeTypes<-nTipNumbers<-3
 	}
+#
+# empiricalTraitData
+#
+# nTraitSets is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
+nTraitSets<-1
+if(empiricalTraitData == "Anolis_Size_Data"){
+	
+	}
+#
+if(empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
+	
+	}
+#
+if(empiricalTraitData == "SIMULATED"){
+	# nTraitSets is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
+	nTraitSets<-nSimTrait
+	# simTrait.Intrinsic
+	#
+	if(is.na(simTrait.Intrinsic)){
+		stop()
+	}else{
+		# ANOLIS BASED MODELS
+		if(simTrait.Intrinsic == "An_Emp-BrownMotion"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-Disp"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-DispBound"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-Bound"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-Bound_BoundByStartingState"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-Bound_BoundByMinValue"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-Bound_BoundOneRangeAway"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "An_Emp-TimeReg"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "Aq_Emp-3Opt2Bound"){
+			
+			}	
+		#
+		if(simTrait.Intrinsic == "Aq_Emp-BrownMotion"){
+			
+			}	
+		#
+				
+			
+		}
+	
+	
+	
+	
+	}
+#
+#
+ 
 
-empiricalTraitData
-Anolis_Size_Data
-SIMULATED
-Aquilegia_Nectar_Spur_Data
 
-nSimTrait
-1
-10
-10
 
-simTrait.Intrinsic
-NA
-An_Emp-DispBound
-An_Emp-Bound
-Aq_Emp-3Opt2Bound
-Aq_Emp-BrownMotion
-An_Emp-BrownMotion
-An_Emp-Disp
-An_Emp-Bound_BoundByStartingState
-An_Emp-Bound_BoundByMinValue
-An_Emp-Bound_BoundOneRangeAway
-An_Emp-TimeReg
+
+
+
+
+
+
+
 
 simTrait.Extrinsic
 NA
@@ -180,8 +252,10 @@ rexp_with_mean_*not*_at_true_sigmasq
 
 # calculate the number of doRun statements for this analysis-run
 # product of treeTypes and nTipNumbers and nSimTrait
-nDoRun <- treeTypes * nTipNumbers * nSimTrait
+nDoRun <- treeTypes * nTipNumbers * nTraitSets
 # should be one 1, 10 or 90... probably
+		
+		
 		
 	
 	
