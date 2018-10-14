@@ -39,6 +39,9 @@ anolisSize<-anolisTrait[,1]
 
 # obtain aquilegia tree (from Whittall and Hodges 2007?)
 aquilegiaTree<-read.tree("datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre")
+# make into a multiPhylo list
+aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
+class(aquilegiaTreeList) <- "multiPhylo"
 
 # obtain aquilegia trait data (from Whittall and Hodges 2007?)
 	# need both nectur spur lengths and regime data
@@ -96,28 +99,64 @@ idealTrees<-list(
 class(ideaTrees)<-"multiPhylo"
 # compress tip labels? No, I don't think that works for trees of different sizes
 	#	trees<-.compressTipLabel(trees)
-		
-
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-
-# does this analysis-run depend on previous runs or not?
-if(dependentPrevRun){
-
-}else{
-	
+######################################################################################
+# time to get table, process the inputs listed
+# 		
+# get simulation run table
+simRunTable<-read.csv(header=TRUE,
+	stringsAsFactors=FALSE,
+	file="simulation_sets_parameters_table.csv")	
+#
+# number of analyses
+nAnalyses<-nrow(simRunTable)	
+#
+# which analyses are independent or dependent
+whichIndependentPrevRun<-which(!as.logical(simRunTable$dependentPrevRun))	
+whichDependentPrevRun<-which(as.logical(simRunTable$dependentPrevRun))
+#
+# create list for saving analysis output 
+analysisOutput <- list()
+names(analysisOutput)<-1:nAnalyses
+#
+# Let's runs the analyses! 
+#
+# run all independent analyses
+for (i in whichIndependentPrevRun){
+	analysisOutput[[i]]<-
 	}
+#
+
+
+
+
+
+
+# run all dependent analyses
+for (i in whichDependentPrevRun){
+	analysisOutput[[i]]<-
+	}	
+		
+		
+		
+		
+# inputs needed from script	above
+nSimTrait
+
+anolisTreeList
+aquilegiaTreeList
+
+anolisSize
+aquilegiaSpurLength
+
+ideaTrees
+
+		
+		
+		
+		
+		
+
+
 
 
 
@@ -238,38 +277,63 @@ if(empiricalTraitData == "SIMULATED"){
 	}
 #
 #
+# doRun.Intrinsic
+# 
+if (doRun.Intrinsic == ""){
 
+	}
+#
 
+if (doRun.Intrinsic == "Pure_BM"){
 
+	}
+#
+if (doRun.Intrinsic == "BM_LowerBound"){
 
+	}
+#
+if (doRun.Intrinsic == "3Opt2Bound"){
 
+	}
+#
+if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
 
+	}
+#
+# doRun.Extrinsic
+#
+if (doRun.Extrinsic =="Null"){
 
-doRun.Intrinsic
+	}
+#
+if (doRun.Extrinsic =="Displacement"){
 
-Pure_BM
-BM_w/_LowerBound
-3Opt2Bound
-Time_AutoRegressive_Model
-
-doRun.Extrinsic
-
-Null
-Displacement
-
-prior
-standard_(uniform)
-rexp_with_mean_NOT_at_true_sigmasq
-
-
-
-
-
-
+	}
+#
+# prior
+# 
+if (prior == "standard_(uniform)"){
+	
+	}
+#
+if (prior == "rexp_with_mean_NOT_at_true_sigmasq"){
+	
+	}
+#
+# nDoRun
+#
 # calculate the number of doRun statements for this analysis-run
 # product of treeTypes and nTipNumbers and nSimTrait
 nDoRun <- treeTypes * nTipNumbers * nTraitSets
 # should be one 1, 10 or 90... probably
+		
+		
+		
+		
+		
+				
+		
+		
 		
 		
 		
