@@ -279,45 +279,71 @@ if(empiricalTraitData == "SIMULATED"){
 #
 # doRun.Intrinsic
 # 
-if (doRun.Intrinsic == ""){
-
-	}
-#
-
 if (doRun.Intrinsic == "Pure_BM"){
-
+	intrinsicArgList <- list(
+		intrinsicPriorsFns = c("exponential"), 
+		intrinsicPriorsValues = matrix(c(10, 10), nrow = 2, byrow = FALSE)
+		)
 	}
 #
 if (doRun.Intrinsic == "BM_LowerBound"){
+	intrinsicArgList <- list(
 
+		)
 	}
 #
 if (doRun.Intrinsic == "3Opt2Bound"){
+	intrinsicArgList <- list(
 
+		)
 	}
 #
 if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
+	intrinsicArgList <- list(
 
+		)
 	}
 #
 # doRun.Extrinsic
 #
 if (doRun.Extrinsic =="Null"){
-
+	extrinsicArgList <- list(
+		extrinsicPriorsFns = c("fixed"), 
+		extrinsicPriorsValues = matrix(c(0, 0), nrow = 2, byrow = FALSE)	
+		)
 	}
 #
 if (doRun.Extrinsic =="Displacement"){
-
+	extrinsicArgList <- list(
+		
+		)
 	}
 #
 # prior
 # 
 if (prior == "standard_(uniform)"){
+	# this is the option for almost all models 
+	priorArgList <- list(
+		startingPriorsFns = "normal",
+		startingPriorsValues = matrix(c(mean(simChar[, 1]), sd(simChar[, 1]))), 
+		intrinsicPriorsFns = c("exponential"), 
+		intrinsicPriorsValues = matrix(c(10, 10), nrow = 2, byrow = FALSE), 
+		extrinsicPriorsFns = c("fixed"), 
+		extrinsicPriorsValues = matrix(c(0, 0), nrow = 2, byrow = FALSE)	
+		)
+	list(
+		startingPriorsFns = "normal",
+		startingPriorsValues = matrix(c(mean(simChar[, 1]), sd(simChar[, 1])))	
+		)
+
+
 	
 	}
 #
 if (prior == "rexp_with_mean_NOT_at_true_sigmasq"){
-	
+	priorArgList <- list(
+
+		)	
 	}
 #
 # nDoRun
@@ -326,10 +352,41 @@ if (prior == "rexp_with_mean_NOT_at_true_sigmasq"){
 # product of treeTypes and nTipNumbers and nSimTrait
 nDoRun <- treeTypes * nTipNumbers * nTraitSets
 # should be one 1, 10 or 90... probably
+#
+# now run doRun across trees, trait datasets
+
+
+do.call(what = doRun_prc,
+	# arguments
+	args = c(
 		
 		
 		
+		intrinsicArgList,
+		extrinsicArgList,
+		generation.time = 10000, 
+		nRuns = 2, 
+		nStepsPRC = 3, 
+		numParticles = 20, 
+		nInitialSimsPerParam = 10, 
+		jobName = "examplerun_prc", 
+		stopRule = FALSE, 
+		multicore = FALSE, 
+		coreLimit = 1
+		)
+	)
 		
+
+resultsPRC <- doRun_prc(
+  phy = simPhy, 
+  traits = simChar, 
+  intrinsicFn = brownianIntrinsic, 
+  extrinsicFn = nullExtrinsic, 
+
+
+
+
+)		
 		
 				
 		
@@ -387,35 +444,6 @@ nDoRun <- treeTypes * nTipNumbers * nTraitSets
 
 
 
-
-
-# get simulation run table
-simRunTable<-read.csv(header=TRUE,
-	stringsAsFactors=FALSE,
-	file="simulation_sets_07-20-18.csv")
-
-
-# remove ID, remove comments
-simRunTable<-simRunTable[,-c(1,ncol(simRunTable))]
-
-nRepeatTraitSim<-10			
-simNtip<-"c(8, 16, 64)"
-idealTreeTypes<-'c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star")'
-
-#####################################################
-
-# convert the table
-simRunTable$nTipNumbers[simRunTable$nTipNumbers==1]<-NA
-simRunTable$nTipNumbers[simRunTable$nTipNumbers==3]<-simNtip
-colnames(simRunTable)[colnames(simRunTable)=="nTipNumbers"]<-"nTipSets"
-simRunTable$nTreeTypes[simRunTable$nTreeTypes==1]<-NA
-simRunTable$nTreeTypes[simRunTable$nTreeTypes==3]<-idealTreeTypes
-colnames(simRunTable)[colnames(simRunTable)=="nTreeTypes"]<-"idealTreeSets"
-
-simRunTable$nSimTrait[simRunTable$nSimTrait==1]<-NA
-
-#simRunTable<-simRunTable[,!(colnames(simRunTable)=="nTree")]
-simRunTable<-simRunTable[,!(colnames(simRunTable)=="nDoRun")]
 
 
 	
