@@ -4,9 +4,29 @@
 
 # Control Box
 
+
+
 # number of simulated trait datasets to do for simulated-trait runs
 nSimTrait <- 10
 
+# error for run with mis-specified prior on sigmasq in a pure-BM model
+	# the mean of the normal prior is multiplied by this value
+	# 100 = mean of rate prior is off by two orders of magnitude!
+ratePriorError <- 100
+
+# control parameters for multicore
+multicore <- TRUE 
+coreLimit <- 1
+
+# control parameters for simulations
+generation.time <- 10000 
+
+# control parameters for MCMC / ABC
+nRuns <- 2 
+nStepsPRC <- 3 
+numParticles <- 20 
+nInitialSimsPerParam <- 10 
+StartSims <- 10
 
 ##################################################
 
@@ -141,6 +161,7 @@ for (i in whichDependentPrevRun){
 		
 # inputs needed from script	above
 nSimTrait
+ratePriorError
 
 anolisTreeList
 aquilegiaTreeList
@@ -151,50 +172,166 @@ aquilegiaSpurLength
 ideaTrees
 
 		
+
+
+
+
+
+
 		
 		
+
+################################################
+# define MCMC / ABC control parameter list
+controlsList <- list(
+	# standard controls, don't need to be change
+	standardDevFactor=0.2,				
+	epsilonProportion=0.7,
+	epsilonMultiplier=0.7,
+	stopRule = FALSE, 
+	plot=FALSE,
+	verboseParticles=FALSE,	
+	#
+	# controls that may need to be changed
+	generation.time=generation.time,
+	multicore=multicore,
+	coreLimit=coreLimit,				
+	nRuns = nRuns, 
+	nStepsPRC = nStepsPRC, 
+	numParticles = numParticles, 
+	nInitialSimsPerParam = nInitialSimsPerParam, 
+	StartSims = StartSims	
+	)
+#
+##################################################	
+# rate prior error
+# sigmasq state prior has an error if "rexp_with_mean_NOT_at_true_sigmasq"
+# 
+if (prior != "rexp_with_mean_NOT_at_true_sigmasq"){
+	# then do *NOT* apply the error to the sigmasq prior
+	ratePriorError <- 1
+	}
+##########################################
+#
+#
+# doRun.Intrinsic
+# 
+if (doRun.Intrinsic == "Pure_BM"){
+	intrinsicFunctionToFit <- brownianIntrinsic
+	#
+	intrinsicArgList <- list(
+		intrinsicPriorsFns = c("exponential"), 
+		intrinsicPriorsValues = matrix(c(10 * ratePriorError, 10), nrow = 2, byrow = FALSE)
+		)
+	}
+#
+if (doRun.Intrinsic == "BM_LowerBound"){
+	intrinsicFunctionToFit <- boundaryMinIntrinsic
+	#
+	intrinsicArgList <- list(
+		intrinsicPriorsFns=c("exponential","normal"),
+		intrinsicPriorsValues=matrix(c(10, 10, -10, 1), nrow=2, byrow=FALSE)
+		)
+	}
+#
+if (doRun.Intrinsic == "3Opt2Bound"){
+	intrinsicFunctionToFit <- 
+	#
+	intrinsicArgList <- list(
+
+		)
+	}
+#
+if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
+	intrinsicFunctionToFit <- 
+	#
+	intrinsicArgList <- list(
+
+		)
+	}
+#
+# doRun.Extrinsic
+#
+if (doRun.Extrinsic =="Null"){
+	extrinsicFunctionToFit <- nullExtrinsic, 
+	#
+	extrinsicArgList <- list(
+		extrinsicPriorsFns = c("fixed"), 
+		extrinsicPriorsValues = matrix(c(0, 0), nrow = 2, byrow = FALSE)	
+		)
+	}
+#
+if (doRun.Extrinsic =="Displacement"){
+	extrinsicFunctionToFit <-
+	#
+	extrinsicArgList <- list(
 		
-		
-
-
-
-
-
-
+		)
+	}
+#########################################
+# nTraitSetsPerSimTree is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
+nTraitSetsPerSimTree<-1
+if(empiricalTraitData == "SIMULATED"){
+	nTraitSetsPerSimTree<-nSimTrait
+	}
+#
+#########################################
+#
 #treeSet
-
+#
 # if the treeSet is "Ideal-Simulated"
-# then the number of treeTypes and nTipNumbers is 3, other 1
-nTreeTypes<-nTipNumbers<-1
+# then the number of simulated tree types and 
+	# number of tip-totals per simulated tree type is 3, other 1
+nSimTreeTypes<-nTipNumbersPerSimTreeType<-1
 #
 if(treeSet == "empirical_anolis_tree"){
-	treeList<-
+	treeList <- anolisTreeList
 	}
 #
 if(treeSet == "empirical_Aquilegia_tree"){
-	treeList<-
+	treeList <- aquilegiaTreeList
 	}
 #
 if(treeSet=="Ideal_Simulated"){
 	treeList<-ideaTrees
-	nTreeTypes<-nTipNumbers<-3
+	nSimTreeTypes<-nTipNumbersPerSimTreeType<-3
 	}
+####################################
 #
+# nDoRun
+#
+# calculate the number of doRun statements for this analysis-run
+# product of treeTypes and nTipNumbersPerSimTreeType and nSimTrait
+nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
+# should be one 1, 10 or 90... probably
+#	
+################################################	
+# need to make trait data for every tree in treeList	
+#
+for()
+
 # empiricalTraitData
 #
-# nTraitSets is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
-nTraitSets<-1
+
 if(empiricalTraitData == "Anolis_Size_Data"){
+
+
+
 	
+	# save as a list of trait sets (of length 1)
+	traitDataList <- 
 	}
 #
 if(empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
 	
+	
+	
+	# save as a list of trait sets (of length 1)
+	traitDataList <- 
 	}
 #
 if(empiricalTraitData == "SIMULATED"){
-	# nTraitSets is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
-	nTraitSets<-nSimTrait
+	#
 	# simTrait.Intrinsic
 	#
 	if(is.na(simTrait.Intrinsic)){
@@ -270,126 +407,65 @@ if(empiricalTraitData == "SIMULATED"){
 	
 		
 		}
-
+	#####################
+	# now have to simulate traits
+	#
 	
 	
-	
+	# save as a list of trait sets
+	traitDataList <- 
 	}
-#
-#
-# doRun.Intrinsic
-# 
-if (doRun.Intrinsic == "Pure_BM"){
-	intrinsicArgList <- list(
-		intrinsicPriorsFns = c("exponential"), 
-		intrinsicPriorsValues = matrix(c(10, 10), nrow = 2, byrow = FALSE)
-		)
-	}
-#
-if (doRun.Intrinsic == "BM_LowerBound"){
-	intrinsicArgList <- list(
 
-		)
-	}
-#
-if (doRun.Intrinsic == "3Opt2Bound"){
-	intrinsicArgList <- list(
-
-		)
-	}
-#
-if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
-	intrinsicArgList <- list(
-
-		)
-	}
-#
-# doRun.Extrinsic
-#
-if (doRun.Extrinsic =="Null"){
-	extrinsicArgList <- list(
-		extrinsicPriorsFns = c("fixed"), 
-		extrinsicPriorsValues = matrix(c(0, 0), nrow = 2, byrow = FALSE)	
-		)
-	}
-#
-if (doRun.Extrinsic =="Displacement"){
-	extrinsicArgList <- list(
-		
-		)
-	}
-#
-# prior
-# 
-if (prior == "standard_(uniform)"){
-	# this is the option for almost all models 
-	priorArgList <- list(
-		startingPriorsFns = "normal",
-		startingPriorsValues = matrix(c(mean(simChar[, 1]), sd(simChar[, 1]))), 
-		intrinsicPriorsFns = c("exponential"), 
-		intrinsicPriorsValues = matrix(c(10, 10), nrow = 2, byrow = FALSE), 
-		extrinsicPriorsFns = c("fixed"), 
-		extrinsicPriorsValues = matrix(c(0, 0), nrow = 2, byrow = FALSE)	
-		)
-	list(
-		startingPriorsFns = "normal",
-		startingPriorsValues = matrix(c(mean(simChar[, 1]), sd(simChar[, 1])))	
-		)
-
-
-	
-	}
-#
-if (prior == "rexp_with_mean_NOT_at_true_sigmasq"){
-	priorArgList <- list(
-
-		)	
-	}
-#
-# nDoRun
-#
-# calculate the number of doRun statements for this analysis-run
-# product of treeTypes and nTipNumbers and nSimTrait
-nDoRun <- treeTypes * nTipNumbers * nTraitSets
-# should be one 1, 10 or 90... probably
-#
 # now run doRun across trees, trait datasets
+#
 
-
-do.call(what = doRun_prc,
-	# arguments
-	args = c(
-		
-		
-		
-		intrinsicArgList,
-		extrinsicArgList,
-		generation.time = 10000, 
-		nRuns = 2, 
-		nStepsPRC = 3, 
-		numParticles = 20, 
-		nInitialSimsPerParam = 10, 
-		jobName = "examplerun_prc", 
-		stopRule = FALSE, 
-		multicore = FALSE, 
-		coreLimit = 1
-		)
-	)
-		
-
-resultsPRC <- doRun_prc(
-  phy = simPhy, 
-  traits = simChar, 
-  intrinsicFn = brownianIntrinsic, 
-  extrinsicFn = nullExtrinsic, 
-
-
-
-
-)		
-		
+	
+	
+for (tree_i in 1:length(treeList)){
+	for (trait_j in length(traitDataList)){
+	
+		# define job name
+		jobNameRun <- 
+		#
+		traitDataToUse <- traitDataList [[trait_j]]
+		#	
+		doRun_out <- do.call(what = doRun_prc,
+			# arguments
+			args = c(
+				phy = ,
+				traits = traitDataToUse,
+				intrinsicFn =
+				extrinsicFn = 
 				
+				intrinsicArgList,
+				extrinsicArgList,
+				
+				# starting state prior
+				startingPriorsFns = "normal",
+				startingPriorsValues = matrix(
+					c(mean(traitDataToUse[, 1]) , sd(traitDataToUse[, 1]))),
+				#
+				#
+				jobName = paste(),
+				
+				# give control arguments
+				controlsList
+				)
+			)
+		}	
+	}	
+
 		
+
+
+  
+  
+
+  
+  
+
+
+  )	
 		
 		
 		
