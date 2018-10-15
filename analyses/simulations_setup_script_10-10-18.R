@@ -14,11 +14,9 @@ nSimTrait <- 10
 	# 100 = mean of rate prior is off by two orders of magnitude!
 ratePriorError <- 100
 
-# control parameters for multicore
+# control parameters for multicore and simulation resolution
 multicore <- TRUE 
-coreLimit <- 1
-
-# control parameters for simulations
+coreLimit <- 6
 generation.time <- 10000 
 
 # control parameters for MCMC / ABC
@@ -235,7 +233,7 @@ if (doRun.Intrinsic == "BM_LowerBound"){
 	}
 #
 if (doRun.Intrinsic == "3Opt2Bound"){
-	intrinsicFunctionToFit <- 
+	intrinsicFunctionToFit <- multiOptima3IntrinsicMaxBoundary2
 	#
 	intrinsicArgList <- list(
 
@@ -243,7 +241,7 @@ if (doRun.Intrinsic == "3Opt2Bound"){
 	}
 #
 if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
-	intrinsicFunctionToFit <- 
+	intrinsicFunctionToFit <- autoregressiveIntrinsic
 	#
 	intrinsicArgList <- list(
 
@@ -308,7 +306,8 @@ nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
 ################################################	
 # need to make trait data for every tree in treeList	
 #
-for()
+for (tree_i in 1:length(treeList)){
+
 
 # empiricalTraitData
 #
@@ -421,7 +420,7 @@ if(empiricalTraitData == "SIMULATED"){
 
 	
 	
-for (tree_i in 1:length(treeList)){
+
 	for (trait_j in length(traitDataList)){
 	
 		# define job name

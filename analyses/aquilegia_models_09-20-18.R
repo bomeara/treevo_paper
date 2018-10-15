@@ -10,7 +10,7 @@
 
 
 
-multiOptima3IntrinsicMaxBoudary3 <- function(params, states, timefrompresent) {
+multiOptima3IntrinsicMaxBoundary3 <- function(params, states, timefrompresent) {
 	# 1) trait values have three optima on gradient, with some rate of
 		# switching to next-largest optima, cannot reverse
 	#
@@ -81,7 +81,7 @@ multiOptima3IntrinsicMaxBoudary3 <- function(params, states, timefrompresent) {
     }
 
 
-multiOptima3IntrinsicMaxBoudary2 <- function(params, states, timefrompresent) {
+multiOptima3IntrinsicMaxBoundary2 <- function(params, states, timefrompresent) {
 	# trait values evolve in three regimes with successive upper bounds on gradient (
 	   # so only ****two**** upper-bounds, highest regime has no bounds) 
 		# with some rate of switching to next-largest regime, cannot reverse
