@@ -169,8 +169,26 @@ aquilegiaSpurLength
 
 ideaTrees
 
-		
 
+	generation.time=generation.time,
+	multicore=multicore,
+	coreLimit=coreLimit,				
+	nRuns = nRuns, 
+	nStepsPRC = nStepsPRC, 
+	numParticles = numParticles, 
+	nInitialSimsPerParam = nInitialSimsPerParam, 
+	StartSims = StartSims	
+
+
+		
+	generation.time
+	multicore
+	coreLimit			
+	nRuns  
+	nStepsPRC 
+	numParticles 
+	nInitialSimsPerParam 
+	StartSims 	
 
 
 
@@ -219,7 +237,7 @@ if (doRun.Intrinsic == "Pure_BM"){
 	#
 	intrinsicArgList <- list(
 		intrinsicPriorsFns = c("exponential"), 
-		intrinsicPriorsValues = matrix(c(10 * ratePriorError, 10), nrow = 2, byrow = FALSE)
+		intrinsicPriorsValues = list(10 * ratePriorError)
 		)
 	}
 #
@@ -228,7 +246,7 @@ if (doRun.Intrinsic == "BM_LowerBound"){
 	#
 	intrinsicArgList <- list(
 		intrinsicPriorsFns=c("exponential","normal"),
-		intrinsicPriorsValues=matrix(c(10, 10, -10, 1), nrow=2, byrow=FALSE)
+		intrinsicPriorsValues=list(10, c(-10, 1))
 		)
 	}
 #
@@ -236,7 +254,30 @@ if (doRun.Intrinsic == "3Opt2Bound"){
 	intrinsicFunctionToFit <- multiOptima3IntrinsicMaxBoundary2
 	#
 	intrinsicArgList <- list(
-
+		# breakdown of params:
+			# params[1] is dispersion (sigma)
+			# params[2] is alpha (strength of attraction to an optima)
+			# params[3] is rho, an exponent scaling the weighting of distance to optima
+				# this parameter will control switching optima
+			# params[4:5] is the max boundary, for the two lower regimes regimes
+			# params[6:8] describes theta (optima) values for each of the three regimes
+		intrinsicPriorsFns=c(
+			# we'll make rate an exponential prior, rate 10
+			"exponential",
+			# we'll make alpha an exponential prior, rate 10
+			"exponential",
+			# well make rho an exponential, rate 1
+			"exponential",
+			# let's place bounds based on whitall and hodges:
+			"uniform","uniform",
+			# normal priors for optima
+			"normal","normal","normal"
+			),
+		intrinsicPriorsValues=list(
+			10, 10, 1, 
+			c(15,20),c(20,25),
+			c(10,1), c(20,1), c(30,1)
+			)
 		)
 	}
 #
@@ -244,7 +285,9 @@ if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
 	intrinsicFunctionToFit <- autoregressiveIntrinsic
 	#
 	intrinsicArgList <- list(
-
+		
+		intrinsicPriorsFns=c("exponential","normal"),
+		intrinsicPriorsValues=list(10, c(-10, 1))
 		)
 	}
 #
@@ -255,15 +298,17 @@ if (doRun.Extrinsic =="Null"){
 	#
 	extrinsicArgList <- list(
 		extrinsicPriorsFns = c("fixed"), 
-		extrinsicPriorsValues = matrix(c(0, 0), nrow = 2, byrow = FALSE)	
+		extrinsicPriorsValues = list(0)
 		)
 	}
 #
 if (doRun.Extrinsic =="Displacement"){
-	extrinsicFunctionToFit <-
+	extrinsicFunctionToFit <-ExponentiallyDecayingPushExtrinsic,
 	#
 	extrinsicArgList <- list(
-		
+		extrinsicPriorsFns = c("exponential","normal","exponential"), 
+		# \code{ExponentiallyDecayingPushExtrinsic} with parameters \code{params = sd, maximumForce, halfDistance}
+		extrinsicPriorsValues = list(10,c(1,1),10)
 		)
 	}
 #########################################
