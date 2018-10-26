@@ -12,13 +12,13 @@ Aq_Sim3Opt_3Opt,TRUE,empirical_Aquilegia_tree,SIMULATED,Aq_Emp_3Opt2Bound,Null,3
 Aq_SimBM_3Opt2Bound,TRUE,empirical_Aquilegia_tree,SIMULATED,Aq_Emp_BrownMotion,Null,3Opt2Bound,Null,standard_(uniform),False detection of 3 optima / 2 bound model from BM data
 Ideal_SimBM_BM,TRUE,Ideal_Simulated,SIMULATED,An_Emp_BrownMotion,Null,Pure_BM,Null,standard_(uniform),Adequecy of BM model in simulations
 Ideal_SimBMpriorBiased,TRUE,Ideal_Simulated,SIMULATED,An_Emp_BrownMotion,Null,Pure_BM,Null,rexp_with_mean_NOT_at_true_sigmasq,Adequecy of BM model in simulations with biased prior
-Ideal_SimBM_Disp,TRUE,Ideal_Simulated,SIMULATED,An_Emp_BrownMotion,Null,Pure_BM,Displacement,standard_(uniform),Adequecy of BM_Displacement model when that is the true model
+Ideal_SimBM_Disp,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Disp,An_Emp_Disp,Pure_BM,Displacement,standard_(uniform),Adequecy of BM_Displacement model when that is the true model
 Ideal_SimDisp_Disp,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Disp,An_Emp_Disp,Pure_BM,Displacement,standard_(uniform),Adequecy of BM_Displacement model for data simulated under that model
-Ideal_SimBound_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound,Null,BM_LowerBound,Displacement,standard_(uniform),Adequecy of BM_Displacement model when that is the true model
-Ideal_SimDispBoundNear_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound_BoundByStartingState,An_Emp_Bound,BM_LowerBound,Displacement,standard_(uniform),Testing adequecy of one_bound models under various simulated scenarios
-Ideal_SimDispBoundMod_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound_BoundByMinValue,An_Emp_Bound,BM_LowerBound,Displacement,standard_(uniform),Testing adequecy of one_bound models under various simulated scenarios
-Ideal_SimDispBoundFar_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound_BoundOneRangeAway,An_Emp_Bound,BM_LowerBound,Displacement,standard_(uniform),Testing adequecy of one_bound models under various simulated scenarios
-Ideal_SimDispBound_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_DispBound,An_Emp_DispBound,BM_LowerBound,Displacement,standard_(uniform),Adequecy of BM_Displacement model for data simulated under that model
+Ideal_SimBound_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound,An_Emp_Disp,BM_LowerBound,Displacement,standard_(uniform),Adequecy of BM_Displacement model when that is the true model
+Ideal_SimDispBoundNear_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound_BoundByStartingState,An_Emp_Disp,BM_LowerBound,Displacement,standard_(uniform),Testing adequecy of one_bound models under various simulated scenarios
+Ideal_SimDispBoundMod_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound_BoundByMinValue,An_Emp_Disp,BM_LowerBound,Displacement,standard_(uniform),Testing adequecy of one_bound models under various simulated scenarios
+Ideal_SimDispBoundFar_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_Bound_BoundOneRangeAway,An_Emp_Disp,BM_LowerBound,Displacement,standard_(uniform),Testing adequecy of one_bound models under various simulated scenarios
+Ideal_SimDispBound_DispBound,TRUE,Ideal_Simulated,SIMULATED,An_Emp_DispBound,An_Emp_Disp,BM_LowerBound,Displacement,standard_(uniform),Adequecy of BM_Displacement model for data simulated under that model
 Ideal_SimBM_TimeReg,TRUE,Ideal_Simulated,SIMULATED,An_Emp_BrownMotion,Null,Time_AutoRegressive_Model,Null,standard_(uniform),Adequecy of time_regressive models when true model is time_regressive
 Ideal_SimTimeReg_TimeReg,TRUE,Ideal_Simulated,SIMULATED,An_Emp_TimeReg,Null,Time_AutoRegressive_Model,Null,standard_(uniform),Adequecy of time_regressive models when true model is time_regressive
 Ideal_SimBM_3Opt2Bound,TRUE,Ideal_Simulated,SIMULATED,Aq_Emp_BrownMotion,Null,3Opt2Bound,Null,standard_(uniform),False detection of 3 optima / 2 bound model from BM data

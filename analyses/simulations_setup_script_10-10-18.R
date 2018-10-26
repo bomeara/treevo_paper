@@ -167,7 +167,7 @@ aquilegiaTreeList
 anolisSize
 aquilegiaSpurLength
 
-ideaTrees
+idealTrees
 
 
 	generation.time=generation.time,
@@ -294,7 +294,7 @@ if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
 # doRun.Extrinsic
 #
 if (doRun.Extrinsic =="Null"){
-	extrinsicFunctionToFit <- nullExtrinsic, 
+	extrinsicFunctionToFit <- nullExtrinsic
 	#
 	extrinsicArgList <- list(
 		extrinsicPriorsFns = c("fixed"), 
@@ -303,7 +303,7 @@ if (doRun.Extrinsic =="Null"){
 	}
 #
 if (doRun.Extrinsic =="Displacement"){
-	extrinsicFunctionToFit <-ExponentiallyDecayingPushExtrinsic,
+	extrinsicFunctionToFit <-ExponentiallyDecayingPushExtrinsic
 	#
 	extrinsicArgList <- list(
 		extrinsicPriorsFns = c("exponential","normal","exponential"), 
@@ -336,7 +336,7 @@ if(treeSet == "empirical_Aquilegia_tree"){
 	}
 #
 if(treeSet=="Ideal_Simulated"){
-	treeList<-ideaTrees
+	treeList<-idealTrees
 	nSimTreeTypes<-nTipNumbersPerSimTreeType<-3
 	}
 ####################################
@@ -351,39 +351,62 @@ nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
 ################################################	
 # need to make trait data for every tree in treeList	
 #
+
+
+
+
 for (tree_i in 1:length(treeList)){
-
-
+#
+# traitDataList will be a list with each element corresponding to a tree
+# and sub list corresponding to trait data to be analyzed on that tree
+#
+traitDataList<-list()
 # empiricalTraitData
 #
-
 if(empiricalTraitData == "Anolis_Size_Data"){
-
-
-
-	
-	# save as a list of trait sets (of length 1)
-	traitDataList <- 
+	# need a list of trait sets (of length 1)
+	traitDataList[[tree_i]] <-list(anolisSize = anolisSize)
 	}
 #
 if(empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
-	
-	
-	
-	# save as a list of trait sets (of length 1)
-	traitDataList <- 
+	# need a list of trait sets (of length 1)
+	traitDataList[[tree_i]] <-list(aquilegiaSpurLength = aquilegiaSpurLength)
 	}
 #
 if(empiricalTraitData == "SIMULATED"){
 	#
 	# simTrait.Intrinsic
+	# ALSO need estimates of parameters from previous analyses needed for later simulations
+	# 	 need to make part of output from doRun if not already
 	#
 	if(is.na(simTrait.Intrinsic)){
 		stop("The intrinsic model for a simulated trait dataset is given as NA")
 	}else{
 		# ANOLIS BASED MODELS
 		if(simTrait.Intrinsic == "An_Emp_BrownMotion"){
+			simTraitIntrinsicArgs <- list(
+				intfn = brownianIntrinsic,
+				intPar = An_Emp_BrownMotion$parMeansList$intrinsic, #whatever run is An_Emp_BrownMotion
+				startPar = An_Emp_BrownMotion$parMeansList$starting
+				)
 			
+				
+
+	 
+	 
+
+# need function that simply outputs a list with those parameters
+	# (median?) expectations from the last MCMC generation
+# this function would be run with doRun such that doRun would include with output
+# these parameter estimates would be given as a list
+	# split into 3 vectors: starting/intrinsic/extrinsic parameters
+	# formatted for immediate use as parameter estimates for doSimulation
+	# with matching intrinsic/extrinsic functions
+	
+
+	 
+				
+				)
 			}	
 		#
 		if(simTrait.Intrinsic == "An_Emp_Disp"){
@@ -433,11 +456,20 @@ if(empiricalTraitData == "SIMULATED"){
 	}else{
 		
 		if(simTrait.Extrinsic == "Null"){
-			
+			simTraitExtrinsicArgs <- list(
+				extfn = nullExtrinsic,
+				extPar = c(0), 
+				)
 			}
 		#
-		if(simTrait.Extrinsic == "An_Emp_Bound"){
-			
+		if(simTrait.Extrinsic == "An_Emp_Disp"){
+			simTraitExtrinsicArgs <- list(
+				extfn = ExponentiallyDecayingPushExtrinsic,
+				extPar = anolisBMrun$parMeansList$extrinsic, #whatever run is An_Emp_BrownMotion 
+				
+				
+				
+				)			
 			}
 		#
 		if(simTrait.Extrinsic == "An_Emp_Disp"){
@@ -453,8 +485,16 @@ if(empiricalTraitData == "SIMULATED"){
 		}
 	#####################
 	# now have to simulate traits
-	#
-	
+	simChar <- doSimulation(
+		phy = treeList[[tree_i]], 
+		
+		intrinsicFn = simTraitIntrinsicArgs$intFn, 
+		extrinsicFn = exFn, 
+		startingValues = simTraitIntrinsicArgs$startPar, #root state
+		intrinsicValues = simTraitIntrinsicArgs$intPar, 
+		extrinsicValues = c(0), 
+		generation.time = generation.time
+		)	
 	
 	# save as a list of trait sets
 	traitDataList <- 
