@@ -12,10 +12,12 @@ nSimTrait <- 10
 	# 100 = mean of rate prior is off by two orders of magnitude!
 ratePriorError <- 100
 
+# simulation resolution
+generation.time <- 10000 
+
 # control parameters for multicore and simulation resolution
 multicore <- TRUE 
 coreLimit <- 6
-generation.time <- 10000 
 
 # control parameters for MCMC / ABC
 nRuns <- 2 
@@ -23,6 +25,8 @@ nStepsPRC <- 3
 numParticles <- 20 
 nInitialSimsPerParam <- 10 
 StartSims <- 10
+
+
 
 ##################################################
 
@@ -39,7 +43,7 @@ library(TreEvo)
 
 # obtain anolis tree - from Poe et al. 2017 (SystBiol)
 	# their time-tree
-anolisTree<-read.tree(
+anolisTree <- read.tree(
 	file="datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre"
 	)
 # make into a multiPhylo list
@@ -48,17 +52,17 @@ class(anolisTreeList) <- "multiPhylo"
 
 # obtain anolis trait data - 
 	# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
-anolisTrait<-read.table(
+anolisTrait <- read.table(
 	"datasets//anolis_lntraits_matched_tabdelim_07-24-18.txt",
 	header=TRUE,row.names=1
 	)
-anolisSize<-anolisTrait[,1]
+anolisSize <- anolisTrait[,1]
 
 # 2) Aquilegia
 	# whittall et al. model of nectar spur increase in size
 
 # obtain aquilegia tree (from Whittall and Hodges 2007?)
-aquilegiaTree<-read.tree(
+aquilegiaTree <- read.tree(
 	"datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
 	)
 # make into a multiPhylo list
@@ -68,15 +72,15 @@ class(aquilegiaTreeList) <- "multiPhylo"
 # obtain aquilegia trait data (from Whittall and Hodges 2007?)
 	# need both nectur spur lengths and regime data
 	#
-aquilegiaTrait<-read.table("aquilegia_traitData.txt", 
+aquilegiaTrait <- read.table("aquilegia_traitData.txt", 
 	header=FALSE, row.names=1)
 
 # get just nectur spur length
-aquilegiaSpurLength<-aquilegiaTrait[,2]
+aquilegiaSpurLength <- aquilegiaTrait[,2]
 # and take the natural log
 	# (note that the third column of the table was already the natural log)
 	# previous code from Brian had 'log(data[,3])' - log of a log
-aquilegiaSpurLength<-log(aquilegiaSpurLength)
+aquilegiaSpurLength <- log(aquilegiaSpurLength)
 
 # legacy aquilegia code from Brian O'Meara:
 # 
@@ -87,14 +91,14 @@ aquilegiaSpurLength<-log(aquilegiaSpurLength)
 # Thus each unit = 1,000,000 years or 100,000 generations
 #
 # TreeYears=100000
-# timeStep<-1/TreeYears
+# timeStep <- 1/TreeYears
 # totalTreeLength=TreeYears*sum(phy$edge.length) #how many generations are represented
 # number of expected polinator shifts based on parsimony is 7:
 # parsimonyShifts=7
 # pollinatorShiftRate=parsimonyShifts/totalTreeLength
 
 # aquilegia regimes - pollinator syndromes
-aquilegiaPollinators<-aquilegiaTrait[,14]
+aquilegiaPollinators <- aquilegiaTrait[,14]
 # regimes coded 0, 1, 2
 	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
 # this probably won't be used directly?
@@ -106,119 +110,240 @@ aquilegiaPollinators<-aquilegiaTrait[,14]
    # idealTreeSets = c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star") 
    # nTipSets = c(8, 16, 64)   
    
-idealTrees<-list(
+idealTrees <- list(
     #
-    balanced_n8 = stree(n=8, 
-		type = "balanced", tip.label = NULL),
-    balanced_n16 = stree(n=16, 
-		type = "balanced", tip.label = NULL),
-    balanced_n64 = stree(n=64, 
-		type = "balanced", tip.label = NULL),
+    balanced_n8 = stree(
+		n=8, 
+		type = "balanced", tip.label = NULL
+		),
+    balanced_n16 = stree(
+		n=16, 
+		type = "balanced", tip.label = NULL
+		),
+    balanced_n64 = stree(
+		n=64, 
+		type = "balanced", tip.label = NULL
+		),
     #
-    pectinate_n8 = stree(n=8, 
-		type = "left", tip.label = NULL),
-    pectinate_n16 = stree(n=16, 
-		type = "left", tip.label = NULL),
-    pectinate_n64 = stree(n=64, 
-		type = "left", tip.label = NULL), 
+    pectinate_n8 = stree(
+		n=8, 
+		type = "left", tip.label = NULL
+		),
+    pectinate_n16 = stree(
+		n=16, 
+		type = "left", tip.label = NULL
+		),
+    pectinate_n64 = stree(
+		n=64, 
+		type = "left", tip.label = NULL
+		), 
     #
-    star_n8 = stree(n=8, 
-		type = "star", tip.label = NULL),
-    star_n16 = stree(n=16, 
-		type = "star", tip.label = NULL),
-    star_n64 = stree(n=64, 
-		type = "star", tip.label = NULL)
+    star_n8 = stree(
+		n=8, 
+		type = "star", tip.label = NULL
+		),
+    star_n16 = stree(
+		n=16, 
+		type = "star", tip.label = NULL
+		),
+    star_n64 = stree(
+		n=64, 
+		type = "star", tip.label = NULL
+		)
     )
 # make multiPhylo	
-class(ideaTrees)<-"multiPhylo"
+class(ideaTrees) <- "multiPhylo"
+#
 # compress tip labels? No, I don't think that works for trees of different sizes
-	#	trees<-.compressTipLabel(trees)
+	#	trees <- .compressTipLabel(trees)
 ######################################################################################
 # time to get table, process the inputs listed
 # 		
 # get simulation run table
-simRunTable<-read.csv(
+simRunTable <- read.csv(
 	file="simulation_sets_parameters_table.csv"
 	header=TRUE,
 	stringsAsFactors=FALSE,
 	)	
 #
 # number of analyses
-nAnalyses<-nrow(simRunTable)	
+nAnalyses <- nrow(simRunTable)
+# 
+# names of analyses
+analysesNames <- simRunTable$runLabel	
 #
 # which analyses are independent or dependent
-whichIndependentPrevRun<-which(!as.logical(simRunTable$dependentPrevRun))	
-whichDependentPrevRun<-which(as.logical(simRunTable$dependentPrevRun))
+whichIndependentPrevRun <- which(
+	!as.logical(simRunTable$dependentPrevRun)
+	)	
+whichDependentPrevRun <- which(
+	as.logical(simRunTable$dependentPrevRun)
+	)
 #
 # create list for saving analysis output 
 analysisOutput <- list()
-names(analysisOutput)<-1:nAnalyses
+# why numbers? use actual names
+	# names(analysisOutput) <- 1:nAnalyses
+names(analysisOutput) <- analysesNames
 #
 # Let's runs the analyses! 
 #
 # run all independent analyses
 for (i in whichIndependentPrevRun){
-	analysisOutput[[i]]<-
+	analysisOutput[[i]] <- runAnalysis(
+		runParameters <- simRunTable[i,],
+		# inputs needed from script	above
+		nSimTrait = nSimTrait,
+		ratePriorError = ratePriorError,
+		#
+		anolisTreeList = anolisTreeList,
+		anolisSize = anolisSize,
+		aquilegiaTreeList = aquilegiaTreeList,	
+		aquilegiaSpurLength = aquilegiaSpurLength,
+		idealTrees = idealTrees,
+		#
+		indepAnalyses_intrinsicOut = NULL,
+		indepAnalyses_extrinsicOut = NULL,
+		#
+		# presets
+		generation.time=generation.time,
+		multicore=multicore,
+		coreLimit=coreLimit,				
+		nRuns = nRuns, 
+		nStepsPRC = nStepsPRC, 
+		numParticles = numParticles, 
+		nInitialSimsPerParam = nInitialSimsPerParam, 
+		StartSims = StartSims	
+		)
 	}
+
+
+}
+
+
+
+
+
+#############################
+# dependent analyses
+########################################
+#indep runs that dep runs depend on :
 #
+# INTRINSIC
+	# An_Emp_BrownMotion
+	# An_Emp_Disp
+	# An_Emp_Bound
+	# An_Emp_DispBound
+	# An_Emp_Bound_BoundByStartingState
+	# An_Emp_Bound_BoundByMinValue
+	# An_Emp_Bound_BoundOneRangeAway
+	# An_Emp_TimeReg
+	# Aq_Emp_3Opt2Bound
+	# Aq_Emp_BrownMotion
+# EXTRINSIC
+	# An_Emp_DispBound
+	# An_Emp_Disp
+#############################
+# get the stuff necessary for doing the dependent analyses
+#
+# get model parameters from runs 
+	# that will be used for dependent simulations
+# use extract on all indep analyses now
+	# then can call these later for dependent analyses
+	# without have to extract same data many times
+#
+indepAnalyses_intrinsicOut <- lapply(
+	analysisOutput[whichIndependentPrevRun],
+	extractIntrinsic_from_prcOut
+	)
+#
+indepAnalyses_extrinsicOut <- lapply(
+	analysisOutput[whichIndependentPrevRun],
+	extractExtrinsic_from_prcOut
+	)
+# make sure named correctly
+names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
+names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
 
 
 
+
+
+
+
+extractIntrinsic_from_prcOut<-function(prcOut){
+	res <- list(
+		intrinsicFn = prcOut$intrinsicFn, 
+		intrinsicValues = prcOut$parMeansList$intrinsic, 
+		startingValues = prcOut$parMeansList$starting
+		)
+	return(res)
+	}
+	
+extractExtrinsic_from_prcOut<-function(prcOut){
+	res <- list(
+		extrinsicFn = prcOut$extrinsicFn, 
+		extrinsicValues = prcOut$parMeansList$extrinsic
+		)
+	return(res)
+	}
+	
 
 
 
 # run all dependent analyses
 for (i in whichDependentPrevRun){
-	analysisOutput[[i]]<-
-	}	
-		
-		
-		
-		
-# inputs needed from script	above
-nSimTrait
-ratePriorError
-
-anolisTreeList
-aquilegiaTreeList
-
-anolisSize
-aquilegiaSpurLength
-
-idealTrees
-
-
-	generation.time=generation.time,
-	multicore=multicore,
-	coreLimit=coreLimit,				
-	nRuns = nRuns, 
-	nStepsPRC = nStepsPRC, 
-	numParticles = numParticles, 
-	nInitialSimsPerParam = nInitialSimsPerParam, 
-	StartSims = StartSims	
-
-
-		
-	generation.time
-	multicore
-	coreLimit			
-	nRuns  
-	nStepsPRC 
-	numParticles 
-	nInitialSimsPerParam 
-	StartSims 	
+	analysisOutput[[i]] <- runAnalysis(
+		runParameters <- simRunTable[i,],
+		# inputs needed from script	above
+		nSimTrait = nSimTrait,
+		ratePriorError = ratePriorError,
+		#
+		anolisTreeList = anolisTreeList,
+		anolisSize = anolisSize,
+		aquilegiaTreeList = aquilegiaTreeList,	
+		aquilegiaSpurLength = aquilegiaSpurLength,
+		idealTrees = idealTrees,
+		#
+		indepAnalyses_intrinsicOut = indepAnalyses_intrinsicOut,
+		indepAnalyses_extrinsicOut = indepAnalyses_extrinsicOut,
+		#
+		# presets
+		generation.time=generation.time,
+		multicore=multicore,
+		coreLimit=coreLimit,				
+		nRuns = nRuns, 
+		nStepsPRC = nStepsPRC, 
+		numParticles = numParticles, 
+		nInitialSimsPerParam = nInitialSimsPerParam, 
+		StartSims = StartSims	
+	}
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+runAnalysis <- function(){
+	
+	}
 		
 		
 
 ################################################
 # define MCMC / ABC control parameter list
 controlsList <- list(
-	# standard controls, don't need to be change
+	# standard controls, don't need to be changed
 	standardDevFactor=0.2,				
 	epsilonProportion=0.7,
 	epsilonMultiplier=0.7,
@@ -321,7 +446,7 @@ if (doRun.Extrinsic =="Null"){
 	}
 #
 if (doRun.Extrinsic =="Displacement"){
-	extrinsicFunctionToFit <-ExponentiallyDecayingPushExtrinsic
+	extrinsicFunctionToFit  <- ExponentiallyDecayingPushExtrinsic
 	#
 	extrinsicArgList <- list(
 		extrinsicPriorsFns = c("exponential","normal","exponential"), 
@@ -331,9 +456,9 @@ if (doRun.Extrinsic =="Displacement"){
 	}
 #########################################
 # nTraitSetsPerSimTree is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
-nTraitSetsPerSimTree<-1
+nTraitSetsPerSimTree <- 1
 if(empiricalTraitData == "SIMULATED"){
-	nTraitSetsPerSimTree<-nSimTrait
+	nTraitSetsPerSimTree <- nSimTrait
 	}
 #
 #########################################
@@ -343,7 +468,7 @@ if(empiricalTraitData == "SIMULATED"){
 # if the treeSet is "Ideal-Simulated"
 # then the number of simulated tree types and 
 	# number of tip-totals per simulated tree type is 3, other 1
-nSimTreeTypes<-nTipNumbersPerSimTreeType<-1
+nSimTreeTypes <- nTipNumbersPerSimTreeType <- 1
 #
 if(treeSet == "empirical_anolis_tree"){
 	treeList <- anolisTreeList
@@ -354,8 +479,8 @@ if(treeSet == "empirical_Aquilegia_tree"){
 	}
 #
 if(treeSet=="Ideal_Simulated"){
-	treeList<-idealTrees
-	nSimTreeTypes<-nTipNumbersPerSimTreeType<-3
+	treeList <- idealTrees
+	nSimTreeTypes <- nTipNumbersPerSimTreeType <- 3
 	}
 ####################################
 #
@@ -373,22 +498,38 @@ nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
 
 
 
-for (tree_i in 1:length(treeList)){
-#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # traitDataList will be a list with each element corresponding to a tree
 # and sub list corresponding to trait data to be analyzed on that tree
 #
-traitDataList<-list()
+traitDataList <- list()
+
+for (tree_i in 1:length(treeList)){
+#
 # empiricalTraitData
 #
 if(empiricalTraitData == "Anolis_Size_Data"){
 	# need a list of trait sets (of length 1)
-	traitDataList[[tree_i]] <-list(anolisSize = anolisSize)
+	traitDataList[[tree_i]]  <- list(anolisSize = anolisSize)
 	}
 #
 if(empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
 	# need a list of trait sets (of length 1)
-	traitDataList[[tree_i]] <-list(aquilegiaSpurLength = aquilegiaSpurLength)
+	traitDataList[[tree_i]]  <- list(aquilegiaSpurLength = aquilegiaSpurLength)
 	}
 #
 if(empiricalTraitData == "SIMULATED"){
@@ -409,19 +550,7 @@ if(empiricalTraitData == "SIMULATED"){
 				startPar = An_Emp_BrownMotion$parMeansList$starting
 				)
 			
-				
-
-	 
-	 
-
-# need function that simply outputs a list with those parameters
-	# (median?) expectations from the last MCMC generation
-# this function would be run with doRun such that doRun would include with output
-# these parameter estimates would be given as a list
-	# split into 3 vectors: starting/intrinsic/extrinsic parameters
-	# formatted for immediate use as parameter estimates for doSimulation
-	# with matching intrinsic/extrinsic functions
-	
+			
 
 	 
 				
@@ -484,7 +613,8 @@ if(empiricalTraitData == "SIMULATED"){
 		if(simTrait.Extrinsic == "An_Emp_Disp"){
 			simTraitExtrinsicArgs <- list(
 				extfn = ExponentiallyDecayingPushExtrinsic,
-				extPar = anolisBMrun$parMeansList$extrinsic, #whatever run is An_Emp_BrownMotion 
+				#whatever run is An_Emp_BrownMotion 
+				extPar = anolisBMrun$parMeansList$extrinsic, 
 				
 				
 				
