@@ -264,33 +264,7 @@ indepAnalyses_extrinsicOut <- lapply(
 # make sure named correctly
 names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
 names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
-
-
-
-
-
-
-
-extractIntrinsic_from_prcOut<-function(prcOut){
-	res <- list(
-		intrinsicFn = prcOut$intrinsicFn, 
-		intrinsicValues = prcOut$parMeansList$intrinsic, 
-		startingValues = prcOut$parMeansList$starting
-		)
-	return(res)
-	}
-	
-extractExtrinsic_from_prcOut<-function(prcOut){
-	res <- list(
-		extrinsicFn = prcOut$extrinsicFn, 
-		extrinsicValues = prcOut$parMeansList$extrinsic
-		)
-	return(res)
-	}
-	
-
-
-
+#
 # run all dependent analyses
 for (i in whichDependentPrevRun){
 	analysisOutput[[i]] <- runAnalysis(
@@ -317,7 +291,7 @@ for (i in whichDependentPrevRun){
 		numParticles = numParticles, 
 		nInitialSimsPerParam = nInitialSimsPerParam, 
 		StartSims = StartSims	
-	}
+		}
 
 
 
@@ -541,19 +515,34 @@ if(empiricalTraitData == "SIMULATED"){
 	if(is.na(simTrait.Intrinsic)){
 		stop("The intrinsic model for a simulated trait dataset is given as NA")
 	}else{
+	
+		simTraitIntrinsicArgs <- list(
+			intfn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
+			intPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
+			startPar = $parMeansList$starting
+			)
+			
+		
 		# ANOLIS BASED MODELS
 		if(simTrait.Intrinsic == "An_Emp_BrownMotion"){
 			simTraitIntrinsicArgs <- list(
 				intfn = brownianIntrinsic,
 				#whatever run is An_Emp_BrownMotion
-				intPar = An_Emp_BrownMotion$parMeansList$intrinsic, 
-				startPar = An_Emp_BrownMotion$parMeansList$starting
+				intPar = An_Emp_BrownMotionintrinsicValues, 
+				startPar = $parMeansList$starting
 				)
 			
-			
-
-	 
 				
+				intPar <- indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues
+	  = 
+				
+				
+		simTraitIntrinsicArgs <- list(
+			intfn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$extrinsicFn,
+			intPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$extrinsicValues,
+			startPar = $parMeansList$starting
+			)	
+		
 				)
 			}	
 		#
