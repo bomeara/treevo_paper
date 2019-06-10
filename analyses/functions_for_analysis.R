@@ -213,7 +213,7 @@ runAnalysis <- function(
 				simTraitIntrinsicArgs <- list(
 					intfn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
 					intPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
-					startPar = $parMeansList$starting
+					startPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
 					)			
 				}
 			#
@@ -230,7 +230,7 @@ runAnalysis <- function(
 				}else{
 					simTraitExtrinsicArgs <- list(
 						extfn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
-						extPar = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues,
+						extPar = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
 						)	
 					}		
 				}	
@@ -262,8 +262,11 @@ runAnalysis <- function(
 	#
 	for (trait_j in length(traitDataList)){
 		# define job name
-		
-		jobNameRun <- paste0(runParameters$runLabel,"_",trait_j)
+		jobNameRun <- paste0(
+			runParameters$runLabel,
+			"_", format(Sys.time(), "%m-%d-%y"),
+			"_", trait_j
+			)
 		#
 		traitDataToUseForThisRun <- traitDataList [[trait_j]]
 		#
