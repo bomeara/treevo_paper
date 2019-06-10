@@ -121,8 +121,7 @@ runAnalysis <- function(
 		intrinsicFunctionToFit <- autoregressiveIntrinsic
 		#
 		intrinsicArgList <- list(
-			
-			intrinsicPriorsFns=c("exponential","normal"),
+			intrinsicPriorsFns=c("exponential", "normal"),
 			intrinsicPriorsValues=list(10, c(-10, 1))
 			)
 		}
@@ -142,7 +141,7 @@ runAnalysis <- function(
 		extrinsicFunctionToFit  <- ExponentiallyDecayingPushExtrinsic
 		#
 		extrinsicArgList <- list(
-			extrinsicPriorsFns = c("exponential","normal","exponential"), 
+			extrinsicPriorsFns = c("exponential", "normal", "exponential"), 
 			# \code{ExponentiallyDecayingPushExtrinsic}
 			# with parameters \code{params = sd, maximumForce, halfDistance}
 			extrinsicPriorsValues = list(10, c(1,1), 10)
@@ -190,17 +189,20 @@ runAnalysis <- function(
 		#
 		# empiricalTraitData
 		#
-		if(empiricalTraitData == "Anolis_Size_Data"){
+		if(runParameters$empiricalTraitData == "Anolis_Size_Data"){
 			# need a list of trait sets (of length 1)
-			traitDataList[[tree_i]]  <- list(anolisSize = anolisSize)
+			traitDataList[[tree_i]]  <- anolisSize
 			}
 		#
-		if(empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
+		if(runParameters$empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
 			# need a list of trait sets (of length 1)
-			traitDataList[[tree_i]]  <- list(aquilegiaSpurLength = aquilegiaSpurLength)
+			traitDataList[[tree_i]]  <- aquilegiaSpurLength
 			}
 		#
-		if(empiricalTraitData == "SIMULATED"){
+		if(runParameters$empiricalTraitData == "SIMULATED"){
+			#
+			simTrait.Intrinsic <- runParameters$simTrait.Intrinsic
+			simTrait.Extrinsic <- runParameters$simTrait.Extrinsic
 			#
 			# simTrait.Intrinsic
 			# ALSO need estimates of parameters from previous analyses needed for later simulations
@@ -219,7 +221,7 @@ runAnalysis <- function(
 			#
 			# simTrait.Extrinsic
 			#
-			if(is.na(simTrait.Extrinsic)){
+			if(is.na(runParameters$simTrait.Extrinsic)){
 				stop("The extrinsic model for a simulated trait dataset is given as NA")
 			}else{
 				if(simTrait.Extrinsic == "Null"){
@@ -268,10 +270,16 @@ runAnalysis <- function(
 			"_", trait_j
 			)
 		#
-		traitDataToUseForThisRun <- traitDataList [[trait_j]]
+		traitDataToUseForThisRun <- traitDataList[[trait_j]]
+		#if(is.list(traitDataToUseForThisRun)){
+		#	traitDataToUseForThisRun <- unlist(traitDataToUseForThisRun)
+		#	}
+		#print(traitDataToUseForThisRun)
+		#x<-getBM(treeList[[trait_j]], 
+		#	trait = traitDataToUseForThisRun)
 		#
-		argListForDoRun <- c(
-			phy = treeList[[j]],
+		argListForDoRun <- list(
+			phy = treeList[[trait_j]],
 			traits = traitDataToUseForThisRun,
 			#
 			intrinsicFn = intrinsicFunctionToFit,
@@ -279,11 +287,10 @@ runAnalysis <- function(
 			#
 			startingPriorsFns = "normal", 
 			startingPriorsValues = 
-				matrix(c(
-					mean(traitDataToUseForThisRun[, 1]),
-					sd(traitDataToUseForThisRun[, 1])
-					)
-				),
+				list(c(
+					mean(traitDataToUseForThisRun),
+					sd(traitDataToUseForThisRun)
+					)), 
 			#########
 			#
 			intrinsicPriorsFns =
