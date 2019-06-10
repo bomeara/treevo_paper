@@ -13,7 +13,7 @@ nSimTrait <- 10
 ratePriorError <- 100
 
 # simulation resolution
-generation.time <- 10000 
+generation.time <- 100000 
 
 # control parameters for multicore and simulation resolution
 multicore <- TRUE 
@@ -37,10 +37,10 @@ library(TreEvo)
 
 ######################################
 # get empirical data
-	
+#	
 # 1) Anolis
 	# repulsion - adaptive landscape dynamics - multi optima	
-
+#
 # obtain anolis tree - from Poe et al. 2017 (SystBiol)
 	# their time-tree
 anolisTree <- read.tree(
@@ -49,7 +49,7 @@ anolisTree <- read.tree(
 # make into a multiPhylo list
 anolisTreeList <- list(anolisTree = anolisTree)
 class(anolisTreeList) <- "multiPhylo"
-
+#
 # obtain anolis trait data - 
 	# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
 anolisTrait <- read.table(
@@ -57,10 +57,10 @@ anolisTrait <- read.table(
 	header=TRUE,row.names=1
 	)
 anolisSize <- anolisTrait[,1]
-
+#
 # 2) Aquilegia
 	# whittall et al. model of nectar spur increase in size
-
+#
 # obtain aquilegia tree (from Whittall and Hodges 2007?)
 aquilegiaTree <- read.tree(
 	"datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
@@ -68,20 +68,20 @@ aquilegiaTree <- read.tree(
 # make into a multiPhylo list
 aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
 class(aquilegiaTreeList) <- "multiPhylo"
-
+#
 # obtain aquilegia trait data (from Whittall and Hodges 2007?)
 	# need both nectur spur lengths and regime data
 	#
 aquilegiaTrait <- read.table("aquilegia_traitData.txt", 
 	header=FALSE, row.names=1)
-
+#
 # get just nectur spur length
 aquilegiaSpurLength <- aquilegiaTrait[,2]
 # and take the natural log
 	# (note that the third column of the table was already the natural log)
 	# previous code from Brian had 'log(data[,3])' - log of a log
 aquilegiaSpurLength <- log(aquilegiaSpurLength)
-
+#
 # legacy aquilegia code from Brian O'Meara:
 # 
 # assume generation time of 10 years (its a perennial plant), 
@@ -191,7 +191,7 @@ names(analysisOutput) <- analysesNames
 # run all independent analyses
 for (i in whichIndependentPrevRun){
 	analysisOutput[[i]] <- runAnalysis(
-		runParameters <- simRunTable[i,],
+		runParameters = simRunTable[i, , drop = FALSE],
 		# inputs needed from script	above
 		nSimTrait = nSimTrait,
 		ratePriorError = ratePriorError,
@@ -206,9 +206,9 @@ for (i in whichIndependentPrevRun){
 		indepAnalyses_extrinsicOut = NULL,
 		#
 		# presets
-		generation.time=generation.time,
-		multicore=multicore,
-		coreLimit=coreLimit,				
+		generation.time = generation.time,
+		multicore = multicore,
+		coreLimit = coreLimit,				
 		nRuns = nRuns, 
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
@@ -216,14 +216,6 @@ for (i in whichIndependentPrevRun){
 		StartSims = StartSims	
 		)
 	}
-
-
-}
-
-
-
-
-
 #############################
 # dependent analyses
 ########################################
@@ -268,7 +260,7 @@ names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
 # run all dependent analyses
 for (i in whichDependentPrevRun){
 	analysisOutput[[i]] <- runAnalysis(
-		runParameters <- simRunTable[i,],
+		runParameters = simRunTable[i, , drop = FALSE],
 		# inputs needed from script	above
 		nSimTrait = nSimTrait,
 		ratePriorError = ratePriorError,
@@ -283,369 +275,25 @@ for (i in whichDependentPrevRun){
 		indepAnalyses_extrinsicOut = indepAnalyses_extrinsicOut,
 		#
 		# presets
-		generation.time=generation.time,
-		multicore=multicore,
-		coreLimit=coreLimit,				
+		generation.time = generation.time,
+		multicore = multicore,
+		coreLimit = coreLimit,				
 		nRuns = nRuns, 
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
 		nInitialSimsPerParam = nInitialSimsPerParam, 
 		StartSims = StartSims	
-		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-runAnalysis <- function(){
-	
-	}
-		
-		
-
-################################################
-# define MCMC / ABC control parameter list
-controlsList <- list(
-	# standard controls, don't need to be changed
-	standardDevFactor=0.2,				
-	epsilonProportion=0.7,
-	epsilonMultiplier=0.7,
-	stopRule = FALSE, 
-	plot=FALSE,
-	verboseParticles=FALSE,	
-	#
-	# controls that may need to be changed
-	generation.time=generation.time,
-	multicore=multicore,
-	coreLimit=coreLimit,				
-	nRuns = nRuns, 
-	nStepsPRC = nStepsPRC, 
-	numParticles = numParticles, 
-	nInitialSimsPerParam = nInitialSimsPerParam, 
-	StartSims = StartSims	
-	)
-#
-##################################################	
-# rate prior error
-# sigmasq state prior has an error if "rexp_with_mean_NOT_at_true_sigmasq"
-# 
-if (prior != "rexp_with_mean_NOT_at_true_sigmasq"){
-	# then do *NOT* apply the error to the sigmasq prior
-	ratePriorError <- 1
-	}
-##########################################
-#
-#
-# doRun.Intrinsic
-# 
-if (doRun.Intrinsic == "Pure_BM"){
-	intrinsicFunctionToFit <- brownianIntrinsic
-	#
-	intrinsicArgList <- list(
-		intrinsicPriorsFns = c("exponential"), 
-		intrinsicPriorsValues = list(10 * ratePriorError)
 		)
 	}
-#
-if (doRun.Intrinsic == "BM_LowerBound"){
-	intrinsicFunctionToFit <- boundaryMinIntrinsic
-	#
-	intrinsicArgList <- list(
-		intrinsicPriorsFns=c("exponential","normal"),
-		intrinsicPriorsValues=list(10, c(-10, 1))
-		)
-	}
-#
-if (doRun.Intrinsic == "3Opt2Bound"){
-	intrinsicFunctionToFit <- multiOptima3IntrinsicMaxBoundary2
-	#
-	intrinsicArgList <- list(
-		# breakdown of params:
-			# params[1] is dispersion (sigma)
-			# params[2] is alpha (strength of attraction to an optima)
-			# params[3] is rho, an exponent scaling the weighting of distance to optima
-				# this parameter will control switching optima
-			# params[4:5] is the max boundary, for the two lower regimes regimes
-			# params[6:8] describes theta (optima) values for each of the three regimes
-		intrinsicPriorsFns=c(
-			# we'll make rate an exponential prior, rate 10
-			"exponential",
-			# we'll make alpha an exponential prior, rate 10
-			"exponential",
-			# well make rho an exponential, rate 1
-			"exponential",
-			# let's place bounds based on whitall and hodges:
-			"uniform","uniform",
-			# normal priors for optima
-			"normal","normal","normal"
-			),
-		intrinsicPriorsValues=list(
-			10, 10, 1, 
-			c(15,20),c(20,25),
-			c(10,1), c(20,1), c(30,1)
-			)
-		)
-	}
-#
-if (doRun.Intrinsic == "Time_AutoRegressive_Model"){
-	intrinsicFunctionToFit <- autoregressiveIntrinsic
-	#
-	intrinsicArgList <- list(
-		
-		intrinsicPriorsFns=c("exponential","normal"),
-		intrinsicPriorsValues=list(10, c(-10, 1))
-		)
-	}
-#
-# doRun.Extrinsic
-#
-if (doRun.Extrinsic =="Null"){
-	extrinsicFunctionToFit <- nullExtrinsic
-	#
-	extrinsicArgList <- list(
-		extrinsicPriorsFns = c("fixed"), 
-		extrinsicPriorsValues = list(0)
-		)
-	}
-#
-if (doRun.Extrinsic =="Displacement"){
-	extrinsicFunctionToFit  <- ExponentiallyDecayingPushExtrinsic
-	#
-	extrinsicArgList <- list(
-		extrinsicPriorsFns = c("exponential","normal","exponential"), 
-		# \code{ExponentiallyDecayingPushExtrinsic} with parameters \code{params = sd, maximumForce, halfDistance}
-		extrinsicPriorsValues = list(10,c(1,1),10)
-		)
-	}
-#########################################
-# nTraitSetsPerSimTree is 1 unless empiricalTraitData is "SIMULATED" in which case it is nSimTrait
-nTraitSetsPerSimTree <- 1
-if(empiricalTraitData == "SIMULATED"){
-	nTraitSetsPerSimTree <- nSimTrait
-	}
-#
-#########################################
-#
-#treeSet
-#
-# if the treeSet is "Ideal-Simulated"
-# then the number of simulated tree types and 
-	# number of tip-totals per simulated tree type is 3, other 1
-nSimTreeTypes <- nTipNumbersPerSimTreeType <- 1
-#
-if(treeSet == "empirical_anolis_tree"){
-	treeList <- anolisTreeList
-	}
-#
-if(treeSet == "empirical_Aquilegia_tree"){
-	treeList <- aquilegiaTreeList
-	}
-#
-if(treeSet=="Ideal_Simulated"){
-	treeList <- idealTrees
-	nSimTreeTypes <- nTipNumbersPerSimTreeType <- 3
-	}
-#
-################################################	
-# need to make trait data for every tree in treeList	
-#
 
-#
-# traitDataList will be a list with each element corresponding to a tree
-# and sub list corresponding to trait data to be analyzed on that tree
-#
-traitDataList <- list()
-#
-for (tree_i in 1:length(treeList)){
-	#
-	# empiricalTraitData
-	#
-	if(empiricalTraitData == "Anolis_Size_Data"){
-		# need a list of trait sets (of length 1)
-		traitDataList[[tree_i]]  <- list(anolisSize = anolisSize)
-		}
-	#
-	if(empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
-		# need a list of trait sets (of length 1)
-		traitDataList[[tree_i]]  <- list(aquilegiaSpurLength = aquilegiaSpurLength)
-		}
-	#
-	if(empiricalTraitData == "SIMULATED"){
-		#
-		# simTrait.Intrinsic
-		# ALSO need estimates of parameters from previous analyses needed for later simulations
-		# 	 need to make part of output from doRun if not already
-		#
-		if(is.na(simTrait.Intrinsic)){
-			stop("The intrinsic model for a simulated trait dataset is given as NA")
-		}else{
-			# call respective analysis, take parameters from it
-			simTraitIntrinsicArgs <- list(
-				intfn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
-				intPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
-				startPar = $parMeansList$starting
-				)			
-			}
-		#
-		# simTrait.Extrinsic
-		#
-		if(is.na(simTrait.Extrinsic)){
-			stop("The extrinsic model for a simulated trait dataset is given as NA")
-		}else{
-			if(simTrait.Extrinsic == "Null"){
-				simTraitExtrinsicArgs <- list(
-					extfn = nullExtrinsic,
-					extPar = c(0), 
-					)
-			}else{
-				simTraitExtrinsicArgs <- list(
-					extfn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
-					extPar = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues,
-					)	
-				}		
-			}
-		#####################
-		# now have to simulate traits
-			# save to the list of trait sets
-		traitDataList[[tree_i]]  <- doSimulation(
-			phy = treeList[[tree_i]], 
-			intrinsicFn = simTraitIntrinsicArgs$intFn, 
-			extrinsicFn = simTraitExtrinsicArgs$exFn, 
-			startingValues = simTraitIntrinsicArgs$startPar,
-			intrinsicValues = simTraitIntrinsicArgs$intPar, 
-			extrinsicValues = simTraitExtrinsicArgs$exPar, 
-			generation.time = generation.time
-			)	
-		
-			
-		
-		
-		
-		}
-
-#################################################
-#
-# nDoRun
-#
-# calculate the number of doRun statements for this analysis-run
-# product of nSimTreeTypes and nTipNumbersPerSimTreeType and nSimTrait
-nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
-# should be one 1, 10 or 90... probably
-#	
-##########################################################
-# now run doRun across trees, trait datasets
-#
-
-	
-	
-
-	for (trait_j in length(traitDataList)){
-	
-		# define job name
-		jobNameRun <- 
-		#
-		traitDataToUse <- traitDataList [[trait_j]]
-		#	
-		doRun_out <- do.call(what = doRun_prc,
-			# arguments
-			args = c(
-				phy = ,
-				traits = traitDataToUse,
-				intrinsicFn =
-				extrinsicFn = 
-				
-				intrinsicArgList,
-				extrinsicArgList,
-				
-				# starting state prior
-				startingPriorsFns = "normal",
-				startingPriorsValues = matrix(
-					c(mean(traitDataToUse[, 1]) , sd(traitDataToUse[, 1]))),
-				#
-				#
-				jobName = paste(),
-				
-				# give control arguments
-				controlsList
-				)
-			)
-		}	
-	}	
-
-		
 
 
   
   
 
-  
-  
-
-
-  )	
-		
-		
 		
 		
 	
-	
-###################################################
-###### TWO tests of treevo
-#################################################
-
-# Unresolved question: Number of particles? Number of generations?
-
-#########################
-### (1) test basic BM
-	# fixed sigma square (rate)
-
-	#Two different BM priors: unif with truth at say 25th percentile, rexp with mean not at true value (just to be realistic). Similar for root state.
-
-	
-#############################	
-### (2) interaction model - repulsion between species with max bound 
-	# assume log transformed traits, so no min bound
-	# use realistic tree set
-
-# Some models with 
-	# no actual repulsion
-	# moderate (species cross in trait space) 
-	# high (no touching happens). 
-# Models vary distance of max to the trait data
-	# max is very close (most species bounce off it based on starting values), 
-	# max is moderately far (start hitting in last 25% of sim), 
-	# very far (never hit)
-# That’s nine different parameter values, 
-	# all of which I guess are scaled effective to the BM rate. 
-	# Could do it as six: 
-		#1) moderate repulsion, max bound is very close
-		#2) moderate repulsion, max bound is moderately close
-		#3) moderate repulsion, max bound is very far
-		#4) no repulsion, max bound is moderately close
-		#5) high repulsion, max bound is moderately close 		
-		
-#########################
-# 3) Time - autoregressive model with optimum based on a factor that changes through time (like O2 concentration)
- # empirical tree, like in simulations
-
- # Parameters of the regression: 
-	# a single variable function to convert O2 to optimal gill size or whatever
-	# strength of pull
-	# BM wiggle
-	
-# abd presumably the tracked env factor will be analyzed many times over
-
 
 
 
