@@ -14,7 +14,7 @@ ratePriorError <- 100
 
 # simulation resolution
 	# recc default is 1000
-generation.time <- 100000 
+generation.time <- 10000 
 
 # control parameters for multicore and simulation resolution
 multicore <- TRUE 

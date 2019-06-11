@@ -1,6 +1,7 @@
+# simulation framework 
+	# (shouldn't need to be changed)
 
 ##################################################
-
 library(ape)
 library(TreEvo)
 setwd("d://dave//workspace//treevo_paper//")
@@ -38,10 +39,12 @@ names(anolisSize) <- anolisTree$tip.label
 anyMatchesNA <- is.na(anolisSize)
 if(any(anyMatchesNA)){	
 	droppers <- names(anolisSize)[anyMatchesNA]
-	message(
-		"The following OTUs on the Anolis tree do not appear to\n",
+	message(paste0(
+		"The following OTUs (",
+		length(droppers),
+		") on the Anolis tree do not appear to\n",
 		" have size data and thus will be dropped: \n",
-		paste0(droppers, collapse=", "))
+		paste0(droppers, collapse=", ")))
 	anolisTree <- drop.tip(anolisTree, droppers)
 	anolisSize <- anolisSize[anolisTree$tip.label]
 	names(anolisSize) <- anolisTree$tip.label
@@ -99,10 +102,13 @@ names(aquilegiaPollinators) <- aquilegiaTree$tip.label
 anyMatchesNA <- is.na(aquilegiaSpurLength)
 if(any(anyMatchesNA)){	
 	droppers <- names(aquilegiaSpurLength)[anyMatchesNA]
-	message(
-		"The following OTUs on the Aquilegia tree do not appear to\n",
+	message(paste0(
+		"The following OTUs(",
+		length(droppers),
+		") on the Aquilegia tree do not appear to\n",
 		" have spur length data and thus will be dropped: \n",
-		paste0(droppers, collapse=", "))
+		paste0(droppers, collapse=", ")
+		))
 	aquilegiaTree <- drop.tip(aquilegiaTree, droppers)
 	# and drop from trait data
 	aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
@@ -307,8 +313,10 @@ for (i in whichDependentPrevRun){
 		aquilegiaSpurLength = aquilegiaSpurLength,
 		idealTrees = idealTrees,
 		#
-		indepAnalyses_intrinsicOut = indepAnalyses_intrinsicOut,
-		indepAnalyses_extrinsicOut = indepAnalyses_extrinsicOut,
+		indepAnalyses_intrinsicOut = 
+			indepAnalyses_intrinsicOut,
+		indepAnalyses_extrinsicOut = 
+			indepAnalyses_extrinsicOut,
 		#
 		# presets
 		generation.time = generation.time,
