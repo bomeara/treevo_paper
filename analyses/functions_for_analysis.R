@@ -34,34 +34,14 @@ runAnalysis <- function(
 		nStepsPRC,
 		numParticles, 
 		nInitialSimsPerParam,
-		StartSims	
+		nInitialSims,	
+		saveData,
+		verboseParticles
 		){
-	################
-	################################################
-	# define MCMC / ABC control parameter list
-	controlsList <- list(
-		# standard controls, don't need to be changed
-		standardDevFactor=0.2,				
-		epsilonProportion=0.7,
-		epsilonMultiplier=0.7,
-		stopRule = FALSE, 
-		plot = FALSE,
-		verboseParticles = FALSE,	
-		#
-		# controls that may need to be changed
-		generation.time = generation.time,
-		multicore = multicore,
-		coreLimit = coreLimit,				
-		nRuns = nRuns, 
-		nStepsPRC = nStepsPRC, 
-		numParticles = numParticles, 
-		nInitialSimsPerParam = nInitialSimsPerParam, 
-		StartSims = StartSims	
-		)
-	#
 	##################################################	
 	# rate prior error
-	# sigmasq state prior has an error if "rexp_with_mean_NOT_at_true_sigmasq"
+	# sigmasq state prior has an error
+		# if "rexp_with_mean_NOT_at_true_sigmasq"
 	# 
 	if(runParameters$prior != "rexp_with_mean_NOT_at_true_sigmasq"){
 		# then do *NOT* apply the error to the sigmasq prior
@@ -210,7 +190,8 @@ runAnalysis <- function(
 			simTrait.Extrinsic <- runParameters$simTrait.Extrinsic
 			#
 			# simTrait.Intrinsic
-			# ALSO need estimates of parameters from previous analyses needed for later simulations
+			# ALSO need estimates of parameters from
+			#    previous analyses needed for later simulations
 			# 	 need to make part of output from doRun if not already
 			#
 			if(is.na(simTrait.Intrinsic)){
@@ -283,7 +264,7 @@ runAnalysis <- function(
 		#x<-getBM(treeList[[trait_j]], 
 		#	trait = traitDataToUseForThisRun)
 		#
-		argListForDoRun <- list(
+		doRun_out <- doRun_prc(
 			##############
 			phy = treeList[[trait_j]],
 			traits = traitDataToUseForThisRun,
@@ -297,7 +278,7 @@ runAnalysis <- function(
 					mean(traitDataToUseForThisRun),
 					sd(traitDataToUseForThisRun)
 					)), 
-			#########
+			###########################
 			#
 			intrinsicPriorsFns =
 				intrinsicArgList$intrinsicPriorsFns, 
@@ -311,15 +292,40 @@ runAnalysis <- function(
 				extrinsicArgList$extrinsicPriorsValues, 
 			#########
 			#
-			jobName = jobNameRun
-			)
-		#
-		# add control arguments
-		argListForDoRun <- c(argListForDoRun, controlsList)
-		#	
-		doRun_out <- do.call(what = doRun_prc,
-			# arguments
-			args = argListForDoRun
+			jobName = jobNameRun,
+
+			#
+			# define MCMC / ABC control parameter list
+			#
+			# controls that may need to be changed
+			generation.time = generation.time,
+			multicore = multicore,
+			coreLimit = coreLimit,				
+			#
+			numParticles = numParticles, 
+			nStepsPRC = nStepsPRC, 
+			nRuns = nRuns, 
+			nInitialSims = nInitialSims,
+			nInitialSimsPerParam = nInitialSimsPerParam, 
+			#
+			saveData = saveData, 
+			verboseParticles = verboseParticles,
+			#
+			#
+			# standard controls, don't need to be changed
+			standardDevFactor = 0.20, 
+			epsilonProportion = 0.7, 
+			epsilonMultiplier = 0.7, 
+			#
+			validation = "CV", 
+			scale = TRUE, 
+			variance.cutoff = 95, 
+			#niter.goal = 5, 
+			#
+			stopRule = FALSE, 
+			stopValue = 0.05, 
+			maxAttempts = Inf
+			#
 			)
 		}
 	#

@@ -22,7 +22,7 @@ nRuns <- 2
 nStepsPRC <- 3 
 numParticles <- 20 
 nInitialSimsPerParam <- 10 
-StartSims <- 10
+nInitialSims <- 10
 
 ##################################################
 
@@ -195,7 +195,7 @@ idealTrees
 	nStepsPRC = nStepsPRC, 
 	numParticles = numParticles, 
 	nInitialSimsPerParam = nInitialSimsPerParam, 
-	StartSims = StartSims	
+	nInitialSims = nInitialSims	
 
 
 		
@@ -206,7 +206,7 @@ idealTrees
 	nStepsPRC 
 	numParticles 
 	nInitialSimsPerParam 
-	StartSims 	
+	nInitialSims 	
 
 
 
@@ -234,7 +234,7 @@ controlsList <- list(
 	nStepsPRC = nStepsPRC, 
 	numParticles = numParticles, 
 	nInitialSimsPerParam = nInitialSimsPerParam, 
-	StartSims = StartSims	
+	nInitialSims = nInitialSims	
 	)
 #
 ##################################################	

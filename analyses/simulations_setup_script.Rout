@@ -43,7 +43,7 @@ Type 'q()' to quit R.
 > nStepsPRC <- 3 
 > numParticles <- 20 
 > nInitialSimsPerParam <- 10 
-> StartSims <- 10
+> nInitialSims <- 10
 > 
 > source(
 + 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
@@ -52,6 +52,6 @@ The following OTUs on the Anolis tree do not appear to
  have size data and thus will be dropped: 
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
 Error in (function (phy, traits, intrinsicFn, extrinsicFn, startingPriorsValues,  : 
-  unused arguments (plot = FALSE, StartSims = 10)
+  unused arguments (plot = FALSE, nInitialSims = 10)
 Calls: source ... withVisible -> eval -> eval -> runAnalysis -> do.call
 Execution halted

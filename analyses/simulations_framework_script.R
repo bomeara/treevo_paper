@@ -239,7 +239,10 @@ for (i in whichIndependentPrevRun){
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
 		nInitialSimsPerParam = nInitialSimsPerParam, 
-		StartSims = StartSims	
+		nInitialSims = nInitialSims, 
+		saveData = saveData,
+		verboseParticles = verboseParticles
+
 		)
 	#
 	save(analysisOutput, 
@@ -315,7 +318,9 @@ for (i in whichDependentPrevRun){
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
 		nInitialSimsPerParam = nInitialSimsPerParam, 
-		StartSims = StartSims	
+		nInitialSims = nInitialSims,
+		saveData = saveData,
+		verboseParticles = verboseParticles
 		)
 	#
 	save(analysisOutput, 

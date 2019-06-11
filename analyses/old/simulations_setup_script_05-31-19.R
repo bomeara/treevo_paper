@@ -24,7 +24,7 @@ nRuns <- 2
 nStepsPRC <- 3 
 numParticles <- 20 
 nInitialSimsPerParam <- 10 
-StartSims <- 10
+nInitialSims <- 10
 
 
 
@@ -213,7 +213,7 @@ for (i in whichIndependentPrevRun){
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
 		nInitialSimsPerParam = nInitialSimsPerParam, 
-		StartSims = StartSims	
+		nInitialSims = nInitialSims	
 		)
 	}
 #############################
@@ -282,7 +282,7 @@ for (i in whichDependentPrevRun){
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
 		nInitialSimsPerParam = nInitialSimsPerParam, 
-		StartSims = StartSims	
+		nInitialSims = nInitialSims	
 		)
 	}
 

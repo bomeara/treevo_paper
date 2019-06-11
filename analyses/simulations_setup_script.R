@@ -13,6 +13,7 @@ nSimTrait <- 10
 ratePriorError <- 100
 
 # simulation resolution
+	# recc default is 1000
 generation.time <- 100000 
 
 # control parameters for multicore and simulation resolution
@@ -20,11 +21,17 @@ multicore <- TRUE
 coreLimit <- 6
 
 # control parameters for MCMC / ABC
-nRuns <- 2 
-nStepsPRC <- 3 
-numParticles <- 20 
-nInitialSimsPerParam <- 10 
-StartSims <- 10
+nRuns <- 1            		# recc default is 2
+nStepsPRC <- 2        		# recc default is 5
+numParticles <- 5 			# recc default is 300
+nInitialSimsPerParam <- 10 	# recc default is 100
+nInitialSims <- 5			# recc default is NULL (100 per param)
+
+#### miscellaneous controls
+# save data during runs?
+saveData <- FALSE
+# print out progress to terminal?
+verboseParticles <- FALSE
 
 source(
 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
