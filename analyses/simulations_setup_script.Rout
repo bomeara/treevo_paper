@@ -67,3 +67,8 @@ The smallest edge length on the input tree is 0.00083
 Given generation time, a total of 506988 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
+Initial simulations took 1299.14 seconds
+Error in cvsegments(nobj, k = segments, type = segment.type) : 
+  More segments than observations requested
+Calls: source ... doRun_prc -> initialSimsPRC -> apply -> FUN -> makeQuiet
+Execution halted
