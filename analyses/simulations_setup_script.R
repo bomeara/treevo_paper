@@ -1,3 +1,7 @@
+#
+
+#source("d://dave//workspace//treevo_paper//analyses//simulations_setup_script.R")
+
 ###################################################
 # Individual Empirical Analyses and Simulations
 ##################################################
@@ -35,6 +39,7 @@ source(".//analyses//functions_for_analysis.R")
 
 ######################################
 # get empirical data
+#############################################
 #	
 # 1) Anolis
 	# repulsion - adaptive landscape dynamics - multi optima	
@@ -44,9 +49,6 @@ source(".//analyses//functions_for_analysis.R")
 anolisTree <- read.tree(
 	file="datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre"
 	)
-# make into a multiPhylo list
-anolisTreeList <- list(anolisTree = anolisTree)
-class(anolisTreeList) <- "multiPhylo"
 #
 # obtain anolis trait data - 
 	# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
@@ -54,7 +56,29 @@ anolisTrait <- read.table(
 	"datasets//anolis_lntraits_matched_tabdelim_07-24-18.txt",
 	header=TRUE,row.names=1
 	)
-anolisSize <- anolisTrait[,1]
+#
+anolisSize <- anolisTrait[,1]             # ,drop = FALSE]
+names(anolisSize) <- rownames(anolisTrait)
+#
+# need to remove all unshared taxa from the tree
+#
+# crop traits down to those in the tree
+anolisSize <- anolisSize[anolisTree$tip.label]
+# are any NA?
+anyMatchesNA <- is.na(anolisSize)
+if(any(anyMatchesNA)){	
+	droppers <- names(anolisSize)[anyMatchesNA]
+	message(
+		"The following OTUs on the Anolis tree do not appear to\n",
+		" have size data and thus will be dropped: \n",
+		paste0(droppers, collapse=", "))
+	anolisTree <- drop.tip(anolisTree, droppers)
+	}
+# make into a multiPhylo list
+anolisTreeList <- list(anolisTree = anolisTree)
+class(anolisTreeList) <- "multiPhylo"
+#
+################################################
 #
 # 2) Aquilegia
 	# whittall et al. model of nectar spur increase in size
@@ -63,9 +87,6 @@ anolisSize <- anolisTrait[,1]
 aquilegiaTree <- read.tree(
 	"datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
 	)
-# make into a multiPhylo list
-aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
-class(aquilegiaTreeList) <- "multiPhylo"
 #
 # obtain aquilegia trait data (from Whittall and Hodges 2007?)
 	# need both nectur spur lengths and regime data
@@ -76,12 +97,46 @@ aquilegiaTrait <- read.table(
 	)
 #
 # get just nectur spur length
-aquilegiaSpurLength <- aquilegiaTrait[,2]
+aquilegiaSpurLength <- aquilegiaTrait[,2]           # , drop = FALSE]
+names(aquilegiaSpurLength) <- rownames(aquilegiaTrait)
 # and take the natural log
 	# (note that the third column of the table was already the natural log)
 	# previous code from Brian had 'log(data[,3])' - log of a log
 aquilegiaSpurLength <- log(aquilegiaSpurLength)
+# crop traits down to those in the tree
+aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
+
 #
+# aquilegia regimes - pollinator syndromes
+aquilegiaPollinators <- aquilegiaTrait[,14]
+names(aquilegiaPollinators) <- rownames(aquilegiaTrait)
+# crop traits down to those in the tree
+aquilegiaPollinators <- aquilegiaPollinators[aquilegiaTree$tip.label]
+#
+# regimes coded 0, 1, 2
+	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
+# this probably won't be used directly?
+# could use for post-analysis comparisons? Hmm
+#
+# need to remove all unshared taxa from the tree
+	# will do this ONLY relative to spur length vector!
+#
+
+# are any NA?
+anyMatchesNA <- is.na(aquilegiaSpurLength)
+if(any(anyMatchesNA)){	
+	droppers <- names(aquilegiaSpurLength)[anyMatchesNA]
+	message(
+		"The following OTUs on the Aquilegia tree do not appear to\n",
+		" have spur length data and thus will be dropped: \n",
+		paste0(droppers, collapse=", "))
+	aquilegiaTree <- drop.tip(aquilegiaTree, droppers)
+	}
+# make into a multiPhylo list
+aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
+class(aquilegiaTreeList) <- "multiPhylo"
+#
+###############################################
 # legacy aquilegia code from Brian O'Meara:
 # 
 # assume generation time of 10 years (its a perennial plant), 
@@ -96,15 +151,8 @@ aquilegiaSpurLength <- log(aquilegiaSpurLength)
 # number of expected polinator shifts based on parsimony is 7:
 # parsimonyShifts=7
 # pollinatorShiftRate=parsimonyShifts/totalTreeLength
-
-# aquilegia regimes - pollinator syndromes
-aquilegiaPollinators <- aquilegiaTrait[,14]
-# regimes coded 0, 1, 2
-	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
-# this probably won't be used directly?
-# could use for post-analysis comparisons? Hmm
-	
-
+#
+#
 ###############################################################################
 # generate sets of ideal trees for doing simulations on
    # idealTreeSets = c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star") 
