@@ -92,6 +92,7 @@ Type 'q()' to quit R.
 + 		" have size data and thus will be dropped: \n",
 + 		paste0(droppers, collapse=", "))
 + 	anolisTree <- drop.tip(anolisTree, droppers)
++ 	anolisSize <- anolisSize[anolisTree$tip.label]
 + 	}
 The following OTUs on the Anolis tree do not appear to
  have size data and thus will be dropped: 
@@ -153,6 +154,9 @@ podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cym
 + 		" have spur length data and thus will be dropped: \n",
 + 		paste0(droppers, collapse=", "))
 + 	aquilegiaTree <- drop.tip(aquilegiaTree, droppers)
++ 	# and drop from trait data
++ 	aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
++ 	aquilegiaPollinators <- aquilegiaPollinators[aquilegiaTree$tip.label]
 + 	}
 > # make into a multiPhylo list
 > aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
@@ -308,7 +312,4 @@ Number of initial simulations to be performed (nInitialSims) not given
 Error in matchTreeWithTrait(tree = phy, traitsOld = traits, whichTrait = 1) : 
   Some taxa seem to have missing or NA trait values in the input
 Calls: runAnalysis ... <Anonymous> -> summaryStatsLong -> matchTreeWithTrait
-In addition: Warning message:
-In matchTreeWithTrait(tree = phy, traitsOld = traits, whichTrait = 1) :
-  Number of trait values input is not equal to the number of tip taxa used
 Execution halted

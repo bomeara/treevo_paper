@@ -64,6 +64,7 @@ names(anolisSize) <- rownames(anolisTrait)
 #
 # crop traits down to those in the tree
 anolisSize <- anolisSize[anolisTree$tip.label]
+names(anolisSize) <- anolisTree$tip.label
 # are any NA?
 anyMatchesNA <- is.na(anolisSize)
 if(any(anyMatchesNA)){	
@@ -73,6 +74,8 @@ if(any(anyMatchesNA)){
 		" have size data and thus will be dropped: \n",
 		paste0(droppers, collapse=", "))
 	anolisTree <- drop.tip(anolisTree, droppers)
+	anolisSize <- anolisSize[anolisTree$tip.label]
+	names(anolisSize) <- anolisTree$tip.label
 	}
 # make into a multiPhylo list
 anolisTreeList <- list(anolisTree = anolisTree)
@@ -105,13 +108,14 @@ names(aquilegiaSpurLength) <- rownames(aquilegiaTrait)
 aquilegiaSpurLength <- log(aquilegiaSpurLength)
 # crop traits down to those in the tree
 aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
-
+names(aquilegiaSpurLength) <- aquilegiaTree$tip.label
 #
 # aquilegia regimes - pollinator syndromes
 aquilegiaPollinators <- aquilegiaTrait[,14]
 names(aquilegiaPollinators) <- rownames(aquilegiaTrait)
 # crop traits down to those in the tree
 aquilegiaPollinators <- aquilegiaPollinators[aquilegiaTree$tip.label]
+names(aquilegiaPollinators) <- aquilegiaTree$tip.label
 #
 # regimes coded 0, 1, 2
 	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
@@ -131,6 +135,11 @@ if(any(anyMatchesNA)){
 		" have spur length data and thus will be dropped: \n",
 		paste0(droppers, collapse=", "))
 	aquilegiaTree <- drop.tip(aquilegiaTree, droppers)
+	# and drop from trait data
+	aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
+	aquilegiaPollinators <- aquilegiaPollinators[aquilegiaTree$tip.label]
+	names(aquilegiaSpurLength) <- aquilegiaTree$tip.label
+	names(aquilegiaPollinators) <- aquilegiaTree$tip.label
 	}
 # make into a multiPhylo list
 aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
