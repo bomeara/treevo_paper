@@ -27,9 +27,14 @@ runAnalysis <- function(
 		indepAnalyses_extrinsicOut,
 		#
 		# presets
-		generation.time, multicore, coreLimit,				
-		nRuns, nStepsPRC, numParticles, 
-		nInitialSimsPerParam, StartSims	
+		generation.time,
+		multicore,
+		coreLimit,				
+		nRuns,
+		nStepsPRC,
+		numParticles, 
+		nInitialSimsPerParam,
+		StartSims	
 		){
 	################
 	################################################
@@ -40,13 +45,13 @@ runAnalysis <- function(
 		epsilonProportion=0.7,
 		epsilonMultiplier=0.7,
 		stopRule = FALSE, 
-		plot=FALSE,
-		verboseParticles=FALSE,	
+		plot = FALSE,
+		verboseParticles = FALSE,	
 		#
 		# controls that may need to be changed
-		generation.time=generation.time,
-		multicore=multicore,
-		coreLimit=coreLimit,				
+		generation.time = generation.time,
+		multicore = multicore,
+		coreLimit = coreLimit,				
 		nRuns = nRuns, 
 		nStepsPRC = nStepsPRC, 
 		numParticles = numParticles, 
@@ -279,6 +284,7 @@ runAnalysis <- function(
 		#	trait = traitDataToUseForThisRun)
 		#
 		argListForDoRun <- list(
+			##############
 			phy = treeList[[trait_j]],
 			traits = traitDataToUseForThisRun,
 			#
@@ -305,10 +311,11 @@ runAnalysis <- function(
 				extrinsicArgList$extrinsicPriorsValues, 
 			#########
 			#
-			jobName = jobNameRun,
-			# give control arguments
-			controlsList
+			jobName = jobNameRun
 			)
+		#
+		# add control arguments
+		argListForDoRun <- c(argListForDoRun, controlsList)
 		#	
 		doRun_out <- do.call(what = doRun_prc,
 			# arguments
