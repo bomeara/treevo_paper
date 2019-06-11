@@ -32,26 +32,38 @@ Type 'q()' to quit R.
 > ratePriorError <- 100
 > 
 > # simulation resolution
-> generation.time <- 100000 
+> 	# recc default is 1000
+> generation.time <- 10000 
 > 
 > # control parameters for multicore and simulation resolution
 > multicore <- TRUE 
 > coreLimit <- 6
 > 
 > # control parameters for MCMC / ABC
-> nRuns <- 2 
-> nStepsPRC <- 3 
-> numParticles <- 20 
-> nInitialSimsPerParam <- 10 
-> nInitialSims <- 10
+> nRuns <- 1            		# recc default is 2
+> nStepsPRC <- 2        		# recc default is 5
+> numParticles <- 5 			# recc default is 300
+> nInitialSimsPerParam <- 10 	# recc default is 100
+> nInitialSims <- 5			# recc default is NULL (100 per param)
+> 
+> #### miscellaneous controls
+> # save data during runs?
+> saveData <- FALSE
+> # print out progress to terminal?
+> verboseParticles <- FALSE
 > 
 > source(
 + 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
 + 	)
-The following OTUs on the Anolis tree do not appear to
+The following OTUs (24) on the Anolis tree do not appear to
  have size data and thus will be dropped: 
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
-Error in (function (phy, traits, intrinsicFn, extrinsicFn, startingPriorsValues,  : 
-  unused arguments (plot = FALSE, nInitialSims = 10)
-Calls: source ... withVisible -> eval -> eval -> runAnalysis -> do.call
-Execution halted
+The effective timeStep for this tree will be 0.00019,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+(This is 43000 in the same TreeYears units
+    as used for the input generation.time ( = 10000))
+Given generation time, a total of 506988 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
