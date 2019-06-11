@@ -4,7 +4,7 @@
 ##################################################
 library(ape)
 library(TreEvo)
-setwd("d://dave//workspace//treevo_paper//")
+setwd("~//treevo_paper//")
 source(".//analyses//functions_for_analysis.R")
 
 ######################################
