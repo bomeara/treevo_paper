@@ -1,5 +1,4 @@
-
-	
+###############################################################
 # September 2018
 # Make two more models for Aquilegia
 # 1) trait values have three optima on gradient, with some rate of switching to next-largest optima, cannot reverse
