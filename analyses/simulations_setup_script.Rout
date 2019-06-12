@@ -67,18 +67,89 @@ The smallest edge length on the input tree is 0.00083
 Given generation time, a total of 25063 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
-Initial simulations took 65.81 seconds
+Initial simulations took 71.86 seconds
 Finding distribution of distances...
 Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 620 seconds...
-Function completed in 900 seconds.
-Error in gzfile(file, "wb") : cannot open the connection
-Calls: source -> withVisible -> eval -> eval -> save -> gzfile
+Collection of simulation particles under PRC completed in 1500 seconds...
+Function completed in 1700 seconds.
+The effective timeStep for this tree will be 0.0039,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+(This is 43000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 45.33 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 140 seconds...
+Function completed in 280 seconds.
+The effective timeStep for this tree will be 0.0039,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+(This is 43000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 42.19 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 97 seconds...
+Function completed in 240 seconds.
+The effective timeStep for this tree will be 0.0039,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+(This is 43000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 63.76 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 860 seconds...
+Function completed in 1300 seconds.
+The effective timeStep for this tree will be 0.0039,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+(This is 43000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 37.46 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 120 seconds...
+Function completed in 290 seconds.
+Error in runAnalysis(runParameters = simRunTable[i, , drop = FALSE], nSimTrait = nSimTrait,  : 
+  object 'multiOptima3IntrinsicMaxBoundary2' not found
+Calls: source -> withVisible -> eval -> eval -> runAnalysis
 In addition: Warning messages:
 1: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
   Tree has rescaled branches shorter than generation.time/TreeYears
     No trait evolution will be simulated on these branches and
     thus ML summary statistic functions may fail or produce unexpected results.
-2: In gzfile(file, "wb") :
-  cannot open compressed file '//saved_output//analysisOutput_saved_06-12-19.Rdata', probable reason 'Invalid argument'
+2: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+3: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+4: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+5: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
 Execution halted

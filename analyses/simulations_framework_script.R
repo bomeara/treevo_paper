@@ -6,6 +6,8 @@ library(ape)
 library(TreEvo)
 setwd("~//treevo_paper//")
 source(".//analyses//functions_for_analysis.R")
+source(".//analyses//functions_for_aquilegia_models.R")
+
 
 ######################################
 # get empirical data
