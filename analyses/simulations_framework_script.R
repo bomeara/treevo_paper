@@ -252,7 +252,7 @@ for (i in whichIndependentPrevRun){
 		)
 	#
 	save(analysisOutput, 
-		file = paste0("//saved_output//",
+		file = paste0(".//saved_output//",
 			"analysisOutput_saved_",
 			format(Sys.time(), "%m-%d-%y"),
 			".Rdata")
@@ -332,7 +332,7 @@ for (i in whichDependentPrevRun){
 		)
 	#
 	save(analysisOutput, 
-		file = paste0("//saved_output//",
+		file = paste0(".//saved_output//",
 			"analysisOutput_saved_",
 			format(Sys.time(), "%m-%d-%y"),
 			".Rdata")

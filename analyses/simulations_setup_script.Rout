@@ -33,7 +33,7 @@ Type 'q()' to quit R.
 > 
 > # simulation resolution
 > 	# recc default is 1000
-> generation.time <- 10000 
+> generation.time <- 200000 
 > 
 > # control parameters for multicore and simulation resolution
 > multicore <- TRUE 
@@ -58,17 +58,27 @@ Type 'q()' to quit R.
 The following OTUs (24) on the Anolis tree do not appear to
  have size data and thus will be dropped: 
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
-The effective timeStep for this tree will be 0.00019,
+The effective timeStep for this tree will be 0.0039,
      as a proportion of tree height (root to furthest tip)...
 Rescaling edge lengths relative to maximum tip-to-root distance...
 The smallest edge length on the input tree is 0.00083
 (This is 43000 in the same TreeYears units
-    as used for the input generation.time ( = 10000))
-Given generation time, a total of 506988 generations are expected to occur over this tree
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
-Initial simulations took 1299.14 seconds
-Error in cvsegments(nobj, k = segments, type = segment.type) : 
-  More segments than observations requested
-Calls: source ... doRun_prc -> initialSimsPRC -> apply -> FUN -> makeQuiet
+Initial simulations took 65.81 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 620 seconds...
+Function completed in 900 seconds.
+Error in gzfile(file, "wb") : cannot open the connection
+Calls: source -> withVisible -> eval -> eval -> save -> gzfile
+In addition: Warning messages:
+1: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+2: In gzfile(file, "wb") :
+  cannot open compressed file '//saved_output//analysisOutput_saved_06-12-19.Rdata', probable reason 'Invalid argument'
 Execution halted
