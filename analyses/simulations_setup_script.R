@@ -33,6 +33,12 @@ saveData <- FALSE
 # print out progress to terminal?
 verboseParticles <- FALSE
 
+###########################
+# FOR TESTING
+#
+# change starting sim
+starting_sim <- 4
+
 source(
 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
 	)
