@@ -37,7 +37,7 @@ verboseParticles <- FALSE
 # FOR TESTING
 #
 # change starting sim
-starting_sim <- 4
+starting_sim <- 1
 
 source(
 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"

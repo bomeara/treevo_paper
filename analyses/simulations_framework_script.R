@@ -220,10 +220,21 @@ analysisOutput <- as.list(analysesNames)
 	# names(analysisOutput) <- 1:nAnalyses
 names(analysisOutput) <- analysesNames
 #
+###########################
+# FOR TESTING
+#
+# change starting sim to the one indicated by setup script
+if(starting_sim > 1){
+	dropRuns <- 1:(starting_sim - 1)
+	whichIndependentPrevRun <- whichIndependentPrevRun[-dropRuns]
+	}
+#
 # Let's runs the analyses! 
 #
 # run all independent analyses
 for (i in whichIndependentPrevRun){
+	message("######   Now running ", analysesNames[i], "  #########")
+	#
 	analysisOutput[[i]] <- runAnalysis(
 		runParameters = simRunTable[i, , drop = FALSE],
 		# inputs needed from script	above
@@ -303,6 +314,8 @@ names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
 #
 # run all dependent analyses
 for (i in whichDependentPrevRun){
+	message("######   Now running ", analysesNames[i], "  #########")
+	#
 	analysisOutput[[i]] <- runAnalysis(
 		runParameters = simRunTable[i, , drop = FALSE],
 		# inputs needed from script	above
