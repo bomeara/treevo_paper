@@ -35,7 +35,7 @@ verboseParticles <- FALSE
 
 ###########################
 # FOR CONTINUING FROM A PREVIOUS TEST
-#
+# (...if output from previous analyses exist at all)
 continueFromPrevious <- TRUE
 
 source(

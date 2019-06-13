@@ -64,6 +64,8 @@ class(anolisTreeList) <- "multiPhylo"
 aquilegiaTree <- read.tree(
 	"datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
 	)
+# need to clear away the root edge length
+aquilegiaTree$root.edge <- NULL	
 #
 # obtain aquilegia trait data (from Whittall and Hodges 2007?)
 	# need both nectur spur lengths and regime data
