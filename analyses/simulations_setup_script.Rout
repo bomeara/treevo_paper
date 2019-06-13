@@ -56,7 +56,7 @@ Type 'q()' to quit R.
 > # FOR TESTING
 > #
 > # change starting sim
-> starting_sim <- 4
+> starting_sim <- 1
 > 
 > source(
 + 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
@@ -64,6 +64,7 @@ Type 'q()' to quit R.
 The following OTUs (24) on the Anolis tree do not appear to
  have size data and thus will be dropped: 
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
+######   Now running An_Emp_DispBound  #########
 The effective timeStep for this tree will be 0.0039,
      as a proportion of tree height (root to furthest tip)...
 Rescaling edge lengths relative to maximum tip-to-root distance...
@@ -73,46 +74,6 @@ The smallest edge length on the input tree is 0.00083
 Given generation time, a total of 25063 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
-Initial simulations took 60.47 seconds
+Initial simulations took 73.52 seconds
 Finding distribution of distances...
 Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 16000 seconds...
-Function completed in 16000 seconds.
-The effective timeStep for this tree will be 0.0039,
-     as a proportion of tree height (root to furthest tip)...
-Rescaling edge lengths relative to maximum tip-to-root distance...
-The smallest edge length on the input tree is 0.00083
-(This is 43000 in the same TreeYears units
-    as used for the input generation.time ( = 2e+05))
-Given generation time, a total of 25063 generations are expected to occur over this tree
-Number of initial simulations set to 5
-Doing initial simulations...
-Initial simulations took 32.75 seconds
-Finding distribution of distances...
-Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 78 seconds...
-Function completed in 190 seconds.
-The effective timeStep for this tree will be 0.065,
-     as a proportion of tree height (root to furthest tip)...
-Rescaling edge lengths relative to maximum tip-to-root distance...
-The smallest edge length on the input tree is 0.0043
-(This is 13000 in the same TreeYears units
-    as used for the input generation.time ( = 2e+05))
-Given generation time, a total of 228 generations are expected to occur over this tree
-Error in transf.branch.lengths(phy, model, parameters = parameters, check.pruningwise = F,  : 
-  the tree is supposed to have no root edge (or of length 0).
-Calls: source ... getBM -> <Anonymous> -> loglik -> transf.branch.lengths
-In addition: Warning messages:
-1: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-2: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-3: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-Execution halted

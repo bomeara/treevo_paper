@@ -220,7 +220,22 @@ analysisOutput <- as.list(analysesNames)
 	# names(analysisOutput) <- 1:nAnalyses
 names(analysisOutput) <- analysesNames
 #
-###########################
+
+# make a new save file name
+saveFileName <- paste0(
+	".//saved_output//",
+	"analysisOutput_saved_",
+	format(Sys.time(), "%m-%d-%y"),
+	".Rdata"
+	)
+#
+# save initial file
+save(analysisOutput, 
+	file = saveFileName
+	)
+
+#
+###########################################
 # FOR TESTING
 #
 # change starting sim to the one indicated by setup script
@@ -229,10 +244,15 @@ if(starting_sim > 1){
 	whichIndependentPrevRun <- whichIndependentPrevRun[-dropRuns]
 	}
 #
+######################################
+#
 # Let's runs the analyses! 
 #
 # run all independent analyses
+message("#########  Independent Analyses  ##############")
+#
 for (i in whichIndependentPrevRun){
+	message("###########################################")
 	message("######   Now running ", analysesNames[i], "  #########")
 	#
 	analysisOutput[[i]] <- runAnalysis(
@@ -265,10 +285,7 @@ for (i in whichIndependentPrevRun){
 		)
 	#
 	save(analysisOutput, 
-		file = paste0(".//saved_output//",
-			"analysisOutput_saved_",
-			format(Sys.time(), "%m-%d-%y"),
-			".Rdata")
+		file = saveFileName
 		)
 	}
 #############################
@@ -313,7 +330,10 @@ names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
 names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
 #
 # run all dependent analyses
+message("#########  Dependent Analyses  ##############")
+#
 for (i in whichDependentPrevRun){
+	message("###########################################")
 	message("######   Now running ", analysesNames[i], "  #########")
 	#
 	analysisOutput[[i]] <- runAnalysis(
@@ -347,10 +367,7 @@ for (i in whichDependentPrevRun){
 		)
 	#
 	save(analysisOutput, 
-		file = paste0(".//saved_output//",
-			"analysisOutput_saved_",
-			format(Sys.time(), "%m-%d-%y"),
-			".Rdata")
+		file = saveFileName
 		)
 	}
 
