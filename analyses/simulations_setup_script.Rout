@@ -40,11 +40,11 @@ Type 'q()' to quit R.
 > coreLimit <- 6
 > 
 > # control parameters for MCMC / ABC
-> nRuns <- 1            		# recc default is 2
-> nStepsPRC <- 2        		# recc default is 5
-> numParticles <- 5 			# recc default is 300
-> nInitialSimsPerParam <- 10 	# recc default is 100
-> nInitialSims <- 5			# recc default is NULL (100 per param)
+> nRuns <- 1            		  # recc default is 2
+> nStepsPRC <- 2        		  # recc default is 5
+> numParticles <- 5 			  # recc default is 300
+> nInitialSimsPerParam <- 10 	  # recc default is 100
+> nInitialSims <- 5			  # recc default is NULL (100 per param)
 > 
 > #### miscellaneous controls
 > # save data during runs?
@@ -53,10 +53,9 @@ Type 'q()' to quit R.
 > verboseParticles <- FALSE
 > 
 > ###########################
-> # FOR TESTING
+> # FOR CONTINUING FROM A PREVIOUS TEST
 > #
-> # change starting sim
-> starting_sim <- 1
+> continueFromPrevious <- TRUE
 > 
 > source(
 + 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
@@ -64,7 +63,10 @@ Type 'q()' to quit R.
 The following OTUs (24) on the Anolis tree do not appear to
  have size data and thus will be dropped: 
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
-######   Now running An_Emp_DispBound  #########
+###########################################
+#########  Independent Analyses  ##############
+###########################################
+######   Now running -- An_Emp_DispBound  #########
 The effective timeStep for this tree will be 0.0039,
      as a proportion of tree height (root to furthest tip)...
 Rescaling edge lengths relative to maximum tip-to-root distance...
@@ -74,72 +76,16 @@ The smallest edge length on the input tree is 0.00083
 Given generation time, a total of 25063 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
-Initial simulations took 73.52 seconds
+Initial simulations took 58.9 seconds
 Finding distribution of distances...
 Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 2200 seconds...
-Function completed in 2400 seconds.
-######   Now running An_Emp_Bound  #########
-The effective timeStep for this tree will be 0.0039,
-     as a proportion of tree height (root to furthest tip)...
-Rescaling edge lengths relative to maximum tip-to-root distance...
-The smallest edge length on the input tree is 0.00083
-(This is 43000 in the same TreeYears units
-    as used for the input generation.time ( = 2e+05))
-Given generation time, a total of 25063 generations are expected to occur over this tree
-Number of initial simulations set to 5
-Doing initial simulations...
-Initial simulations took 36.86 seconds
-Finding distribution of distances...
-Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 79 seconds...
-Function completed in 200 seconds.
-######   Now running An_Emp_BrownMotion  #########
-The effective timeStep for this tree will be 0.0039,
-     as a proportion of tree height (root to furthest tip)...
-Rescaling edge lengths relative to maximum tip-to-root distance...
-The smallest edge length on the input tree is 0.00083
-(This is 43000 in the same TreeYears units
-    as used for the input generation.time ( = 2e+05))
-Given generation time, a total of 25063 generations are expected to occur over this tree
-Number of initial simulations set to 5
-Doing initial simulations...
-Initial simulations took 35 seconds
-Finding distribution of distances...
-Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 77 seconds...
-Function completed in 190 seconds.
-######   Now running An_Emp_Disp  #########
-The effective timeStep for this tree will be 0.0039,
-     as a proportion of tree height (root to furthest tip)...
-Rescaling edge lengths relative to maximum tip-to-root distance...
-The smallest edge length on the input tree is 0.00083
-(This is 43000 in the same TreeYears units
-    as used for the input generation.time ( = 2e+05))
-Given generation time, a total of 25063 generations are expected to occur over this tree
-Number of initial simulations set to 5
-Doing initial simulations...
-Initial simulations took 68 seconds
-Finding distribution of distances...
-Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 1200 seconds...
-Error in highestDensityInterval(dataVector = param, alpha = alpha, coda = coda,  : 
-  Values of distribution are more than half tied with each other, may be flat
-Calls: source ... summarizePosterior -> apply -> FUN -> highestDensityInterval
-In addition: Warning messages:
-1: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-2: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-3: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-4: In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
+Collection of simulation particles under PRC completed in 680 seconds...
+Function completed in 880 seconds.
+Error in analysisOutput[[i]] <- runAnalysis(runParameters = simRunTable[i,  : 
+  more elements supplied than there are to replace
+Calls: source -> withVisible -> eval -> eval
+In addition: Warning message:
+In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
   Tree has rescaled branches shorter than generation.time/TreeYears
     No trait evolution will be simulated on these branches and
     thus ML summary statistic functions may fail or produce unexpected results.

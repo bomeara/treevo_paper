@@ -39,5 +39,5 @@ verboseParticles <- FALSE
 continueFromPrevious <- TRUE
 
 source(
-	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
+	"~/treevo_paper/analyses/simulations_framework_script.R"
 	)

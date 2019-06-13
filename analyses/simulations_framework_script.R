@@ -191,6 +191,9 @@ class(idealTrees) <- "multiPhylo"
 # compress tip labels? No, I don't think that works for trees of different sizes
 	#	trees <- .compressTipLabel(trees)
 ######################################################################################
+message("##############################")
+message("######### Beginning Analyses ############")
+#
 # time to get table, process the inputs listed
 # 		
 # get simulation run table
@@ -226,13 +229,29 @@ names(analysisOutput) <- analysesNames
 # 
 if(continueFromPrevious){
 	outFiles <- file.info(list.files(
-		"./saved_output/", full.names = T
+		"./saved_output/", full.names = TRUE
 		))
 	outFiles <- rownames(outFiles)[which.max(outFiles$mtime)]
 	# replace analysisOutput
-	analysisOutput <- load(file=outFiles)
+	analysisOutputOld <- load(file=outFiles)
+	if((length(analysisOutputOld) == length(analysisOutput))
+			& identical(analysesNames,names(analysisOutput))){
+		message("Loading output file from previous run...")
+		analysisOutput <- analysisOutputOld
+	}else{
+		warning(paste0(
+			"Format of previous output file does not match current script expectations\n",
+			"Beginning analyses without loading previous output file..."
+			))
+		}
+	}
+# 
+# test that analysis output is useable
+if(identical(analysesNames,names(analysisOutput))){
+	stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 	}
 #
+##############################################
 # make a new save file name
 saveFileName <- paste0(
 	".//saved_output//",
@@ -287,6 +306,11 @@ for (i in whichIndependentPrevRun){
 			saveData = saveData,
 			verboseParticles = verboseParticles
 			)
+		#
+		# test that analysis output is useable
+		if(identical(analysesNames,names(analysisOutput))){
+			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
+		}
 		#
 		save(analysisOutput, 
 			file = saveFileName
@@ -373,6 +397,11 @@ for (i in whichDependentPrevRun){
 			saveData = saveData,
 			verboseParticles = verboseParticles
 			)
+		#
+		# test that analysis output is useable
+		if(identical(analysesNames,names(analysisOutput))){
+			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
+			}
 		#
 		save(analysisOutput, 
 			file = saveFileName
