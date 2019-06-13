@@ -21,11 +21,11 @@ multicore <- TRUE
 coreLimit <- 6
 
 # control parameters for MCMC / ABC
-nRuns <- 1            		# recc default is 2
-nStepsPRC <- 2        		# recc default is 5
-numParticles <- 5 			# recc default is 300
-nInitialSimsPerParam <- 10 	# recc default is 100
-nInitialSims <- 5			# recc default is NULL (100 per param)
+nRuns <- 1            		  # recc default is 2
+nStepsPRC <- 2        		  # recc default is 5
+numParticles <- 5 			  # recc default is 300
+nInitialSimsPerParam <- 10 	  # recc default is 100
+nInitialSims <- 5			  # recc default is NULL (100 per param)
 
 #### miscellaneous controls
 # save data during runs?
@@ -34,10 +34,9 @@ saveData <- FALSE
 verboseParticles <- FALSE
 
 ###########################
-# FOR TESTING
+# FOR CONTINUING FROM A PREVIOUS TEST
 #
-# change starting sim
-starting_sim <- 1
+continueFromPrevious <- TRUE
 
 source(
 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"

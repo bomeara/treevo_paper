@@ -220,7 +220,19 @@ analysisOutput <- as.list(analysesNames)
 	# names(analysisOutput) <- 1:nAnalyses
 names(analysisOutput) <- analysesNames
 #
-
+#
+############################################
+# 
+# 
+if(continueFromPrevious){
+	outFiles <- file.info(list.files(
+		"./saved_output/", full.names = T
+		))
+	outFiles <- rownames(outFiles)[which.max(outFiles$mtime)]
+	# replace analysisOutput
+	analysisOutput <- load(file=outFiles)
+	}
+#
 # make a new save file name
 saveFileName <- paste0(
 	".//saved_output//",
@@ -233,60 +245,53 @@ saveFileName <- paste0(
 save(analysisOutput, 
 	file = saveFileName
 	)
-
-#
-###########################################
-# FOR TESTING
-#
-# change starting sim to the one indicated by setup script
-if(starting_sim > 1){
-	dropRuns <- 1:(starting_sim - 1)
-	whichIndependentPrevRun <- whichIndependentPrevRun[-dropRuns]
-	}
 #
 ######################################
 #
 # Let's runs the analyses! 
 #
 # run all independent analyses
+message("###########################################")
 message("#########  Independent Analyses  ##############")
 #
 for (i in whichIndependentPrevRun){
-	message("###########################################")
-	message("######   Now running ", analysesNames[i], "  #########")
-	#
-	analysisOutput[[i]] <- runAnalysis(
-		runParameters = simRunTable[i, , drop = FALSE],
-		# inputs needed from script	above
-		nSimTrait = nSimTrait,
-		ratePriorError = ratePriorError,
+	if(length(analysisOutput[[i]])==1){
 		#
-		anolisTreeList = anolisTreeList,
-		anolisSize = anolisSize,
-		aquilegiaTreeList = aquilegiaTreeList,	
-		aquilegiaSpurLength = aquilegiaSpurLength,
-		idealTrees = idealTrees,
+		message("###########################################")
+		message("######   Now running -- ", analysesNames[i], "  #########")
 		#
-		indepAnalyses_intrinsicOut = NULL,
-		indepAnalyses_extrinsicOut = NULL,
+		analysisOutput[[i]] <- runAnalysis(
+			runParameters = simRunTable[i, , drop = FALSE],
+			# inputs needed from script	above
+			nSimTrait = nSimTrait,
+			ratePriorError = ratePriorError,
+			#
+			anolisTreeList = anolisTreeList,
+			anolisSize = anolisSize,
+			aquilegiaTreeList = aquilegiaTreeList,	
+			aquilegiaSpurLength = aquilegiaSpurLength,
+			idealTrees = idealTrees,
+			#
+			indepAnalyses_intrinsicOut = NULL,
+			indepAnalyses_extrinsicOut = NULL,
+			#
+			# presets
+			generation.time = generation.time,
+			multicore = multicore,
+			coreLimit = coreLimit,				
+			nRuns = nRuns, 
+			nStepsPRC = nStepsPRC, 
+			numParticles = numParticles, 
+			nInitialSimsPerParam = nInitialSimsPerParam, 
+			nInitialSims = nInitialSims, 
+			saveData = saveData,
+			verboseParticles = verboseParticles
+			)
 		#
-		# presets
-		generation.time = generation.time,
-		multicore = multicore,
-		coreLimit = coreLimit,				
-		nRuns = nRuns, 
-		nStepsPRC = nStepsPRC, 
-		numParticles = numParticles, 
-		nInitialSimsPerParam = nInitialSimsPerParam, 
-		nInitialSims = nInitialSims, 
-		saveData = saveData,
-		verboseParticles = verboseParticles
-
-		)
-	#
-	save(analysisOutput, 
-		file = saveFileName
-		)
+		save(analysisOutput, 
+			file = saveFileName
+			)
+		}
 	}
 #############################
 # dependent analyses
@@ -330,44 +335,47 @@ names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
 names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
 #
 # run all dependent analyses
+message("###########################################")
 message("#########  Dependent Analyses  ##############")
 #
 for (i in whichDependentPrevRun){
-	message("###########################################")
-	message("######   Now running ", analysesNames[i], "  #########")
-	#
-	analysisOutput[[i]] <- runAnalysis(
-		runParameters = simRunTable[i, , drop = FALSE],
-		# inputs needed from script	above
-		nSimTrait = nSimTrait,
-		ratePriorError = ratePriorError,
+	if(length(analysisOutput[[i]])==1){
 		#
-		anolisTreeList = anolisTreeList,
-		anolisSize = anolisSize,
-		aquilegiaTreeList = aquilegiaTreeList,	
-		aquilegiaSpurLength = aquilegiaSpurLength,
-		idealTrees = idealTrees,
+		message("###########################################")
+		message("######   Now running -- ", analysesNames[i], "  #########")
 		#
-		indepAnalyses_intrinsicOut = 
-			indepAnalyses_intrinsicOut,
-		indepAnalyses_extrinsicOut = 
-			indepAnalyses_extrinsicOut,
+		analysisOutput[[i]] <- runAnalysis(
+			runParameters = simRunTable[i, , drop = FALSE],
+			# inputs needed from script	above
+			nSimTrait = nSimTrait,
+			ratePriorError = ratePriorError,
+			#
+			anolisTreeList = anolisTreeList,
+			anolisSize = anolisSize,
+			aquilegiaTreeList = aquilegiaTreeList,	
+			aquilegiaSpurLength = aquilegiaSpurLength,
+			idealTrees = idealTrees,
+			#
+			indepAnalyses_intrinsicOut = 
+				indepAnalyses_intrinsicOut,
+			indepAnalyses_extrinsicOut = 
+				indepAnalyses_extrinsicOut,
+			#
+			# presets
+			generation.time = generation.time,
+			multicore = multicore,
+			coreLimit = coreLimit,				
+			nRuns = nRuns, 
+			nStepsPRC = nStepsPRC, 
+			numParticles = numParticles, 
+			nInitialSimsPerParam = nInitialSimsPerParam, 
+			nInitialSims = nInitialSims,
+			saveData = saveData,
+			verboseParticles = verboseParticles
+			)
 		#
-		# presets
-		generation.time = generation.time,
-		multicore = multicore,
-		coreLimit = coreLimit,				
-		nRuns = nRuns, 
-		nStepsPRC = nStepsPRC, 
-		numParticles = numParticles, 
-		nInitialSimsPerParam = nInitialSimsPerParam, 
-		nInitialSims = nInitialSims,
-		saveData = saveData,
-		verboseParticles = verboseParticles
-		)
-	#
-	save(analysisOutput, 
-		file = saveFileName
-		)
+		save(analysisOutput, 
+			file = saveFileName
+			)
+		}
 	}
-
