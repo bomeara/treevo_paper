@@ -232,22 +232,31 @@ if(continueFromPrevious){
 		"./saved_output/", full.names = TRUE
 		))
 	outFiles <- rownames(outFiles)[which.max(outFiles$mtime)]
-	# replace analysisOutput
-	analysisOutputOld <- load(file=outFiles)
-	if((length(analysisOutputOld) == length(analysisOutput))
-			& identical(analysesNames,names(analysisOutput))){
-		message("Loading output file from previous run...")
-		analysisOutput <- analysisOutputOld
+	# if there are any files...
+	if(length(outFiles) > 0){
+		# replace analysisOutput
+		analysisOutputOld <- load(file=outFiles)
+		if((length(analysisOutputOld) == length(analysisOutput))
+				& identical(analysesNames,names(analysisOutput))){
+			message("Loading output file from previous run...")
+			analysisOutput <- analysisOutputOld
+		}else{
+			warning(paste0(
+				"Format of previous output file does not match current script expectations\n",
+				"Beginning analyses without loading previous output file..."
+				))
+			}
 	}else{
-		warning(paste0(
-			"Format of previous output file does not match current script expectations\n",
-			"Beginning analyses without loading previous output file..."
+		message(paste0(
+			"No output files from previous runs found\n",
+			"Beginning analyses without loading any previous output file..."
 			))
 		}
 	}
 # 
+#
 # test that analysis output is useable
-if(identical(analysesNames,names(analysisOutput))){
+if(!identical(analysesNames,names(analysisOutput))){
 	stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 	}
 #
@@ -308,7 +317,7 @@ for (i in whichIndependentPrevRun){
 			)
 		#
 		# test that analysis output is useable
-		if(identical(analysesNames,names(analysisOutput))){
+		if(!identical(analysesNames,names(analysisOutput))){
 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 		}
 		#
@@ -399,7 +408,7 @@ for (i in whichDependentPrevRun){
 			)
 		#
 		# test that analysis output is useable
-		if(identical(analysesNames,names(analysisOutput))){
+		if(!identical(analysesNames,names(analysisOutput))){
 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 			}
 		#

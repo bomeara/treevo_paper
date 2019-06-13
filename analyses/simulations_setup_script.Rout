@@ -58,11 +58,15 @@ Type 'q()' to quit R.
 > continueFromPrevious <- TRUE
 > 
 > source(
-+ 	"d://dave//workspace//treevo_paper//analyses//simulations_framework_script.R"
++ 	"~/treevo_paper/analyses/simulations_framework_script.R"
 + 	)
 The following OTUs (24) on the Anolis tree do not appear to
  have size data and thus will be dropped: 
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
+##############################
+######### Beginning Analyses ############
+No output files from previous runs found
+Beginning analyses without loading any previous output file...
 ###########################################
 #########  Independent Analyses  ##############
 ###########################################
@@ -76,17 +80,3 @@ The smallest edge length on the input tree is 0.00083
 Given generation time, a total of 25063 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
-Initial simulations took 58.9 seconds
-Finding distribution of distances...
-Beginning partial rejection control algorithm...
-Collection of simulation particles under PRC completed in 680 seconds...
-Function completed in 880 seconds.
-Error in analysisOutput[[i]] <- runAnalysis(runParameters = simRunTable[i,  : 
-  more elements supplied than there are to replace
-Calls: source -> withVisible -> eval -> eval
-In addition: Warning message:
-In doRun_prc(phy = treeList[[trait_j]], traits = traitDataToUseForThisRun,  :
-  Tree has rescaled branches shorter than generation.time/TreeYears
-    No trait evolution will be simulated on these branches and
-    thus ML summary statistic functions may fail or produce unexpected results.
-Execution halted
