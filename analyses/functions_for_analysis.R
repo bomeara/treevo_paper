@@ -201,9 +201,9 @@ runAnalysis <- function(
 			}else{
 				# call respective analysis, take parameters from it
 				simTraitIntrinsicArgs <- list(
-					intFn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
-					intPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
-					startPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
+					intrinsicFn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
+					intrinsicValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
+					startingValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
 					)			
 				}
 			#
@@ -214,13 +214,13 @@ runAnalysis <- function(
 			}else{
 				if(simTrait.Extrinsic == "Null"){
 					simTraitExtrinsicArgs <- list(
-						extFn = nullExtrinsic,
-						extPar = c(0)
+						extrinsicFn = nullExtrinsic,
+						extrinsicValues = c(0)
 						)
 				}else{
 					simTraitExtrinsicArgs <- list(
-						extFn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
-						extPar = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
+						extrinsicFn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
+						extrinsicValues = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
 						)	
 					}		
 				}	
@@ -229,11 +229,11 @@ runAnalysis <- function(
 				# save to the list of trait sets
 			traitDataList[[tree_i]]  <- doSimulation(
 				phy = treeList[[tree_i]], 
-				intrinsicFn = simTraitIntrinsicArgs$intFn, 
-				extrinsicFn = simTraitExtrinsicArgs$exFn, 
-				startingValues = simTraitIntrinsicArgs$startPar,
-				intrinsicValues = simTraitIntrinsicArgs$intPar, 
-				extrinsicValues = simTraitExtrinsicArgs$exPar, 
+				intrinsicFn = simTraitIntrinsicArgs$intrinsicFn, 
+				extrinsicFn = simTraitExtrinsicArgs$extrinsicFn, 
+				startingValues = simTraitIntrinsicArgs$startingValues,
+				intrinsicValues = simTraitIntrinsicArgs$intrinsicValues, 
+				extrinsicValues = simTraitExtrinsicArgs$extrinsicValues, 
 				generation.time = generation.time
 				)	
 			}
