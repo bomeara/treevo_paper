@@ -65,10 +65,21 @@ The following OTUs (24) on the Anolis tree do not appear to
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
 ##############################
 ######### Beginning Analyses ############
-[1] "it absolutely did not load an old file"
+No output files from previous runs found
+Beginning analyses without loading any previous output file...
 ###########################################
 #########  Independent Analyses  ##############
 ###########################################
-#########  Dependent Analyses  ##############
-###########################################
-######   Now running -- An_SimDispBound_DispBound  #########
+######   Now running -- An_Emp_DispBound  #########
+The effective timeStep for this tree will be 0.0039,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+(This is 43000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 49.49 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...

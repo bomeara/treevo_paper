@@ -237,18 +237,22 @@ if(continueFromPrevious){
 	# if there are any files...
 	if(length(outFiles) > 0){
 		# replace analysisOutput
-		analysisOutputOld <- load(file=outFiles)
-		if((length(analysisOutputOld) == length(analysisOutput))
+		analysisOutputOld <- readRDS(file=outFiles)
+		if(analysisOutputOld == "analysisOutput"){
+			stop("Somehow the old output is just the string 'analysisOutput'...?")
+			}
+		if((length(analysisOutputOld) == length(analysesNames))
 				& identical(analysesNames,names(analysisOutput))){
 			message("Loading output file from previous run...")
 			analysisOutput <- analysisOutputOld
-			print("yes it loaded an old file")
 		}else{
 			warning(paste0(
 				"Format of previous output file does not match current script expectations\n",
 				"Beginning analyses without loading previous output file..."
 				))
-			print("it absolutely did not load an old file")
+			if(any(sapply(analysisOutput,length) > 1)){
+				stop("How did analysisOutput get non-fresh data without restarting from old?")
+				}
 			}
 	}else{
 		message(paste0(
@@ -258,9 +262,9 @@ if(continueFromPrevious){
 		}
 	}
 # 
-#
+################################################################
 # test that analysis output is useable
-if(!identical(analysesNames,names(analysisOutput))){
+if(!identical(analysesNames, names(analysisOutput))){
 	stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 	}
 #
@@ -270,11 +274,11 @@ saveFileName <- paste0(
 	".//saved_output//",
 	"analysisOutput_saved_",
 	format(Sys.time(), "%m-%d-%y"),
-	".Rdata"
+	".rds"
 	)
 #
 # save initial file
-save(analysisOutput, 
+saveRDS(analysisOutput, 
 	file = saveFileName
 	)
 #
@@ -287,7 +291,7 @@ message("###########################################")
 message("#########  Independent Analyses  ##############")
 #
 for (i in whichIndependentPrevRun){
-	if(length(analysisOutput[[i]])==1){
+	if(length(analysisOutput[[i]]) == 1){
 		#
 		message("###########################################")
 		message("######   Now running -- ", analysesNames[i], "  #########")
@@ -325,7 +329,7 @@ for (i in whichIndependentPrevRun){
 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 		}
 		#
-		save(analysisOutput, 
+		saveRDS(analysisOutput, 
 			file = saveFileName
 			)
 		}
@@ -416,7 +420,7 @@ for (i in whichDependentPrevRun){
 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
 			}
 		#
-		save(analysisOutput, 
+		saveRDS(analysisOutput, 
 			file = saveFileName
 			)
 		}
