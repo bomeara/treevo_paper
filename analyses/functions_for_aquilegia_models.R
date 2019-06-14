@@ -61,12 +61,13 @@ multiOptima3IntrinsicMaxBoundary3 <- function(params, states, timefrompresent) {
 	theta<-theta[regime]
 	maxBound<-maxBound[regime]
 	#
-	# now 
-	#subtract current states because we want displacement
-    newdisplacement <- rpgm::rpgm.rnorm(
-		n = length(states),
-		mean = (theta-states)*alpha,
-		sd = sd) 
+	# now 	
+    #subtract current states because we want displacement
+	newdisplacement <- TreEvo:::rnormFastZig(
+		nZig = length(states), 
+		meanZig = (theta-states)*alpha, 
+		sdZig = sigma) 	
+		
 	# shift states if they surpass max bound
 	for (i in 1:length(newdisplacement)) {
         newstate <- newdisplacement[i]+states[i]
@@ -132,12 +133,13 @@ multiOptima3IntrinsicMaxBoundary2 <- function(params, states, timefrompresent) {
 	regime<-sample(1:length(theta), 1, prob = thetaWeights)
 	theta<-theta[regime]
 	#
-	# now 
-	#subtract current states because we want displacement
-    newdisplacement <- rpgm::rpgm.rnorm(
-		n = length(states),
-		mean = (theta-states)*alpha,
-		sd = sd) 
+	# now 	
+    #subtract current states because we want displacement
+	newdisplacement <- TreEvo:::rnormFastZig(
+		nZig = length(states), 
+		meanZig = (theta-states)*alpha, 
+		sdZig = sigma) 
+	#
 	# shift states if they surpass max bound
 	if(regime != 3){
 		maxBound<-maxBound[regime]
@@ -192,11 +194,19 @@ pollinatorShiftIntrinsic <-function(params, states, timefrompresent) {
   #params[4] is per generation probability of a non-background shift/jump
   if (runif(1,0,1) < params[4] ) {
     # *not* background.process
-	newdisplacement<-rnorm(n=length(states),mean=params[3],sd=params[2])
+	newdisplacement<-rnorm(
+		n = length(states),
+		mean = params[3],
+		sd = params[2]
+		)
     return(newdisplacement)
   }else{
 	# background process
-    newdisplacement<-rnorm(n=length(states),mean=0,sd=params[1])
+    newdisplacement<-rnorm(
+		n = length(states),
+		mean = 0,
+		sd = params[1]
+		)
     return(newdisplacement)
 	}
   }

@@ -242,11 +242,13 @@ if(continueFromPrevious){
 				& identical(analysesNames,names(analysisOutput))){
 			message("Loading output file from previous run...")
 			analysisOutput <- analysisOutputOld
+			print("yes it loaded an old file")
 		}else{
 			warning(paste0(
 				"Format of previous output file does not match current script expectations\n",
 				"Beginning analyses without loading previous output file..."
 				))
+			print("it absolutely did not load an old file")
 			}
 	}else{
 		message(paste0(

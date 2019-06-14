@@ -17,7 +17,9 @@ extractExtrinsic_from_prcOut<-function(prcOut){
 	}
 
 runAnalysis <- function(
-		runParameters, nSimTrait, ratePriorError,
+		runParameters, 
+		nSimTrait, 
+		ratePriorError,
 		#
 		anolisTreeList, anolisSize,
 		aquilegiaTreeList, aquilegiaSpurLength,
@@ -199,7 +201,7 @@ runAnalysis <- function(
 			}else{
 				# call respective analysis, take parameters from it
 				simTraitIntrinsicArgs <- list(
-					intfn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
+					intFn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
 					intPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
 					startPar = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
 					)			
@@ -212,12 +214,12 @@ runAnalysis <- function(
 			}else{
 				if(simTrait.Extrinsic == "Null"){
 					simTraitExtrinsicArgs <- list(
-						extfn = nullExtrinsic,
-						extPar = c(0), 
+						extFn = nullExtrinsic,
+						extPar = c(0)
 						)
 				}else{
 					simTraitExtrinsicArgs <- list(
-						extfn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
+						extFn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
 						extPar = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
 						)	
 					}		
