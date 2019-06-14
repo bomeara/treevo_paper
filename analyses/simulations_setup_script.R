@@ -21,11 +21,11 @@ multicore <- TRUE
 coreLimit <- 6
 
 # control parameters for MCMC / ABC
-nRuns <- 1            		  # recc default is 2
-nStepsPRC <- 2        		  # recc default is 5
-numParticles <- 5 			  # recc default is 300
-nInitialSimsPerParam <- 10 	  # recc default is 100
-nInitialSims <- 5			  # recc default is NULL (100 per param)
+nRuns <- 1            		  # use 2 - recc default is 2 (for testing, use 1)
+nStepsPRC <- 2        		  # use 5 - recc default is 5 (for testing, use 2)
+numParticles <- 5 			  # use 300 - recc default is 300 (for testing, use 5)
+nInitialSimsPerParam <- 10 	  # use 100 - recc default is 100 (for testing, use 10)
+nInitialSims <- 5			  # use NULL - recc default is NULL-ie 100 per param (for testing, use 5)
 
 #### miscellaneous controls
 # save data during runs?
