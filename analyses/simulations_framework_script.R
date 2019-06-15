@@ -187,11 +187,16 @@ idealTrees <- list(
 		type = "star", tip.label = NULL
 		)
     )
+#
+# all of these need to have edge lengths
+idealTrees <- lapply(idealTrees, compute.brlen)
+#
 # make multiPhylo	
 class(idealTrees) <- "multiPhylo"
 #
 # compress tip labels? No, I don't think that works for trees of different sizes
 	#	trees <- .compressTipLabel(trees)
+#
 ######################################################################################
 message("##############################")
 message("######### Beginning Analyses ############")
@@ -387,6 +392,7 @@ for (i in whichDependentPrevRun){
 		#
 		analysisOutput[[i]] <- runAnalysis(
 			runParameters = simRunTable[i, , drop = FALSE],
+			#
 			# inputs needed from script	above
 			nSimTrait = nSimTrait,
 			ratePriorError = ratePriorError,
