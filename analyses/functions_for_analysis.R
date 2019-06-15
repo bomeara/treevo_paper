@@ -15,6 +15,13 @@ extractExtrinsic_from_prcOut<-function(prcOut){
 		)
 	return(res)
 	}
+	
+cleanSimTraitData <- function(simulatedTraitData){
+	res <- simulatedTraitData$states
+	names(res) <- rownames(simulatedTraitData)
+	return(res)
+	}				
+					
 
 runAnalysis <- function(
 		runParameters, 
@@ -227,7 +234,7 @@ runAnalysis <- function(
 			#####################
 			# now have to simulate traits
 				# save to the list of trait sets
-			traitDataList[[tree_i]]  <- doSimulation(
+			simulatedTraitData  <- doSimulation(
 				phy = treeList[[tree_i]], 
 				intrinsicFn = simTraitIntrinsicArgs$intrinsicFn, 
 				extrinsicFn = simTraitExtrinsicArgs$extrinsicFn, 
@@ -236,6 +243,8 @@ runAnalysis <- function(
 				extrinsicValues = simTraitExtrinsicArgs$extrinsicValues, 
 				generation.time = generation.time
 				)	
+			#
+			traitDataList[[tree_i]] <- cleanSimTraitData(simulatedTraitData)
 			}
 		}
 	#################################################
@@ -250,7 +259,7 @@ runAnalysis <- function(
 	##########################################################
 	# now run doRun across trees, trait datasets
 	#
-	for (trait_j in length(traitDataList)){
+	for (trait_j in 1:length(traitDataList)){
 		# define job name
 		jobNameRun <- paste0(
 			runParameters$runLabel,
@@ -295,8 +304,8 @@ runAnalysis <- function(
 			#########
 			#
 			jobName = jobNameRun,
-
 			#
+			################################################
 			# define MCMC / ABC control parameter list
 			#
 			# controls that may need to be changed
