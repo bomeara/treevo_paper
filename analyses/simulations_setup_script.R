@@ -12,6 +12,10 @@ nSimTrait <- 10
 	# 100 = mean of rate prior is off by two orders of magnitude!
 ratePriorError <- 100
 
+# root age for idealized simulated trees from time=0
+	# similar to Anolis root depth (51.49056)
+idealTreeDepth <- 50    
+
 # simulation resolution
 	# recc default is 1000
 generation.time <- 200000 

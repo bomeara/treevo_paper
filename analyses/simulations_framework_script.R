@@ -145,7 +145,7 @@ class(aquilegiaTreeList) <- "multiPhylo"
 # generate sets of ideal trees for doing simulations on
    # idealTreeSets = c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star") 
    # nTipSets = c(8, 16, 64)   
-   
+#   
 idealTrees <- list(
     #
     balanced_n8 = stree(
@@ -190,6 +190,18 @@ idealTrees <- list(
 #
 # all of these need to have edge lengths
 idealTrees <- lapply(idealTrees, compute.brlen)
+# multiple edge lengths by 50
+idealTrees <- lapply(idealTrees, 
+	function(x) {
+		x$edge.length <- x$edge.length * idealTreeDepth
+		return(x)
+		}
+	)
+#
+# test that they are ultrametric
+if(!all(sapply(idealTrees,is.ultrametric))){
+	stop("Not all idealized simulated trees came out as ultrametric ?!")
+	}
 #
 # make multiPhylo	
 class(idealTrees) <- "multiPhylo"
@@ -301,8 +313,11 @@ for (i in whichIndependentPrevRun){
 		message("###########################################")
 		message("######   Now running -- ", analysesNames[i], "  #########")
 		#
+		runParameters <- simRunTable[i, , drop = FALSE]
+		#
 		analysisOutput[[i]] <- runAnalysis(
-			runParameters = simRunTable[i, , drop = FALSE],
+			runParameters = runParameters,
+			#
 			# inputs needed from script	above
 			nSimTrait = nSimTrait,
 			ratePriorError = ratePriorError,
@@ -390,8 +405,10 @@ for (i in whichDependentPrevRun){
 		message("###########################################")
 		message("######   Now running -- ", analysesNames[i], "  #########")
 		#
+		runParameters <- simRunTable[i, , drop = FALSE]
+		#
 		analysisOutput[[i]] <- runAnalysis(
-			runParameters = simRunTable[i, , drop = FALSE],
+			runParameters = runParameters,
 			#
 			# inputs needed from script	above
 			nSimTrait = nSimTrait,

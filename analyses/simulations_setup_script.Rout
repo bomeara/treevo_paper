@@ -31,6 +31,10 @@ Type 'q()' to quit R.
 > 	# 100 = mean of rate prior is off by two orders of magnitude!
 > ratePriorError <- 100
 > 
+> # root age for idealized simulated trees from time=0
+> 	# similar to Anolis root depth (51.49056)
+> idealTreeDepth <- 50    
+> 
 > # simulation resolution
 > 	# recc default is 1000
 > generation.time <- 200000 
@@ -65,21 +69,64 @@ The following OTUs (24) on the Anolis tree do not appear to
 podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae, anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer, vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni, singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
 ##############################
 ######### Beginning Analyses ############
-No output files from previous runs found
-Beginning analyses without loading any previous output file...
+Loading output file from previous run...
 ###########################################
 #########  Independent Analyses  ##############
 ###########################################
-######   Now running -- An_Emp_DispBound  #########
-The effective timeStep for this tree will be 0.0039,
+#########  Dependent Analyses  ##############
+###########################################
+######   Now running -- Ideal_SimBM_BM  #########
+The effective timeStep for this tree will be 0.004,
      as a proportion of tree height (root to furthest tip)...
 Rescaling edge lengths relative to maximum tip-to-root distance...
-The smallest edge length on the input tree is 0.00083
-(This is 43000 in the same TreeYears units
+The smallest edge length on the input tree is 0.14
+(This is 7100000 in the same TreeYears units
     as used for the input generation.time ( = 2e+05))
-Given generation time, a total of 25063 generations are expected to occur over this tree
+Given generation time, a total of 848 generations are expected to occur over this tree
 Number of initial simulations set to 5
 Doing initial simulations...
-Initial simulations took 73.84 seconds
+Initial simulations took 8.63 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 11 seconds...
+Function completed in 34 seconds.
+The effective timeStep for this tree will be 0.004,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.067
+(This is 3300000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 1050 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 8.9 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 11 seconds...
+Function completed in 34 seconds.
+The effective timeStep for this tree will be 0.004,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.016
+(This is 790000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 1408 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 8.89 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 21 seconds...
+Function completed in 45 seconds.
+The effective timeStep for this tree will be 0.004,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.14
+(This is 7100000 in the same TreeYears units
+    as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 1242 generations are expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 8.73 seconds
 Finding distribution of distances...
 Beginning partial rejection control algorithm...
