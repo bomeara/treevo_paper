@@ -198,6 +198,9 @@ idealTrees <- lapply(idealTrees,
 		}
 	)
 #
+# make all trees artificially bifurcating
+idealTrees <- lapply(idealTrees, multi2di)
+#
 # test that they are ultrametric
 if(!all(sapply(idealTrees,is.ultrametric))){
 	stop("Not all idealized simulated trees came out as ultrametric ?!")
