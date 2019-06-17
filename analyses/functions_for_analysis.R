@@ -1,17 +1,17 @@
 
 extractIntrinsic_from_prcOut<-function(prcOut){
 	res <- list(
-		intrinsicFn = prcOut$intrinsicFn, 
-		intrinsicValues = prcOut$parMeansList$intrinsic, 
-		startingValues = prcOut$parMeansList$starting
+		intrinsicFn = prcOut[[1]]$intrinsicFn, 
+		intrinsicValues = prcOut[[1]]$parMeansList$intrinsic, 
+		startingValues = prcOut[[1]]$parMeansList$starting
 		)
 	return(res)
 	}
 	
 extractExtrinsic_from_prcOut<-function(prcOut){
 	res <- list(
-		extrinsicFn = prcOut$extrinsicFn, 
-		extrinsicValues = prcOut$parMeansList$extrinsic
+		extrinsicFn = prcOut[[1]]$extrinsicFn, 
+		extrinsicValues = prcOut[[1]]$parMeansList$extrinsic
 		)
 	return(res)
 	}
