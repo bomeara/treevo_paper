@@ -142,24 +142,17 @@ runAnalysis <- function(
 			)
 		}
 	#########################################
-	# nTraitSetsPerSimTree is 1 unless empiricalTraitData is
-		# "SIMULATED" in which case it is nSimTrait
-	nTraitSetsPerSimTree <- 1
-	if(runParameters$empiricalTraitData == "SIMULATED"){
-		nTraitSetsPerSimTree <- nSimTrait
-		}
-	#
-	#########################################
 	#
 	#treeSet
 	#
 	# if the treeSet is "Ideal-Simulated"
 	# then the number of simulated tree types and 
 		# number of tip-totals per simulated tree type is 3, other 1
-	nSimTreeTypes <- nTipNumbersPerSimTreeType <- 1
+	
 	#
 	if(runParameters$treeSet == "empirical_anolis_tree"){
 		treeList <- anolisTreeList
+		
 		}
 	#
 	if(runParameters$treeSet == "empirical_Aquilegia_tree"){
@@ -169,16 +162,52 @@ runAnalysis <- function(
 	if(runParameters$treeSet == "Ideal_Simulated"){
 		treeList <- idealTrees
 		nSimTreeTypes <- nTipNumbersPerSimTreeType <- 3
+		
+		
 		}
 	#
-	################################################	
+	
+
+
+	#################################################
+	#
+	# nDoRun
+	#
+
+
+	# nTraitSetsPerSimTree is 1 unless empiricalTraitData is
+		# "SIMULATED" in which case it is nSimTrait
+	nTraitSetsPerSimTree <- 1
+	if(runParameters$empiricalTraitData == "SIMULATED"){
+		nTraitSetsPerSimTree <- nSimTrait
+		}
+	#
+	# calculate the number of doRun statements for this analysis-run
+	# product of nSimTreeTypes and nTipNumbersPerSimTreeType and nSimTrait
+	nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
+	# 
+	message(paste0(
+		"Performing ", nDoRun, "analyses"
+		))
+	# should be one 1, 10 or 90... probably
+	#	
+
+
+
+
+
+	#################################################################	
 	# need to make trait data for every tree in treeList	
 	#
 	# traitDataList will be a list with each element corresponding to a tree
 	# and sub list corresponding to trait data to be analyzed on that tree
 	#
+	
+	
+	
 	traitDataList <- list()
 	#
+
 	for (tree_i in 1:length(treeList)){
 		#
 		# empiricalTraitData
@@ -247,15 +276,6 @@ runAnalysis <- function(
 			traitDataList[[tree_i]] <- cleanSimTraitData(simulatedTraitData)
 			}
 		}
-	#################################################
-	#
-	# nDoRun
-	#
-	# calculate the number of doRun statements for this analysis-run
-	# product of nSimTreeTypes and nTipNumbersPerSimTreeType and nSimTrait
-	nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
-	# should be one 1, 10 or 90... probably
-	#	
 	##########################################################
 	# now run doRun across trees, trait datasets
 	#
