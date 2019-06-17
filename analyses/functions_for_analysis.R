@@ -143,30 +143,122 @@ runAnalysis <- function(
 		}
 	#########################################
 	#
-	#treeSet
+	# treeSet and nDoRun
+	#
+	# calculate the number of doRun statements for each analysis-run
+		# should be one 1, 10 or 90... probably
+		# 1 if empirical tree, empirical trait data
+		# 10 if empirical tree and 10 simulated trait datasets
+		# 90 if 9 simulated trees and 10 simulated trait datasets for *each* tree
+	#
 	#
 	# if the treeSet is "Ideal-Simulated"
-	# then the number of simulated tree types and 
+		# then the number of simulated tree types and 
 		# number of tip-totals per simulated tree type is 3, other 1
+	# number of analyses also depends on if empiricalTraitData is "SIMULATED"
 	
 	#
 	if(runParameters$treeSet == "empirical_anolis_tree"){
 		treeList <- anolisTreeList
-		
+		#		
+		if(runParameters$empiricalTraitData == "Anolis_Size_Data"){
+			# need a two-level list of trait sets (one tree, one trait dataset)
+			traitDataList  <- list(list(anolisSize = anolisSize))
+			#
+			message(paste0(
+				"Performing  an single analysis with the empirical Anolis phylogeny,\n",
+				"   and empirical Anolis size trait data."
+				))		
+			}
+		if(runParameters$empiricalTraitData == "SIMULATED"){
+			# nDoRun equal to nSimTrait
+			nDoRun <- nSimTrait
+			#
+			message(paste0(
+				"Performing ", nDoRun, 
+				" analyses on the empirical Anolis phylogeny, with ", 
+				nDoRun, 
+				" seperately-simulated trait datasets."
+				))				
+			}			
 		}
 	#
 	if(runParameters$treeSet == "empirical_Aquilegia_tree"){
 		treeList <- aquilegiaTreeList
+		#		
+		if(runParameters$empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
+			# need a two-level list of trait sets (one tree, one trait dataset)
+			traitDataList  <- list(list(aquilegiaSpurLength = aquilegiaSpurLength))
+			#
+			message(paste0(
+				"Performing  an single analysis with the empirical Aquilegia phylogeny,\n",
+				"   and empirical Aquilegia Nectar Spur trait data."
+				))		
+			}
+		if(runParameters$empiricalTraitData == "SIMULATED"){
+			# nDoRun equal to nSimTrait
+			nDoRun <- nSimTrait
+			#
+			message(paste0(
+				"Performing ", nDoRun, 
+				" analyses on the empirical Aquilegia phylogeny, with ", 
+				nDoRun, 
+				" seperately-simulated trait datasets."
+				))				
+			}	
 		}
 	#
 	if(runParameters$treeSet == "Ideal_Simulated"){
 		treeList <- idealTrees
-		nSimTreeTypes <- nTipNumbersPerSimTreeType <- 3
+		#
+		# calculate the number of doRun statements for this analysis-run
+		# product of nSimTreeTypes (3) and nTipNumbersPerSimTreeType (3) and nSimTrait
+		nDoRun <- nSimTrait * 3 * 3		
+		message(paste0(
+			"Performing ", nDoRun, 
+			" analyses for ", 3,
+			" simulated 'idealized' phylogeny classes, with ", 3, 
+			" sets of tip values each,\n",
+			"    and ", nSimTrait, 
+			" simulate trait datasets for each tree."
+			))		
+		#
+		}
+	#
+	#####################################################################
+	# Get Simulated Trait Data
+	#
+	if(runParameters$empiricalTraitData == "SIMULATED"){
+		# go through each tree from tree list
+		# iterate, generate nSimTrait simulated trait datasets
+		# produce a list where each item represents a tree
+			# and each subitem of each list item is a trait dataset
+		#
+		# first make the empty list
+		
 		
 		
 		}
+
+
+	#############################################################
 	#
-	
+	# Run all analyses for each tree, each trait dataset
+	#
+	# first make the empty list for output - two levels!	
+	 <- 
+	#
+	for (i in 1:length(treeList)){
+		
+		}
+
+
+
+
+
+
+
+
 
 
 	#################################################
@@ -182,14 +274,10 @@ runAnalysis <- function(
 		nTraitSetsPerSimTree <- nSimTrait
 		}
 	#
-	# calculate the number of doRun statements for this analysis-run
-	# product of nSimTreeTypes and nTipNumbersPerSimTreeType and nSimTrait
-	nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
+
 	# 
-	message(paste0(
-		"Performing ", nDoRun, "analyses"
-		))
-	# should be one 1, 10 or 90... probably
+
+	
 	#	
 
 
