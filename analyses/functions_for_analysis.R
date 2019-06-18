@@ -236,10 +236,58 @@ runAnalysis <- function(
 		#
 		# first make the empty list
 		
-		
-		
+		#
+		simTrait.Intrinsic <- runParameters$simTrait.Intrinsic
+		simTrait.Extrinsic <- runParameters$simTrait.Extrinsic
+		#
+		# simTrait.Intrinsic
+		# ALSO need estimates of parameters from
+		#    previous analyses needed for later simulations
+		# 	 need to make part of output from doRun if not already
+		#
+		if(is.na(simTrait.Intrinsic)){
+			stop("The intrinsic model for a simulated trait dataset is given as NA")
+		}else{
+			# call respective analysis, take parameters from it
+			simTraitIntrinsicArgs <- list(
+				intrinsicFn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
+				intrinsicValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
+				startingValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
+				)			
+			}
+		#
+		# simTrait.Extrinsic
+		#
+		if(is.na(runParameters$simTrait.Extrinsic)){
+			stop("The extrinsic model for a simulated trait dataset is given as NA")
+		}else{
+			if(simTrait.Extrinsic == "Null"){
+				simTraitExtrinsicArgs <- list(
+					extrinsicFn = nullExtrinsic,
+					extrinsicValues = c(0)
+					)
+			}else{
+				simTraitExtrinsicArgs <- list(
+					extrinsicFn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
+					extrinsicValues = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
+					)	
+				}		
+			}	
+		#####################
+		# now have to simulate traits
+			# save to the list of trait sets
+		simulatedTraitData  <- doSimulation(
+			phy = treeList[[tree_i]], 
+			intrinsicFn = simTraitIntrinsicArgs$intrinsicFn, 
+			extrinsicFn = simTraitExtrinsicArgs$extrinsicFn, 
+			startingValues = simTraitIntrinsicArgs$startingValues,
+			intrinsicValues = simTraitIntrinsicArgs$intrinsicValues, 
+			extrinsicValues = simTraitExtrinsicArgs$extrinsicValues, 
+			generation.time = generation.time
+			)	
+		#
+		traitDataList[[tree_i]] <- cleanSimTraitData(simulatedTraitData)
 		}
-
 
 	#############################################################
 	#
@@ -251,6 +299,48 @@ runAnalysis <- function(
 	for (i in 1:length(treeList)){
 		
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -310,60 +400,7 @@ runAnalysis <- function(
 			traitDataList[[tree_i]]  <- aquilegiaSpurLength
 			}
 		#
-		if(runParameters$empiricalTraitData == "SIMULATED"){
-			#
-			simTrait.Intrinsic <- runParameters$simTrait.Intrinsic
-			simTrait.Extrinsic <- runParameters$simTrait.Extrinsic
-			#
-			# simTrait.Intrinsic
-			# ALSO need estimates of parameters from
-			#    previous analyses needed for later simulations
-			# 	 need to make part of output from doRun if not already
-			#
-			if(is.na(simTrait.Intrinsic)){
-				stop("The intrinsic model for a simulated trait dataset is given as NA")
-			}else{
-				# call respective analysis, take parameters from it
-				simTraitIntrinsicArgs <- list(
-					intrinsicFn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
-					intrinsicValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
-					startingValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
-					)			
-				}
-			#
-			# simTrait.Extrinsic
-			#
-			if(is.na(runParameters$simTrait.Extrinsic)){
-				stop("The extrinsic model for a simulated trait dataset is given as NA")
-			}else{
-				if(simTrait.Extrinsic == "Null"){
-					simTraitExtrinsicArgs <- list(
-						extrinsicFn = nullExtrinsic,
-						extrinsicValues = c(0)
-						)
-				}else{
-					simTraitExtrinsicArgs <- list(
-						extrinsicFn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
-						extrinsicValues = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
-						)	
-					}		
-				}	
-			#####################
-			# now have to simulate traits
-				# save to the list of trait sets
-			simulatedTraitData  <- doSimulation(
-				phy = treeList[[tree_i]], 
-				intrinsicFn = simTraitIntrinsicArgs$intrinsicFn, 
-				extrinsicFn = simTraitExtrinsicArgs$extrinsicFn, 
-				startingValues = simTraitIntrinsicArgs$startingValues,
-				intrinsicValues = simTraitIntrinsicArgs$intrinsicValues, 
-				extrinsicValues = simTraitExtrinsicArgs$extrinsicValues, 
-				generation.time = generation.time
-				)	
-			#
-			traitDataList[[tree_i]] <- cleanSimTraitData(simulatedTraitData)
-			}
-		}
+
 	##########################################################
 	# now run doRun across trees, trait datasets
 	#
