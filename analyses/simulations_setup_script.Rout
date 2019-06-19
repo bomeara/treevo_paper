@@ -153,3 +153,104 @@ Doing initial simulations...
 Initial simulations took 76.3 seconds
 Finding distribution of distances...
 Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 250 seconds...
+Function completed in 480 seconds.
+#######################################
+######   Now running -- An_Emp_TimeReg  #########
+Performing  an single analysis with the empirical Anolis phylogeny,
+   and empirical Anolis size trait data.
+The effective timeStep for this tree will be 0.0039,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.00083
+   (This is 43000 in the same TreeYears units
+      as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 25063 generations are
+     expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 35.51 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 160 seconds...
+Function completed in 270 seconds.
+#######################################
+######   Now running -- Aq_Emp_3Opt2Bound  #########
+Performing  an single analysis with the empirical Aquilegia phylogeny,
+   and empirical Aquilegia Nectar Spur trait data.
+The effective timeStep for this tree will be 0.065,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.0043
+   (This is 13000 in the same TreeYears units
+      as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 228 generations are
+     expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 4.32 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 5.1 seconds...
+Function completed in 15 seconds.
+#######################################
+######   Now running -- Aq_Emp_BrownMotion  #########
+Performing  an single analysis with the empirical Aquilegia phylogeny,
+   and empirical Aquilegia Nectar Spur trait data.
+The effective timeStep for this tree will be 0.065,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.0043
+   (This is 13000 in the same TreeYears units
+      as used for the input generation.time ( = 2e+05))
+Given generation time, a total of 228 generations are
+     expected to occur over this tree
+Number of initial simulations set to 5
+Doing initial simulations...
+Initial simulations took 4.3 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+Collection of simulation particles under PRC completed in 4.9 seconds...
+Function completed in 15 seconds.
+#############################################
+#########  Dependent Analyses  ##############
+#####################################
+######   Now running -- An_SimDispBound_DispBound  ##########
+Performing 10 analyses on the empirical Anolis phylogeny, with 10 seperately-simulated trait datasets.
+Error in taxonDF[[whichStatesCol]][which(taxonDF$startTime == 0)] <- startingValues : 
+  replacement has length zero
+Calls: source ... runAnalysis -> doSimulation -> doSimulationInternal
+In addition: Warning messages:
+1: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+2: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+3: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+4: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+5: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+6: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+7: In doRun_prc(phy = treeToUse, traits = traitDataToUseForThisRun,  :
+  Tree has rescaled branches shorter than generation.time/TreeYears
+    No trait evolution will be simulated on these branches and
+    thus ML summary statistic functions may fail or produce unexpected results.
+8: In doSimulation(phy = treeList[[tree_i]], intrinsicFn = simTraitIntrinsicArgs$intrinsicFn,  :
+  You have only 10 timeSteps on the shortest branch in this dataset
+ but should probably have a lot more if you expect change on this branch.
+ Please consider decreasing timeStep to no more than 0.00085
+Execution halted
