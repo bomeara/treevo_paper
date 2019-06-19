@@ -169,7 +169,7 @@ runAnalysis <- function(
 			traitDataList  <- list(list(anolisSize = anolisSize))
 			#
 			message(paste0(
-				"Performing  an single analysis with the empirical Anolis phylogeny,\n",
+				"Performing a single analysis with the empirical Anolis phylogeny,\n",
 				"   and empirical Anolis size trait data."
 				))		
 			}
@@ -196,7 +196,7 @@ runAnalysis <- function(
 			traitDataList  <- list(list(aquilegiaSpurLength = aquilegiaSpurLength))
 			#
 			message(paste0(
-				"Performing  an single analysis with the empirical Aquilegia phylogeny,\n",
+				"Performing a single analysis with the empirical Aquilegia phylogeny,\n",
 				"   and empirical Aquilegia Nectar Spur trait data."
 				))		
 			}
