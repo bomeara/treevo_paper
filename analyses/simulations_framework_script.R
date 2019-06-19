@@ -307,13 +307,13 @@ saveRDS(analysisOutput,
 # Let's runs the analyses! 
 #
 # run all independent analyses
-message("###########################################")
+message("###############################################")
 message("#########  Independent Analyses  ##############")
 #
 for (i in whichIndependentPrevRun){
 	if(length(analysisOutput[[i]]) == 1){
 		#
-		message("###########################################")
+		message("#######################################")
 		message("######   Now running -- ", analysesNames[i], "  #########")
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
@@ -378,7 +378,7 @@ for (i in whichIndependentPrevRun){
 	# An_Emp_Disp
 #
 # BUT NOTICE THAT SOME OF THESE DO NOT HAVE 
-	# CORRESPONDING INDEP ANALYSES
+	# CORRESPONDING INDEP ANALYSES !
 #
 # actual indep analyses performed:
 	# An_Emp_DispBound
@@ -403,6 +403,10 @@ for (i in whichIndependentPrevRun){
 	# then can call these later for dependent analyses
 	# without have to extract same data many times
 #
+# Note that following functions will only look at first analysis
+	# this doesn't matter - all indep analyses should only have one analysis
+	# one empirical tree, one empirical trait, thus only one analysis to examine
+#
 indepAnalyses_intrinsicOut <- lapply(
 	analysisOutput[whichIndependentPrevRun],
 	extractIntrinsic_from_prcOut
@@ -412,6 +416,7 @@ indepAnalyses_extrinsicOut <- lapply(
 	analysisOutput[whichIndependentPrevRun],
 	extractExtrinsic_from_prcOut
 	)
+#
 # make sure named correctly
 names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
 names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
@@ -449,17 +454,18 @@ boundOneR <- boundInt
 boundOneR$intrinsicValues['intrinsic_2'] <- oneRangeAway
 indepAnalyses_intrinsicOut$An_Emp_Bound_BoundOneRangeAway<- boundOneR
 #
-#
-###################################################
+################################################################
+
 # run all dependent analyses
-message("###########################################")
+#
+message("#############################################")
 message("#########  Dependent Analyses  ##############")
 #
 for (i in whichDependentPrevRun){
 	if(length(analysisOutput[[i]])==1){
 		#
-		message("###########################################")
-		message("######   Now running -- ", analysesNames[i], "  #########")
+		message("#####################################")
+		message("######   Now running -- ", analysesNames[i], "  ##########")
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#

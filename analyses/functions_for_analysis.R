@@ -1,17 +1,17 @@
 
 extractIntrinsic_from_prcOut<-function(prcOut){
 	res <- list(
-		intrinsicFn = prcOut$intrinsicFn, 
-		intrinsicValues = prcOut$parMeansList$intrinsic, 
-		startingValues = prcOut$parMeansList$starting
+		intrinsicFn = prcOut[[1]]$intrinsicFn, 
+		intrinsicValues = prcOut[[1]]$parMeansList$intrinsic, 
+		startingValues = prcOut[[1]]$parMeansList$starting
 		)
 	return(res)
 	}
 	
 extractExtrinsic_from_prcOut<-function(prcOut){
 	res <- list(
-		extrinsicFn = prcOut$extrinsicFn, 
-		extrinsicValues = prcOut$parMeansList$extrinsic
+		extrinsicFn = prcOut[[1]]$extrinsicFn, 
+		extrinsicValues = prcOut[[1]]$parMeansList$extrinsic
 		)
 	return(res)
 	}
@@ -142,203 +142,272 @@ runAnalysis <- function(
 			)
 		}
 	#########################################
-	# nTraitSetsPerSimTree is 1 unless empiricalTraitData is
-		# "SIMULATED" in which case it is nSimTrait
-	nTraitSetsPerSimTree <- 1
-	if(runParameters$empiricalTraitData == "SIMULATED"){
-		nTraitSetsPerSimTree <- nSimTrait
-		}
 	#
-	#########################################
+	# treeSet and nDoRun
 	#
-	#treeSet
+	# calculate the number of doRun statements for each analysis-run
+		# should be one 1, 10 or 90... probably
+		# 1 if empirical tree, empirical trait data
+		# 10 if empirical tree and 10 simulated trait datasets
+		# 90 if 9 simulated trees and 10 simulated trait datasets for *each* tree
+	#
 	#
 	# if the treeSet is "Ideal-Simulated"
-	# then the number of simulated tree types and 
+		# then the number of simulated tree types and 
 		# number of tip-totals per simulated tree type is 3, other 1
-	nSimTreeTypes <- nTipNumbersPerSimTreeType <- 1
+	# number of analyses also depends on if empiricalTraitData is "SIMULATED"
+	
 	#
 	if(runParameters$treeSet == "empirical_anolis_tree"){
 		treeList <- anolisTreeList
+		#		
+		if(runParameters$empiricalTraitData == "Anolis_Size_Data"){
+			# need a two-level list of trait sets (one tree, one trait dataset)
+			traitDataList  <- list(list(anolisSize = anolisSize))
+			#
+			message(paste0(
+				"Performing  an single analysis with the empirical Anolis phylogeny,\n",
+				"   and empirical Anolis size trait data."
+				))		
+			}
+		if(runParameters$empiricalTraitData == "SIMULATED"){
+			# nDoRun equal to nSimTrait
+			nDoRun <- nSimTrait
+			#
+			message(paste0(
+				"Performing ", nDoRun, 
+				" analyses on the empirical Anolis phylogeny, with ", 
+				nDoRun, 
+				" seperately-simulated trait datasets."
+				))				
+			}			
 		}
 	#
 	if(runParameters$treeSet == "empirical_Aquilegia_tree"){
 		treeList <- aquilegiaTreeList
+		#		
+		if(runParameters$empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
+			# need a two-level list of trait sets (one tree, one trait dataset)
+			traitDataList  <- list(list(aquilegiaSpurLength = aquilegiaSpurLength))
+			#
+			message(paste0(
+				"Performing  an single analysis with the empirical Aquilegia phylogeny,\n",
+				"   and empirical Aquilegia Nectar Spur trait data."
+				))		
+			}
+		if(runParameters$empiricalTraitData == "SIMULATED"){
+			# nDoRun equal to nSimTrait
+			nDoRun <- nSimTrait
+			#
+			message(paste0(
+				"Performing ", nDoRun, 
+				" analyses on the empirical Aquilegia phylogeny, with ", 
+				nDoRun, 
+				" seperately-simulated trait datasets."
+				))				
+			}	
 		}
 	#
 	if(runParameters$treeSet == "Ideal_Simulated"){
 		treeList <- idealTrees
-		nSimTreeTypes <- nTipNumbersPerSimTreeType <- 3
+		#
+		# calculate the number of doRun statements for this analysis-run
+		# product of nSimTreeTypes (3) and nTipNumbersPerSimTreeType (3) and nSimTrait
+		nDoRun <- nSimTrait * 3 * 3		
+		message(paste0(
+			"Performing ", nDoRun, 
+			" analyses for ", 3,
+			" simulated 'idealized' phylogeny classes, with ", 3, 
+			" sets of tip values each,\n",
+			"    and ", nSimTrait, 
+			" simulate trait datasets for each tree."
+			))		
+		#
 		}
 	#
-	################################################	
-	# need to make trait data for every tree in treeList	
+	#####################################################################
+	# Get Simulated Trait Data
 	#
 	# traitDataList will be a list with each element corresponding to a tree
-	# and sub list corresponding to trait data to be analyzed on that tree
+		# and sub list corresponding to trait data to be analyzed on that tree
 	#
-	traitDataList <- list()
-	#
-	for (tree_i in 1:length(treeList)){
+	if(runParameters$empiricalTraitData == "SIMULATED"){
+		# go through each tree from tree list
+		# iterate, generate nSimTrait simulated trait datasets
+		# produce a list where each item represents a tree
+			# and each subitem of each list item is a trait dataset
 		#
-		# empiricalTraitData
+		# first make the empty list
 		#
-		if(runParameters$empiricalTraitData == "Anolis_Size_Data"){
-			# need a list of trait sets (of length 1)
-			traitDataList[[tree_i]]  <- anolisSize
+		traitDataList <- list()		
+		#
+		simTrait.Intrinsic <- runParameters$simTrait.Intrinsic
+		simTrait.Extrinsic <- runParameters$simTrait.Extrinsic
+		#
+		# simTrait.Intrinsic
+		# ALSO need estimates of parameters from
+		#    previous analyses needed for later simulations
+		# 	 need to make part of output from doRun if not already
+		#
+		if(is.na(simTrait.Intrinsic)){
+			stop("The intrinsic model for a simulated trait dataset is given as NA")
+		}else{
+			# call respective analysis, take parameters from it
+			simTraitIntrinsicArgs <- list(
+				intrinsicFn = indepAnalyses_intrinsicOut
+					[[simTrait.Intrinsic]]$intrinsicFn,
+				intrinsicValues = indepAnalyses_intrinsicOut
+					[[simTrait.Intrinsic]]$intrinsicValues,
+				startingValues = indepAnalyses_intrinsicOut
+					[[simTrait.Intrinsic]]$startingValues
+				)			
 			}
 		#
-		if(runParameters$empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
-			# need a list of trait sets (of length 1)
-			traitDataList[[tree_i]]  <- aquilegiaSpurLength
-			}
+		# simTrait.Extrinsic
 		#
-		if(runParameters$empiricalTraitData == "SIMULATED"){
-			#
-			simTrait.Intrinsic <- runParameters$simTrait.Intrinsic
-			simTrait.Extrinsic <- runParameters$simTrait.Extrinsic
-			#
-			# simTrait.Intrinsic
-			# ALSO need estimates of parameters from
-			#    previous analyses needed for later simulations
-			# 	 need to make part of output from doRun if not already
-			#
-			if(is.na(simTrait.Intrinsic)){
-				stop("The intrinsic model for a simulated trait dataset is given as NA")
+		if(is.na(runParameters$simTrait.Extrinsic)){
+			stop("The extrinsic model for a simulated trait dataset is given as NA")
+		}else{
+			if(simTrait.Extrinsic == "Null"){
+				simTraitExtrinsicArgs <- list(
+					extrinsicFn = nullExtrinsic,
+					extrinsicValues = c(0)
+					)
 			}else{
-				# call respective analysis, take parameters from it
-				simTraitIntrinsicArgs <- list(
-					intrinsicFn = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicFn,
-					intrinsicValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$intrinsicValues,
-					startingValues = indepAnalyses_intrinsicOut[[simTrait.Intrinsic]]$startingValues
-					)			
+				simTraitExtrinsicArgs <- list(
+					extrinsicFn = indepAnalyses_extrinsicOut
+						[[simTrait.Extrinsic]]$extrinsicFn,
+					extrinsicValues = indepAnalyses_extrinsicOut
+						[[simTrait.Extrinsic]]$extrinsicValues
+					)	
+				}		
+			}	
+		#####################
+		# now have to simulate traits
+			# save to the list of trait sets
+		#
+		for(tree_i in 1:length(treeList)){
+			#
+			traitDataThisTree <- list()
+			#
+			for(trait_i in 1:nSimTrait){
+				#
+				simulatedTraitData  <- doSimulation(
+					phy = treeList[[tree_i]], 
+					intrinsicFn = simTraitIntrinsicArgs$intrinsicFn, 
+					extrinsicFn = simTraitExtrinsicArgs$extrinsicFn, 
+					startingValues = simTraitIntrinsicArgs$startingValues,
+					intrinsicValues = simTraitIntrinsicArgs$intrinsicValues, 
+					extrinsicValues = simTraitExtrinsicArgs$extrinsicValues, 
+					generation.time = generation.time
+					)	
+				#
+				traitDataThisTree[[trait_i]] <- cleanSimTraitData(simulatedTraitData)
 				}
 			#
-			# simTrait.Extrinsic
-			#
-			if(is.na(runParameters$simTrait.Extrinsic)){
-				stop("The extrinsic model for a simulated trait dataset is given as NA")
-			}else{
-				if(simTrait.Extrinsic == "Null"){
-					simTraitExtrinsicArgs <- list(
-						extrinsicFn = nullExtrinsic,
-						extrinsicValues = c(0)
-						)
-				}else{
-					simTraitExtrinsicArgs <- list(
-						extrinsicFn = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicFn,
-						extrinsicValues = indepAnalyses_extrinsicOut[[simTrait.Extrinsic]]$extrinsicValues
-						)	
-					}		
-				}	
-			#####################
-			# now have to simulate traits
-				# save to the list of trait sets
-			simulatedTraitData  <- doSimulation(
-				phy = treeList[[tree_i]], 
-				intrinsicFn = simTraitIntrinsicArgs$intrinsicFn, 
-				extrinsicFn = simTraitExtrinsicArgs$extrinsicFn, 
-				startingValues = simTraitIntrinsicArgs$startingValues,
-				intrinsicValues = simTraitIntrinsicArgs$intrinsicValues, 
-				extrinsicValues = simTraitExtrinsicArgs$extrinsicValues, 
-				generation.time = generation.time
-				)	
-			#
-			traitDataList[[tree_i]] <- cleanSimTraitData(simulatedTraitData)
+			traitDataList[[tree_i]]  <- traitDataThisTree
 			}
 		}
-	#################################################
-	#
-	# nDoRun
-	#
-	# calculate the number of doRun statements for this analysis-run
-	# product of nSimTreeTypes and nTipNumbersPerSimTreeType and nSimTrait
-	nDoRun <- nSimTreeTypes * nTipNumbersPerSimTreeType * nTraitSetsPerSimTree
-	# should be one 1, 10 or 90... probably
-	#	
+	#############################################################
 	##########################################################
-	# now run doRun across trees, trait datasets
+	# now run doRun across each trees and its trait datasets
 	#
-	for (trait_j in 1:length(traitDataList)){
-		# define job name
-		jobNameRun <- paste0(
-			runParameters$runLabel,
-			"_", format(Sys.time(), "%m-%d-%y"),
-			"_", trait_j
-			)
+	# first make the empty list for output - two levels!	
+	doRun_out <- list()
+	#
+	for (i in 1:length(treeList)){
+		# first iterate over trees
 		#
-		traitDataToUseForThisRun <- traitDataList[[trait_j]]
-		#if(is.list(traitDataToUseForThisRun)){
-		#	traitDataToUseForThisRun <- unlist(traitDataToUseForThisRun)
-		#	}
-		#print(traitDataToUseForThisRun)
-		#x<-getBM(treeList[[trait_j]], 
-		#	trait = traitDataToUseForThisRun)
+		treeToUse <- treeList[[i]]
+		#	
+		# empty list
+		doRun_out_ThisTree <- list()
 		#
-		doRun_out <- doRun_prc(
-			##############
-			phy = treeList[[trait_j]],
-			traits = traitDataToUseForThisRun,
+		for (j in 1:length(traitDataList[[i]])){
 			#
-			intrinsicFn = intrinsicFunctionToFit,
-			extrinsicFn = extrinsicFunctionToFit,
+			# define job name
+			jobNameRun <- paste0(
+				runParameters$runLabel,
+				"_tree_",i,
+				"_trait_",j,
+				"_", format(Sys.time(), "%m-%d-%y")
+				)
 			#
-			startingPriorsFns = "normal", 
-			startingPriorsValues = 
-				list(c(
-					mean(traitDataToUseForThisRun),
-					sd(traitDataToUseForThisRun)
-					)), 
-			###########################
+			traitDataToUseForThisRun <- traitDataList[[i]][[j]]
 			#
-			intrinsicPriorsFns =
-				intrinsicArgList$intrinsicPriorsFns, 
-			intrinsicPriorsValues =
-				intrinsicArgList$intrinsicPriorsValues, 
-			#########
+			#print(traitDataToUseForThisRun)
 			#
-			extrinsicPriorsFns = 
-				extrinsicArgList$extrinsicPriorsFns, 
-			extrinsicPriorsValues = 
-				extrinsicArgList$extrinsicPriorsValues, 
-			#########
-			#
-			jobName = jobNameRun,
-			#
-			################################################
-			# define MCMC / ABC control parameter list
-			#
-			# controls that may need to be changed
-			generation.time = generation.time,
-			multicore = multicore,
-			coreLimit = coreLimit,				
-			#
-			numParticles = numParticles, 
-			nStepsPRC = nStepsPRC, 
-			nRuns = nRuns, 
-			nInitialSims = nInitialSims,
-			nInitialSimsPerParam = nInitialSimsPerParam, 
-			#
-			saveData = saveData, 
-			verboseParticles = verboseParticles,
-			#
-			#
-			# standard controls, don't need to be changed
-			standardDevFactor = 0.20, 
-			epsilonProportion = 0.7, 
-			epsilonMultiplier = 0.7, 
-			#
-			validation = "CV", 
-			scale = TRUE, 
-			variance.cutoff = 95, 
-			#niter.goal = 5, 
-			#
-			stopRule = FALSE, 
-			stopValue = 0.05, 
-			maxAttempts = Inf
-			#
-			)
+			doRun_out_ThisTree[[j]] <- doRun_prc(
+				##############
+				phy = treeToUse,
+				traits = traitDataToUseForThisRun,
+				#
+				intrinsicFn = intrinsicFunctionToFit,
+				extrinsicFn = extrinsicFunctionToFit,
+				#
+				startingPriorsFns = "normal", 
+				startingPriorsValues = 
+					list(c(
+						mean(traitDataToUseForThisRun),
+						sd(traitDataToUseForThisRun)
+						)), 
+				###########################
+				#
+				intrinsicPriorsFns =
+					intrinsicArgList$intrinsicPriorsFns, 
+				intrinsicPriorsValues =
+					intrinsicArgList$intrinsicPriorsValues, 
+				#########
+				#
+				extrinsicPriorsFns = 
+					extrinsicArgList$extrinsicPriorsFns, 
+				extrinsicPriorsValues = 
+					extrinsicArgList$extrinsicPriorsValues, 
+				#########
+				#
+				jobName = jobNameRun,
+				#
+				################################################
+				# define MCMC / ABC control parameter list
+				#
+				# controls that may need to be changed
+				generation.time = generation.time,
+				multicore = multicore,
+				coreLimit = coreLimit,				
+				#
+				numParticles = numParticles, 
+				nStepsPRC = nStepsPRC, 
+				nRuns = nRuns, 
+				nInitialSims = nInitialSims,
+				nInitialSimsPerParam = nInitialSimsPerParam, 
+				#
+				saveData = saveData, 
+				verboseParticles = verboseParticles,
+				#
+				#
+				# standard controls, don't need to be changed
+				standardDevFactor = 0.20, 
+				epsilonProportion = 0.7, 
+				epsilonMultiplier = 0.7, 
+				#
+				validation = "CV", 
+				scale = TRUE, 
+				variance.cutoff = 95, 
+				#niter.goal = 5, 
+				#
+				stopRule = FALSE, 
+				stopValue = 0.05, 
+				maxAttempts = Inf
+				#
+				)
+			}
+		doRun_out[[i]] <- doRun_out_ThisTree	
 		}
+	#
+	###########################################################
+	#
+	# record nDoRun as an attribute
+	attr(doRun_out, "nDoRun") <- nDoRun
 	#
 	return(doRun_out)
 	}
