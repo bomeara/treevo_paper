@@ -312,7 +312,7 @@ message("###############################################")
 message("#########  Independent Analyses  ##############")
 #
 for (i in whichIndependentPrevRun){
-	if(length(analysisOutput[[i]]) == 1){
+	if(analysisOutput[[i]] == analysesNames[i]){
 		#
 		message("#######################################")
 		message("######   Now running -- ", analysesNames[i], "  #########")
@@ -463,7 +463,7 @@ message("#############################################")
 message("#########  Dependent Analyses  ##############")
 #
 for (i in whichDependentPrevRun){
-	if(length(analysisOutput[[i]])==1){
+	if(analysisOutput[[i]] == analysesNames[i]){
 		#
 		message("#####################################")
 		message("######   Now running -- ", analysesNames[i], "  ##########")
