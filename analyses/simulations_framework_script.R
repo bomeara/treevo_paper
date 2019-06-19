@@ -376,6 +376,24 @@ for (i in whichIndependentPrevRun){
 # EXTRINSIC
 	# An_Emp_DispBound
 	# An_Emp_Disp
+#
+# BUT NOTICE THAT SOME OF THESE DO NOT HAVE 
+	# CORRESPONDING INDEP ANALYSES
+#
+# actual indep analyses performed:
+	# An_Emp_DispBound
+	# An_Emp_Bound
+	# An_Emp_BrownMotion
+	# An_Emp_Disp
+	# An_Emp_TimeReg
+	# Aq_Emp_3Opt2Bound
+	# Aq_Emp_BrownMotion
+#
+# ones not covered by indep analyses
+	# An_Emp_Bound_BoundByStartingState
+	# An_Emp_Bound_BoundByMinValue
+	# An_Emp_Bound_BoundOneRangeAway
+#
 #############################
 # get the stuff necessary for doing the dependent analyses
 #
@@ -398,6 +416,41 @@ indepAnalyses_extrinsicOut <- lapply(
 names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
 names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
 #
+# add intrinsic models not included
+	# An_Emp_Bound_BoundByStartingState
+	# An_Emp_Bound_BoundByMinValue
+	# An_Emp_Bound_BoundOneRangeAway
+#
+# all of these are based on An_Emp_Bound
+boundInt <- indepAnalyses_intrinsicOut$An_Emp_Bound
+#
+# An_Emp_Bound_BoundByStartingState
+	# bound is right by the starting state, leading to
+	# diffusion away from left-hand wall dynamics
+boundIntStarting <- boundInt	
+# set bound equal to starting state
+boundIntStarting$intrinsicValues['intrinsic_2'] <- boundIntStarting$startingValues[1]
+indepAnalyses_intrinsicOut$An_Emp_Bound_BoundByStartingState <- boundIntStarting
+#
+# An_Emp_Bound_BoundByMinValue
+	# bound is at the minimum value observed for anolisSize
+boundIntMin <- boundInt	
+# set bound equal to minimum size observed
+boundIntMin$intrinsicValues['intrinsic_2'] <- min(anolisSize)
+indepAnalyses_intrinsicOut$An_Emp_Bound_BoundByMinValue <- boundIntMin
+#
+# An_Emp_Bound_BoundOneRangeAway
+	# what if the bound was very distant -
+		# i.e. one range (max-min) away from the min
+oneRange <- max(anolisSize) - min(anolisSize)
+oneRangeAway <- min(anolisSize) - oneRange
+boundOneR <- boundInt	
+# set bound equal to minimum size observed
+boundOneR$intrinsicValues['intrinsic_2'] <- oneRangeAway
+indepAnalyses_intrinsicOut$An_Emp_Bound_BoundOneRangeAway<- boundOneR
+#
+#
+###################################################
 # run all dependent analyses
 message("###########################################")
 message("#########  Dependent Analyses  ##############")
