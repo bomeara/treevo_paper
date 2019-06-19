@@ -1,17 +1,17 @@
 
 extractIntrinsic_from_prcOut<-function(prcOut){
 	res <- list(
-		intrinsicFn = prcOut[[1]]$intrinsicFn, 
-		intrinsicValues = prcOut[[1]]$parMeansList$intrinsic, 
-		startingValues = prcOut[[1]]$parMeansList$starting
+		intrinsicFn = prcOut[[1]][[1]]$intrinsicFn, 
+		intrinsicValues = prcOut[[1]][[1]]$parMeansList$intrinsic, 
+		startingValues = prcOut[[1]][[1]]$parMeansList$starting
 		)
 	return(res)
 	}
 	
 extractExtrinsic_from_prcOut<-function(prcOut){
 	res <- list(
-		extrinsicFn = prcOut[[1]]$extrinsicFn, 
-		extrinsicValues = prcOut[[1]]$parMeansList$extrinsic
+		extrinsicFn = prcOut[[1]][[1]]$extrinsicFn, 
+		extrinsicValues = prcOut[[1]][[1]]$parMeansList$extrinsic
 		)
 	return(res)
 	}
@@ -179,7 +179,7 @@ runAnalysis <- function(
 			#
 			message(paste0(
 				"Performing ", nDoRun, 
-				" analyses on the empirical Anolis phylogeny, with ", 
+				" analyses on the empirical Anolis phylogeny,\n   with ", 
 				nDoRun, 
 				" seperately-simulated trait datasets."
 				))				
@@ -206,7 +206,7 @@ runAnalysis <- function(
 			#
 			message(paste0(
 				"Performing ", nDoRun, 
-				" analyses on the empirical Aquilegia phylogeny, with ", 
+				" analyses on the empirical Aquilegia phylogeny,\n   with ", 
 				nDoRun, 
 				" seperately-simulated trait datasets."
 				))				
@@ -292,6 +292,23 @@ runAnalysis <- function(
 		#####################
 		# now have to simulate traits
 			# save to the list of trait sets
+		#
+		# reporting messages 
+		#
+		if(length(treeList)>1){
+			message(paste0(
+				"Simulating ", nSimTrait,
+				" trait datasets on ", 
+				length(treeList), " phylogenies..."
+				))
+		}else{
+			message(paste0(
+				"Simulating ", nSimTrait,
+				" trait datasets on the empirical phylogeny..."
+				))
+			}		
+		message("   (...This may take a while...)   ")
+		#
 		#
 		for(tree_i in 1:length(treeList)){
 			#
