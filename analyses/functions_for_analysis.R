@@ -163,6 +163,8 @@ runAnalysis <- function(
 		treeList <- anolisTreeList
 		#		
 		if(runParameters$empiricalTraitData == "Anolis_Size_Data"){
+			# nDoRun equal to length(anolisTreeList) (should be 1)
+			nDoRun <- length(anolisTreeList) 	
 			# need a two-level list of trait sets (one tree, one trait dataset)
 			traitDataList  <- list(list(anolisSize = anolisSize))
 			#
@@ -172,8 +174,8 @@ runAnalysis <- function(
 				))		
 			}
 		if(runParameters$empiricalTraitData == "SIMULATED"){
-			# nDoRun equal to nSimTrait
-			nDoRun <- nSimTrait
+			# nDoRun equal to nSimTrait * # of trees
+			nDoRun <- nSimTrait * length(anolisTreeList) 
 			#
 			message(paste0(
 				"Performing ", nDoRun, 
@@ -188,6 +190,8 @@ runAnalysis <- function(
 		treeList <- aquilegiaTreeList
 		#		
 		if(runParameters$empiricalTraitData == "Aquilegia_Nectar_Spur_Data"){
+			# nDoRun equal to length(aquilegiaTreeList) (should be 1)
+			nDoRun <- length(aquilegiaTreeList) 
 			# need a two-level list of trait sets (one tree, one trait dataset)
 			traitDataList  <- list(list(aquilegiaSpurLength = aquilegiaSpurLength))
 			#
@@ -197,8 +201,8 @@ runAnalysis <- function(
 				))		
 			}
 		if(runParameters$empiricalTraitData == "SIMULATED"){
-			# nDoRun equal to nSimTrait
-			nDoRun <- nSimTrait
+			# nDoRun equal to nSimTrait * # of trees
+			nDoRun <- nSimTrait * length(aquilegiaTreeList)
 			#
 			message(paste0(
 				"Performing ", nDoRun, 
@@ -213,8 +217,10 @@ runAnalysis <- function(
 		treeList <- idealTrees
 		#
 		# calculate the number of doRun statements for this analysis-run
-		# product of nSimTreeTypes (3) and nTipNumbersPerSimTreeType (3) and nSimTrait
-		nDoRun <- nSimTrait * 3 * 3		
+		# nSimTrait multiplied by the number of trees
+			# should be 9
+			# product of nSimTreeTypes (3) and nTipNumbersPerSimTreeType (3) 
+		nDoRun <- nSimTrait * length(idealTrees)	
 		message(paste0(
 			"Performing ", nDoRun, 
 			" analyses for ", 3,
