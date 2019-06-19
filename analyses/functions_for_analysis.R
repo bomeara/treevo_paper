@@ -113,13 +113,14 @@ runAnalysis <- function(
 	#
 	if(runParameters$doRun.Intrinsic == "Time_AutoRegressive_Model"){
 		intrinsicFunctionToFit <- autoregressiveIntrinsic
+		# this model has three parameters:
+			# sigma (sigma), attractor (character mean), attraction (alpha)
 		#
 		intrinsicArgList <- list(
-			intrinsicPriorsFns=c("exponential", "normal"),
-			intrinsicPriorsValues=list(10, c(-10, 1))
+			intrinsicPriorsFns=c("exponential", "normal", "exponential"),
+			intrinsicPriorsValues=list(10, c(-10, 1), 10)
 			)
 		}
-	#
 	# doRun.Extrinsic
 	#
 	if(runParameters$doRun.Extrinsic =="Null"){
