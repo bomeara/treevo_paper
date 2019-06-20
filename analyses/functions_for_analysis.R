@@ -336,11 +336,19 @@ runAnalysis <- function(
 	##########################################################
 	# now run doRun across each trees and its trait datasets
 	#
+	message("###############################")
+	message("Now doing doRun analyses...")	
 	# first make the empty list for output - two levels!	
 	doRun_out <- list()
 	#
 	for (i in 1:length(treeList)){
 		# first iterate over trees
+		#
+		message("####################")
+		message(paste0(
+			"Analyzing tree ",
+			i,"..."
+			))
 		#
 		treeToUse <- treeList[[i]]
 		#	
@@ -356,6 +364,14 @@ runAnalysis <- function(
 				"_trait_",j,
 				"_", format(Sys.time(), "%m-%d-%y")
 				)
+			#
+
+			#
+			message("####################")
+			message(paste0(
+				"Analyzing ",
+				jobNameRun,"..."
+				))
 			#
 			traitDataToUseForThisRun <- traitDataList[[i]][[j]]
 			#
