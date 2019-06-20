@@ -45,8 +45,10 @@ if(any(anyMatchesNA)){
 		"The following OTUs (",
 		length(droppers),
 		") on the Anolis tree do not appear to\n",
-		" have size data and thus will be dropped: \n",
-		strwrap(paste0(droppers, collapse=", "))
+		" have size data and thus will be dropped: \n ",
+		paste0(strwrap(
+			paste0(droppers, collapse=", ")
+			),collapse="\n ")
 		))
 	anolisTree <- drop.tip(anolisTree, droppers)
 	anolisSize <- anolisSize[anolisTree$tip.label]
@@ -111,8 +113,10 @@ if(any(anyMatchesNA)){
 		"The following OTUs(",
 		length(droppers),
 		") on the Aquilegia tree do not appear to\n",
-		" have spur length data and thus will be dropped: \n",
-		strwrap(paste0(droppers, collapse=", "))
+		" have spur length data and thus will be dropped: \n ",
+		paste0(strwrap(
+			paste0(droppers, collapse=", ")
+			),collapse="\n ")
 		))
 	aquilegiaTree <- drop.tip(aquilegiaTree, droppers)
 	# and drop from trait data
