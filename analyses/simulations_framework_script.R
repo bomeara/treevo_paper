@@ -378,7 +378,7 @@ for (i in whichIndependentPrevRun){
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#	
-		if(identical(analysisSetup, list()){
+		if(identical(analysisSetup, list())){
 			analysisSetup <- setupRunAnalysis(
 				runParameters = runParameters,
 				#
@@ -561,7 +561,7 @@ for (i in whichDependentPrevRun){
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#
-		if(identical(analysisSetup, list()){
+		if(identical(analysisSetup, list())){
 			analysisSetup <- setupRunAnalysis(
 				runParameters = runParameters,
 				#
