@@ -264,11 +264,17 @@ analysisOutput <- as.list(analysesNames)
 	# names(analysisOutput) <- 1:nAnalyses
 names(analysisOutput) <- analysesNames
 #
+# start an empty analysisSetup
+analysisSetup <- list()
+loadAnalysisSetup <- FALSE
+#
 #
 ############################################
 # 
 # 
 if(continueFromPrevious){
+	#
+	# output
 	outFiles <- file.info(list.files(
 		"./saved_output/", full.names = TRUE
 		))
@@ -284,6 +290,9 @@ if(continueFromPrevious){
 				& identical(analysesNames,names(analysisOutput))){
 			message("Loading output file from previous run...")
 			analysisOutput <- analysisOutputOld
+			# 
+			# also load old analysisSetup
+			loadAnalysisSetup
 		}else{
 			warning(paste0(
 				"Format of previous output file does not match current script expectations\n",
@@ -300,6 +309,25 @@ if(continueFromPrevious){
 			))
 		}
 	}
+#
+#
+# also load old analysisSetup if loading old output
+if(loadAnalysisSetup){
+	# output
+	outFiles <- file.info(list.files(
+		"./saved_setup/", full.names = TRUE
+		))
+	outFiles <- rownames(outFiles)[which.max(outFiles$mtime)]
+	# if there are any files...
+	if(length(outFiles) > 0){
+		# replace analysisOutput
+		analysisSetup <- readRDS(file=outFiles)
+		#
+		message("Loading analysis setup from previous run...")
+	}else{
+		message("No previous analysis setup found.")
+		}
+	}
 # 
 ################################################################
 # test that analysis output is useable
@@ -308,7 +336,7 @@ if(!identical(analysesNames, names(analysisOutput))){
 	}
 #
 ##############################################
-# make a new save file name
+# make a new save file name for output
 saveFileName <- paste0(
 	".//saved_output//",
 	"analysisOutput_saved_",
@@ -319,6 +347,19 @@ saveFileName <- paste0(
 # save initial file
 saveRDS(analysisOutput, 
 	file = saveFileName
+	)
+#
+# do the same for the setup file
+saveSetupName <- paste0(
+	".//saved_setup//",
+	"analysisSetup_saved_",
+	format(Sys.time(), "%m-%d-%y"),
+	".rds"
+	)
+#
+# save initial file
+saveRDS(analysisSetup, 
+	file = saveSetupName
 	)
 #
 ######################################
@@ -336,22 +377,48 @@ for (i in whichIndependentPrevRun){
 		message("######   Now running -- ", analysesNames[i], "  #########")
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
+		#	
+		if(identical(analysisSetup, list()){
+			analysisSetup <- setupRunAnalysis(
+				runParameters = runParameters,
+				#
+				# inputs needed from script	above
+				nSimTrait = nSimTrait,
+				ratePriorError = ratePriorError,
+				#
+				anolisTreeList = anolisTreeList,
+				anolisSize = anolisSize,
+				aquilegiaTreeList = aquilegiaTreeList,	
+				aquilegiaSpurLength = aquilegiaSpurLength,
+				idealTrees = idealTrees,
+				#
+				indepAnalyses_intrinsicOut = NULL,
+				indepAnalyses_extrinsicOut = NULL
+				)	
+			#
+			# save analysisSetup
+			saveRDS(analysisSetup, 
+				file = saveSetupName
+				)
+		}else{
+			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
+				stop(paste0(
+					"Loaded analysisSetup does not match expected run label.\n",
+					"Maybe delete old files?"
+					))
+				}
+			}
+		#################
+		# now doRun! 
 		#
-		analysisOutput[[i]] <- runAnalysis(
-			runParameters = runParameters,
-			#
-			# inputs needed from script	above
-			nSimTrait = nSimTrait,
-			ratePriorError = ratePriorError,
-			#
-			anolisTreeList = anolisTreeList,
-			anolisSize = anolisSize,
-			aquilegiaTreeList = aquilegiaTreeList,	
-			aquilegiaSpurLength = aquilegiaSpurLength,
-			idealTrees = idealTrees,
-			#
-			indepAnalyses_intrinsicOut = NULL,
-			indepAnalyses_extrinsicOut = NULL,
+		analysisOutput[[i]] <-	doRunAnalysis(
+			treeList = analysisSetup$treeList,
+			traitDataList = analysisSetup$traitDataList,
+			runLabel = analysisSetup$runLabel,
+			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
+			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
+			intrinsicArgList = analysisSetup$intrinsicArgList,
+			extrinsicArgList = analysisSetup$extrinsicArgList,
 			#
 			# presets
 			generation.time = generation.time,
@@ -361,7 +428,7 @@ for (i in whichIndependentPrevRun){
 			nStepsPRC = nStepsPRC, 
 			numParticles = numParticles, 
 			nInitialSimsPerParam = nInitialSimsPerParam, 
-			nInitialSims = nInitialSims, 
+			nInitialSims = nInitialSims,
 			saveData = saveData,
 			verboseParticles = verboseParticles
 			)
@@ -369,10 +436,16 @@ for (i in whichIndependentPrevRun){
 		# test that analysis output is useable
 		if(!identical(analysesNames,names(analysisOutput))){
 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
-		}
+			}
 		#
 		saveRDS(analysisOutput, 
 			file = saveFileName
+			)
+		# delete analysisSetup
+		analysisSetup <- list()
+		# and save empty analysisSetup
+		saveRDS(analysisSetup, 
+			file = saveSetupName
 			)
 		}
 	}
@@ -488,23 +561,49 @@ for (i in whichDependentPrevRun){
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#
-		analysisOutput[[i]] <- runAnalysis(
-			runParameters = runParameters,
+		if(identical(analysisSetup, list()){
+			analysisSetup <- setupRunAnalysis(
+				runParameters = runParameters,
+				#
+				# inputs needed from script	above
+				nSimTrait = nSimTrait,
+				ratePriorError = ratePriorError,
+				#
+				anolisTreeList = anolisTreeList,
+				anolisSize = anolisSize,
+				aquilegiaTreeList = aquilegiaTreeList,	
+				aquilegiaSpurLength = aquilegiaSpurLength,
+				idealTrees = idealTrees,
+				#
+				indepAnalyses_intrinsicOut = 
+					indepAnalyses_intrinsicOut,
+				indepAnalyses_extrinsicOut = 
+					indepAnalyses_extrinsicOut
+				)	
 			#
-			# inputs needed from script	above
-			nSimTrait = nSimTrait,
-			ratePriorError = ratePriorError,
-			#
-			anolisTreeList = anolisTreeList,
-			anolisSize = anolisSize,
-			aquilegiaTreeList = aquilegiaTreeList,	
-			aquilegiaSpurLength = aquilegiaSpurLength,
-			idealTrees = idealTrees,
-			#
-			indepAnalyses_intrinsicOut = 
-				indepAnalyses_intrinsicOut,
-			indepAnalyses_extrinsicOut = 
-				indepAnalyses_extrinsicOut,
+			# save analysisSetup
+			saveRDS(analysisSetup, 
+				file = saveSetupName
+				)
+		}else{
+			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
+				stop(paste0(
+					"Loaded analysisSetup does not match expected run label.\n",
+					"Maybe delete old files?"
+					))
+				}
+			}
+		#################
+		# now doRun! 
+		#
+		analysisOutput[[i]] <-	doRunAnalysis(
+			treeList = analysisSetup$treeList,
+			traitDataList = analysisSetup$traitDataList,
+			runLabel = analysisSetup$runLabel,
+			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
+			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
+			intrinsicArgList = analysisSetup$intrinsicArgList,
+			extrinsicArgList = analysisSetup$extrinsicArgList,
 			#
 			# presets
 			generation.time = generation.time,
@@ -526,6 +625,12 @@ for (i in whichDependentPrevRun){
 		#
 		saveRDS(analysisOutput, 
 			file = saveFileName
+			)
+		# delete analysisSetup
+		analysisSetup <- list()
+		# and save empty analysisSetup
+		saveRDS(analysisSetup, 
+			file = saveSetupName
 			)
 		}
 	}

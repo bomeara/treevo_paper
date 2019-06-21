@@ -23,7 +23,7 @@ cleanSimTraitData <- function(simulatedTraitData){
 	}				
 					
 
-runAnalysis <- function(
+setupRunAnalysis <- function(
 		runParameters, 
 		nSimTrait, 
 		ratePriorError,
@@ -33,19 +33,7 @@ runAnalysis <- function(
 		idealTrees,
 		#
 		indepAnalyses_intrinsicOut, 
-		indepAnalyses_extrinsicOut,
-		#
-		# presets
-		generation.time,
-		multicore,
-		coreLimit,				
-		nRuns,
-		nStepsPRC,
-		numParticles, 
-		nInitialSimsPerParam,
-		nInitialSims,	
-		saveData,
-		verboseParticles
+		indepAnalyses_extrinsicOut
 		){
 	##################################################	
 	# rate prior error
@@ -332,6 +320,40 @@ runAnalysis <- function(
 			traitDataList[[tree_i]]  <- traitDataThisTree
 			}
 		}
+	##################
+	runLabel <- runParameters$runLabel		
+	#
+	res <- list(
+		treeList = treeList,
+		traitDataList = traitDataList,
+		runLabel = runLabel,
+		intrinsicFunctionToFit = intrinsicFunctionToFit,
+		extrinsicFunctionToFit = extrinsicFunctionToFit,
+		intrinsicArgList = intrinsicArgList,
+		extrinsicArgList = extrinsicArgList
+		)
+	#
+	return(res)
+	}
+		
+		
+doRunAnalysis <- function(){
+		treeList,
+		traitDataList,
+		runLabel
+		#
+		# presets
+		generation.time,
+		multicore,
+		coreLimit,
+		numParticles,
+		nStepsPRC,
+		nRuns,
+		nInitialSims,
+		nInitialSimsPerParam,
+		saveData,
+		verboseParticles
+		}
 	#############################################################
 	##########################################################
 	# now run doRun across each trees and its trait datasets
@@ -359,13 +381,12 @@ runAnalysis <- function(
 			#
 			# define job name
 			jobNameRun <- paste0(
-				runParameters$runLabel,
+				runLabel,
 				"_tree_",i,
 				"_trait_",j,
 				"_", format(Sys.time(), "%m-%d-%y")
 				)
 			#
-
 			#
 			message("####################")
 			message(paste0(
@@ -451,4 +472,8 @@ runAnalysis <- function(
 	#
 	return(doRun_out)
 	}
+	
+	
+	
+	
 	
