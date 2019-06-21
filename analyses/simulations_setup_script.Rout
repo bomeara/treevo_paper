@@ -64,9 +64,11 @@ Type 'q()' to quit R.
 > source(
 + 	"~/treevo_paper/analyses/simulations_framework_script.R"
 + 	)
+TreEvo Version Used: 0.21.0
+ape Version Used: 5.3
 The following OTUs (24) on the Anolis tree do not appear to
  have size data and thus will be dropped: 
-podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae,
+ podocarpus, anoriensis, otongae, poei, euskalerriari, inderenae,
  anatoloros, cymbops, pseudopachypus, forbesi, mestrei, guafe, aurifer,
  vinosus, alayoni, oporinus, cyanopleurus, alfaroi, darlingtoni,
  singularis, Pmarmoratus, Bplumifrons, Ugallardoi, Pscapulatus
@@ -83,7 +85,3 @@ Performing 90 analyses for 3 simulated 'idealized' phylogeny classes, with 3 set
     and 10 simulate trait datasets for each tree.
 Simulating 10 trait datasets on 9 phylogenies...
    (...This may take a while...)   
-
-Warning message:
-In if (analysisOutputOld == "analysisOutput") { :
-  the condition has length > 1 and only the first element will be used

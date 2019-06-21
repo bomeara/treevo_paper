@@ -4,10 +4,24 @@
 ##################################################
 library(ape)
 library(TreEvo)
+
+# get package versions
+if(packageVersion("TreEvo") < "0.21.0"){
+	stop("Update TreEvo first!")
+	}
+	
+message(paste0(
+	"TreEvo Version Used: ", 
+	packageVersion("TreEvo")
+	))
+message(paste0(
+	"ape Version Used: ", 
+	packageVersion("ape")
+	))
+
 setwd("~//treevo_paper//")
 source(".//analyses//functions_for_analysis.R")
 source(".//analyses//functions_for_aquilegia_models.R")
-
 
 ######################################
 # get empirical data
