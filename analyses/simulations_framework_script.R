@@ -292,7 +292,7 @@ if(continueFromPrevious){
 			analysisOutput <- analysisOutputOld
 			# 
 			# also load old analysisSetup
-			loadAnalysisSetup
+			loadAnalysisSetup <- TRUE
 		}else{
 			warning(paste0(
 				"Format of previous output file does not match current script expectations\n",
@@ -332,7 +332,9 @@ if(loadAnalysisSetup){
 ################################################################
 # test that analysis output is useable
 if(!identical(analysesNames, names(analysisOutput))){
-	stop("analysisOutput seems to be corrupt - names do not match analysesNames")
+	stop(
+		"analysisOutput seems to be corrupt - names do not match analysesNames"
+		)
 	}
 #
 ##############################################
