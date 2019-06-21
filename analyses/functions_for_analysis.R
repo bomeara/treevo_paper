@@ -337,10 +337,14 @@ setupRunAnalysis <- function(
 	}
 		
 		
-doRunAnalysis <- function(){
+doRunAnalysis <- function(
 		treeList,
 		traitDataList,
-		runLabel
+		runLabel,
+		intrinsicFunctionToFit,
+		extrinsicFunctionToFit,
+		intrinsicArgList,
+		extrinsicArgList,
 		#
 		# presets
 		generation.time,
@@ -353,7 +357,7 @@ doRunAnalysis <- function(){
 		nInitialSimsPerParam,
 		saveData,
 		verboseParticles
-		}
+		){
 	#############################################################
 	##########################################################
 	# now run doRun across each trees and its trait datasets

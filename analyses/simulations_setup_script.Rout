@@ -67,9 +67,9 @@ Type 'q()' to quit R.
 TreEvo Version Used: 0.21.0
 ape Version Used: 5.3
 Error in source(".//analyses//functions_for_analysis.R") : 
-  .//analyses//functions_for_analysis.R:341:25: unexpected ','
-340: doRunAnalysis <- function(){
-341:                 treeList,
-                             ^
+  .//analyses//functions_for_analysis.R:346:17: unexpected symbol
+345:                 # presets
+346:                 generation.time
+                     ^
 Calls: source -> withVisible -> eval -> eval -> source
 Execution halted
