@@ -167,6 +167,19 @@ class(aquilegiaTreeList) <- "multiPhylo"
 #   
 idealTrees <- list(
     #
+    star_n8 = stree(
+		n=8, 
+		type = "star", tip.label = NULL
+		),
+    star_n16 = stree(
+		n=16, 
+		type = "star", tip.label = NULL
+		),
+    star_n64 = stree(
+		n=64, 
+		type = "star", tip.label = NULL
+		)
+    #
     balanced_n8 = stree(
 		n=8, 
 		type = "balanced", tip.label = NULL
@@ -192,19 +205,6 @@ idealTrees <- list(
 		n=64, 
 		type = "left", tip.label = NULL
 		), 
-    #
-    star_n8 = stree(
-		n=8, 
-		type = "star", tip.label = NULL
-		),
-    star_n16 = stree(
-		n=16, 
-		type = "star", tip.label = NULL
-		),
-    star_n64 = stree(
-		n=64, 
-		type = "star", tip.label = NULL
-		)
     )
 #
 # all of these need to have edge lengths
