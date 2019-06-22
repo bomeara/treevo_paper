@@ -178,7 +178,7 @@ idealTrees <- list(
     star_n64 = stree(
 		n=64, 
 		type = "star", tip.label = NULL
-		)
+		),
     #
     balanced_n8 = stree(
 		n=8, 
@@ -204,7 +204,7 @@ idealTrees <- list(
     pectinate_n64 = stree(
 		n=64, 
 		type = "left", tip.label = NULL
-		), 
+		) 
     )
 #
 # all of these need to have edge lengths
