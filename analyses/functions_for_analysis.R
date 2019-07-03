@@ -212,10 +212,10 @@ setupRunAnalysis <- function(
 		message(paste0(
 			"Performing ", nDoRun, 
 			" analyses for ", 3,
-			" simulated 'idealized' phylogeny classes, with ", 3, 
-			" sets of tip values each,\n",
+			" simulated 'idealized' phylogeny classes,\n",
+			"    with ", 3, " sets of tip values each,\n",
 			"    and ", nSimTrait, 
-			" simulate trait datasets for each tree."
+			" trait datasets simulated for each tree."
 			))		
 		#
 		}
