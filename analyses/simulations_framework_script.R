@@ -19,7 +19,7 @@ message(paste0(
 	packageVersion("ape")
 	))
 
-setwd("~//treevo_paper//")
+setwd("/share/bomeara/treevo_paper//")
 source(".//analyses//functions_for_analysis.R")
 source(".//analyses//functions_for_aquilegia_models.R")
 

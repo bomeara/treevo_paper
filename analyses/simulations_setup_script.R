@@ -45,8 +45,8 @@ verboseParticles <- FALSE
 ###########################
 # FOR CONTINUING FROM A PREVIOUS TEST
 # (...if output from previous analyses exist at all)
-continueFromPrevious <- TRUE
+continueFromPrevious <- FALSE
 
 source(
-	"~/treevo_paper/analyses/simulations_framework_script.R"
+	"simulations_framework_script.R"
 	)
