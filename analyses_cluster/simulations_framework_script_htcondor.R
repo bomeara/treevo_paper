@@ -527,7 +527,8 @@ queue 1
 '), file=paste0("Run_",analysesNames[i],".qsub"))
 
 system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],".qsub"))
-
+}
+}
 
 # commenting out below here; redo for dependent run and processing the above runs.
 #
