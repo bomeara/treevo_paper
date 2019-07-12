@@ -524,7 +524,7 @@ when_to_transfer_output = ON_EXIT
 transfer_input_files = Data_',analysesNames[i],'.rda,Run_',analysesNames[i],'.R,Run_',analysesNames[i],'.sh
 
 queue 1
-'), file=file=paste0("Run_",analysesNames[i],".qsub"))
+'), file=paste0("Run_",analysesNames[i],".qsub"))
 
 system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],".qsub"))
 
