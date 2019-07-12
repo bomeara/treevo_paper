@@ -504,7 +504,7 @@ for (i in whichIndependentPrevRun){
 		  verboseParticles = verboseParticles
 		)
 		save(result, file="Results_', analysesNames[i], '.rda")
-', file=paste0("Run_",analysesNames[i],".R"))
+'), file=paste0("Run_",analysesNames[i],".R"))
 
 cat(paste0('#!/bin/bash
 
