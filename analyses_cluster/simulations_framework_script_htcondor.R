@@ -418,6 +418,7 @@ for (i in whichIndependentPrevRun){
 
 		cat(paste0('library(ape)
 		library(TreEvo)
+		load("Data_',analysesNames[i],'.rda")
 
 		# get package versions
 		if(packageVersion("TreEvo") < "0.21.0"){
@@ -459,7 +460,28 @@ for (i in whichIndependentPrevRun){
 		save(result, file="Results_', analysesNames[i], '.rda")
 ', file=paste0("Run_",analysesNames[i],".R"))
 
-# TODO: condor batch file and starting condor.
+cat(paste0('#!/bin/bash
+
+Rscript Run_',analysesNames[i],'.R
+'), file=paste0("Run_",analysesNames[i],".sh"))
+
+system(paste0("chmod u+x Run_",analysesNames[i],".sh"))
+
+cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i], '.log
+error = run_$(Cluster)_$(Process)_', analysesNames[i], '.err
+output = run_$(Cluster)_$(Process)_', analysesNames[i], '.out
+
+executable = Run_',analysesNames[i],'.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = Data_',analysesNames[i],'.rda,Run_',analysesNames[i],'.R,Run_',analysesNames[i],'.sh
+
+queue 1
+'), file=file=paste0("Run_",analysesNames[i],".qsub"))
+
+system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],".qsub"))
+
 
 # commenting out below here; redo for dependent run and processing the above runs.
 #
