@@ -450,10 +450,10 @@ for (i in whichIndependentPrevRun){
 				)
 		}else{
 			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
-				stop(paste0(
-					"Loaded analysisSetup does not match expected run label.\n",
-					"Maybe delete old files?"
-					))
+				# stop(paste0(
+				# 	"Loaded analysisSetup does not match expected run label.\n",
+				# 	"Maybe delete old files?"
+				# 	))
 				}
 			}
 		#################
