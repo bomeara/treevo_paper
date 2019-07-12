@@ -47,6 +47,6 @@ verboseParticles <- FALSE
 # (...if output from previous analyses exist at all)
 continueFromPrevious <- FALSE
 
-source(
-	"simulations_framework_script.R"
-	)
+# source(
+# 	"simulations_framework_script.R"
+# 	)
