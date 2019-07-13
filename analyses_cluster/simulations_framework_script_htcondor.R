@@ -1,5 +1,5 @@
 # simulation framework
-	# (shouldn't need to be changed)
+# (shouldn't need to be changed)
 
 ##################################################
 # Control Box
@@ -8,16 +8,16 @@
 nSimTrait <- 10
 
 # error for run with mis-specified prior on sigmasq in a pure-BM model
-	# the mean of the normal prior is multiplied by this value
-	# 100 = mean of rate prior is off by two orders of magnitude!
+# the mean of the normal prior is multiplied by this value
+# 100 = mean of rate prior is off by two orders of magnitude!
 ratePriorError <- 100
 
 # root age for idealized simulated trees from time=0
-	# similar to Anolis root depth (51.49056)
+# similar to Anolis root depth (51.49056)
 idealTreeDepth <- 50
 
 # simulation resolution
-	# recc default is 1000
+# recc default is 1000
 generation.time <- 1000
 
 # control parameters for multicore and simulation resolution
@@ -26,15 +26,15 @@ coreLimit <- 24
 
 # control parameters for MCMC / ABC
 nRuns <- 2            		  # use 2 - recc default is 2
-								#(for testing, use 1)
+#(for testing, use 1)
 nStepsPRC <- 5        		  # use 5 - recc default is 5
-								#(for testing, use 2)
+#(for testing, use 2)
 numParticles <- 300 			  # use 300 - recc default is 300
-								#(for testing, use 5)
+#(for testing, use 5)
 nInitialSimsPerParam <- 100 	  # use 100 - recc default is 100
-								#(for testing, use 10)
+#(for testing, use 10)
 nInitialSims <- 100			  # use NULL - default is NULL = 100 per param
-								#(for testing, use 5)
+#(for testing, use 5)
 
 #### miscellaneous controls
 # save data during runs?
@@ -54,16 +54,16 @@ library(TreEvo)
 # get package versions
 if(packageVersion("TreEvo") < "0.21.0"){
 	stop("Update TreEvo first!")
-	}
+}
 
 message(paste0(
 	"TreEvo Version Used: ",
 	packageVersion("TreEvo")
-	))
+))
 message(paste0(
 	"ape Version Used: ",
 	packageVersion("ape")
-	))
+))
 
 setwd("/share/bomeara/treevo_paper//")
 source(".//analyses_cluster//functions_for_analysis.R")
@@ -74,20 +74,20 @@ source(".//analyses_cluster//functions_for_aquilegia_models.R")
 #############################################
 #
 # 1) Anolis
-	# repulsion - adaptive landscape dynamics - multi optima
+# repulsion - adaptive landscape dynamics - multi optima
 #
 # obtain anolis tree - from Poe et al. 2017 (SystBiol)
-	# their time-tree
+# their time-tree
 anolisTree <- read.tree(
 	file="datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre"
-	)
+)
 #
 # obtain anolis trait data -
-	# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
+# Snout-Vent body-size data from Poe et al. 2018 (AmNat)
 anolisTrait <- read.table(
 	"datasets//anolis_lntraits_matched_tabdelim_07-24-18.txt",
 	header=TRUE,row.names=1
-	)
+)
 #
 anolisSize <- anolisTrait[,1]             # ,drop = FALSE]
 names(anolisSize) <- rownames(anolisTrait)
@@ -108,12 +108,12 @@ if(any(anyMatchesNA)){
 		" have size data and thus will be dropped: \n ",
 		paste0(strwrap(
 			paste0(droppers, collapse=", ")
-			),collapse="\n ")
-		))
+		),collapse="\n ")
+	))
 	anolisTree <- drop.tip(anolisTree, droppers)
 	anolisSize <- anolisSize[anolisTree$tip.label]
 	names(anolisSize) <- anolisTree$tip.label
-	}
+}
 # make into a multiPhylo list
 anolisTreeList <- list(anolisTree = anolisTree)
 class(anolisTreeList) <- "multiPhylo"
@@ -121,29 +121,29 @@ class(anolisTreeList) <- "multiPhylo"
 ################################################
 #
 # 2) Aquilegia
-	# whittall et al. model of nectar spur increase in size
+# whittall et al. model of nectar spur increase in size
 #
 # obtain aquilegia tree (from Whittall and Hodges 2007?)
 aquilegiaTree <- read.tree(
 	"datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
-	)
+)
 # need to clear away the root edge length
 aquilegiaTree$root.edge <- NULL
 #
 # obtain aquilegia trait data (from Whittall and Hodges 2007?)
-	# need both nectur spur lengths and regime data
-	#
+# need both nectur spur lengths and regime data
+#
 aquilegiaTrait <- read.table(
 	"datasets//aquilegia_traitData.txt",
 	header=FALSE, row.names=1
-	)
+)
 #
 # get just nectur spur length
 aquilegiaSpurLength <- aquilegiaTrait[,2]           # , drop = FALSE]
 names(aquilegiaSpurLength) <- rownames(aquilegiaTrait)
 # and take the natural log
-	# (note that the third column of the table was already the natural log)
-	# previous code from Brian had 'log(data[,3])' - log of a log
+# (note that the third column of the table was already the natural log)
+# previous code from Brian had 'log(data[,3])' - log of a log
 aquilegiaSpurLength <- log(aquilegiaSpurLength)
 # crop traits down to those in the tree
 aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
@@ -157,12 +157,12 @@ aquilegiaPollinators <- aquilegiaPollinators[aquilegiaTree$tip.label]
 names(aquilegiaPollinators) <- aquilegiaTree$tip.label
 #
 # regimes coded 0, 1, 2
-	# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
+# 0 is bumble-bee, 1 is humming-bird, 2 is hawkmoth
 # this probably won't be used directly?
 # could use for post-analysis comparisons? Hmm
 #
 # need to remove all unshared taxa from the tree
-	# will do this ONLY relative to spur length vector!
+# will do this ONLY relative to spur length vector!
 #
 
 # are any NA?
@@ -176,15 +176,15 @@ if(any(anyMatchesNA)){
 		" have spur length data and thus will be dropped: \n ",
 		paste0(strwrap(
 			paste0(droppers, collapse=", ")
-			),collapse="\n ")
-		))
+		),collapse="\n ")
+	))
 	aquilegiaTree <- drop.tip(aquilegiaTree, droppers)
 	# and drop from trait data
 	aquilegiaSpurLength <- aquilegiaSpurLength[aquilegiaTree$tip.label]
 	aquilegiaPollinators <- aquilegiaPollinators[aquilegiaTree$tip.label]
 	names(aquilegiaSpurLength) <- aquilegiaTree$tip.label
 	names(aquilegiaPollinators) <- aquilegiaTree$tip.label
-	}
+}
 # make into a multiPhylo list
 aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
 class(aquilegiaTreeList) <- "multiPhylo"
@@ -193,8 +193,8 @@ class(aquilegiaTreeList) <- "multiPhylo"
 # legacy aquilegia code from Brian O'Meara:
 #
 # assume generation time of 10 years (its a perennial plant),
-	# following Cooper et al. Plos ONe 2010
-	# Genetic Variation at Nuclear loci fails to distinguish group is about 3 MY,
+# following Cooper et al. Plos ONe 2010
+# Genetic Variation at Nuclear loci fails to distinguish group is about 3 MY,
 # So =>> phy height is 3.
 # Thus each unit = 1,000,000 years or 100,000 generations
 #
@@ -208,50 +208,50 @@ class(aquilegiaTreeList) <- "multiPhylo"
 #
 ###############################################################################
 # generate sets of ideal trees for doing simulations on
-   # idealTreeSets = c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star")
-   # nTipSets = c(8, 16, 64)
+# idealTreeSets = c("Ideal-Balanced", "Ideal-Pectinate", "Ideal-Star")
+# nTipSets = c(8, 16, 64)
 #
 idealTrees <- list(
-    #
-    star_n8 = stree(
+	#
+	star_n8 = stree(
 		n=8,
 		type = "star", tip.label = NULL
-		),
-    star_n16 = stree(
+	),
+	star_n16 = stree(
 		n=16,
 		type = "star", tip.label = NULL
-		),
-    star_n64 = stree(
+	),
+	star_n64 = stree(
 		n=64,
 		type = "star", tip.label = NULL
-		),
-    #
-    balanced_n8 = stree(
+	),
+	#
+	balanced_n8 = stree(
 		n=8,
 		type = "balanced", tip.label = NULL
-		),
-    balanced_n16 = stree(
+	),
+	balanced_n16 = stree(
 		n=16,
 		type = "balanced", tip.label = NULL
-		),
-    balanced_n64 = stree(
+	),
+	balanced_n64 = stree(
 		n=64,
 		type = "balanced", tip.label = NULL
-		),
-    #
-    pectinate_n8 = stree(
+	),
+	#
+	pectinate_n8 = stree(
 		n=8,
 		type = "left", tip.label = NULL
-		),
-    pectinate_n16 = stree(
+	),
+	pectinate_n16 = stree(
 		n=16,
 		type = "left", tip.label = NULL
-		),
-    pectinate_n64 = stree(
+	),
+	pectinate_n64 = stree(
 		n=64,
 		type = "left", tip.label = NULL
-		)
-    )
+	)
+)
 #
 # all of these need to have edge lengths
 idealTrees <- lapply(idealTrees, compute.brlen)
@@ -260,8 +260,8 @@ idealTrees <- lapply(idealTrees,
 	function(x) {
 		x$edge.length <- x$edge.length * idealTreeDepth
 		return(x)
-		}
-	)
+	}
+)
 #
 # make all trees artificially bifurcating
 idealTrees <- lapply(idealTrees, multi2di)
@@ -269,13 +269,13 @@ idealTrees <- lapply(idealTrees, multi2di)
 # test that they are ultrametric
 if(!all(sapply(idealTrees,is.ultrametric))){
 	stop("Not all idealized simulated trees came out as ultrametric ?!")
-	}
+}
 #
 # make multiPhylo
 class(idealTrees) <- "multiPhylo"
 #
 # compress tip labels? No, I don't think that works for trees of different sizes
-	#	trees <- .compressTipLabel(trees)
+#	trees <- .compressTipLabel(trees)
 #
 ######################################################################################
 message("##############################")
@@ -288,7 +288,7 @@ simRunTable <- read.csv(
 	file="analyses_cluster//simulation_sets_parameters_table.csv",
 	header=TRUE,
 	stringsAsFactors=FALSE
-	)
+)
 #
 # number of analyses
 nAnalyses <- nrow(simRunTable)
@@ -299,15 +299,15 @@ analysesNames <- simRunTable$runLabel
 # which analyses are independent or dependent
 whichIndependentPrevRun <- which(
 	!as.logical(simRunTable$dependentPrevRun)
-	)
+)
 whichDependentPrevRun <- which(
 	as.logical(simRunTable$dependentPrevRun)
-	)
+)
 #
 # create list for saving analysis output
 analysisOutput <- as.list(analysesNames)
 # why numbers? use actual names
-	# names(analysisOutput) <- 1:nAnalyses
+# names(analysisOutput) <- 1:nAnalyses
 names(analysisOutput) <- analysesNames
 #
 # start an empty analysisSetup
@@ -443,20 +443,20 @@ for (i in whichIndependentPrevRun){
 				#
 				indepAnalyses_intrinsicOut = NULL,
 				indepAnalyses_extrinsicOut = NULL
-				)
+			)
 			#
 			# save analysisSetup
 			saveRDS(analysisSetup,
 				file = saveSetupName
-				)
+			)
 		}else{
 			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
 				# stop(paste0(
 				# 	"Loaded analysisSetup does not match expected run label.\n",
 				# 	"Maybe delete old files?"
 				# 	))
-				}
 			}
+		}
 		#################
 		# now doRun!
 		#
@@ -470,66 +470,68 @@ for (i in whichIndependentPrevRun){
 		# get package versions
 		if(packageVersion("TreEvo") < "0.21.0"){
 			stop("Update TreEvo first!")
-			}
+		}
 
 		message(paste0(
 			"TreEvo Version Used: ",
 			packageVersion("TreEvo")
-			))
+		))
 		message(paste0(
 			"ape Version Used: ",
 			packageVersion("ape")
-			))
+		))
 
 
 		result <- doRunAnalysis(
-		  treeList = analysisSetup$treeList,
-		  traitDataList = analysisSetup$traitDataList,
-		  runLabel = analysisSetup$runLabel,
-		  nDoRun = analysisSetup$nDoRun,
-		  intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
-		  extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
-		  intrinsicArgList = analysisSetup$intrinsicArgList,
-		  extrinsicArgList = analysisSetup$extrinsicArgList,
-		  #
-		  # presets
-		  generation.time = generation.time,
-		  multicore = multicore,
-		  coreLimit = coreLimit,
-		  nRuns = nRuns,
-		  nStepsPRC = nStepsPRC,
-		  numParticles = numParticles,
-		  nInitialSimsPerParam = nInitialSimsPerParam,
-		  nInitialSims = nInitialSims,
-		  saveData = saveData,
-		  verboseParticles = verboseParticles
+			treeList = analysisSetup$treeList,
+			traitDataList = analysisSetup$traitDataList,
+			runLabel = analysisSetup$runLabel,
+			nDoRun = analysisSetup$nDoRun,
+			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
+			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
+			intrinsicArgList = analysisSetup$intrinsicArgList,
+			extrinsicArgList = analysisSetup$extrinsicArgList,
+			#
+			# presets
+			generation.time = generation.time,
+			multicore = multicore,
+			coreLimit = coreLimit,
+			nRuns = nRuns,
+			nStepsPRC = nStepsPRC,
+			numParticles = numParticles,
+			nInitialSimsPerParam = nInitialSimsPerParam,
+			nInitialSims = nInitialSims,
+			saveData = saveData,
+			verboseParticles = verboseParticles
 		)
 		save(result, file="Results_', analysesNames[i], '.rda")
-'), file=paste0("Run_",analysesNames[i],".R"))
+		'), file=paste0("Run_",analysesNames[i],".R"))
 
-cat(paste0('#!/bin/bash
+		cat(paste0('#!/bin/bash
 
-Rscript Run_',analysesNames[i],'.R
-'), file=paste0("Run_",analysesNames[i],".sh"))
+		Rscript Run_',analysesNames[i],'.R
+		'), file=paste0("Run_",analysesNames[i],".sh"))
 
-system(paste0("chmod u+x Run_",analysesNames[i],".sh"))
+		system(paste0("chmod u+x Run_",analysesNames[i],".sh"))
 
-cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i], '.log
-error = run_$(Cluster)_$(Process)_', analysesNames[i], '.err
-output = run_$(Cluster)_$(Process)_', analysesNames[i], '.out
+		cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i], '.log
+		error = run_$(Cluster)_$(Process)_', analysesNames[i], '.err
+		output = run_$(Cluster)_$(Process)_', analysesNames[i], '.out
 
-executable = Run_',analysesNames[i],'.sh
+		executable = Run_',analysesNames[i],'.sh
 
-should_transfer_files = YES
-when_to_transfer_output = ON_EXIT
-transfer_input_files = Data_',analysesNames[i],'.rda,Run_',analysesNames[i],'.R,Run_',analysesNames[i],'.sh
+		should_transfer_files = YES
+		when_to_transfer_output = ON_EXIT
+		transfer_input_files = Data_',analysesNames[i],'.rda,Run_',analysesNames[i],'.R,Run_',analysesNames[i],'.sh
 
-queue 1
-'), file=paste0("Run_",analysesNames[i],".qsub"))
+		queue 1
+		'), file=paste0("Run_",analysesNames[i],".qsub"))
 
-system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],".qsub"))
+		system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],".qsub"))
+	}
 }
-}
+
+save(list=ls(), file="dump_framework.rda")
 
 # commenting out below here; redo for dependent run and processing the above runs.
 #
