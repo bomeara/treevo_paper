@@ -125,7 +125,7 @@ class(anolisTreeList) <- "multiPhylo"
 #
 # obtain aquilegia tree (from Whittall and Hodges 2007?)
 aquilegiaTree <- read.tree(
-	"datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
+	"../datasets//aquilegia_Whttall&Hodges2007_figuredMCC.tre"
 )
 # need to clear away the root edge length
 aquilegiaTree$root.edge <- NULL
