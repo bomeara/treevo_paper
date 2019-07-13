@@ -65,9 +65,9 @@ message(paste0(
 	packageVersion("ape")
 ))
 
-setwd("/share/bomeara/treevo_paper//")
-source(".//analyses_cluster//functions_for_analysis.R")
-source(".//analyses_cluster//functions_for_aquilegia_models.R")
+#setwd("/share/bomeara/treevo_paper//")
+source("functions_for_analysis.R")
+source("functions_for_aquilegia_models.R")
 
 ######################################
 # get empirical data
@@ -79,13 +79,13 @@ source(".//analyses_cluster//functions_for_aquilegia_models.R")
 # obtain anolis tree - from Poe et al. 2017 (SystBiol)
 # their time-tree
 anolisTree <- read.tree(
-	file="datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre"
+	file="..//datasets//anolis_PoeEtAl2018_datedMCCw0.5burnin.tre"
 )
 #
 # obtain anolis trait data -
 # Snout-Vent body-size data from Poe et al. 2018 (AmNat)
 anolisTrait <- read.table(
-	"datasets//anolis_lntraits_matched_tabdelim_07-24-18.txt",
+	"../datasets//anolis_lntraits_matched_tabdelim_07-24-18.txt",
 	header=TRUE,row.names=1
 )
 #
@@ -134,7 +134,7 @@ aquilegiaTree$root.edge <- NULL
 # need both nectur spur lengths and regime data
 #
 aquilegiaTrait <- read.table(
-	"datasets//aquilegia_traitData.txt",
+	"../datasets//aquilegia_traitData.txt",
 	header=FALSE, row.names=1
 )
 #
@@ -285,7 +285,7 @@ message("######### Beginning Analyses ############")
 #
 # get simulation run table
 simRunTable <- read.csv(
-	file="analyses_cluster//simulation_sets_parameters_table.csv",
+	file="simulation_sets_parameters_table.csv",
 	header=TRUE,
 	stringsAsFactors=FALSE
 )
@@ -531,7 +531,6 @@ for (i in whichIndependentPrevRun){
 	}
 }
 
-save(list=ls(), file="dump_framework.rda")
 
 # commenting out below here; redo for dependent run and processing the above runs.
 #
