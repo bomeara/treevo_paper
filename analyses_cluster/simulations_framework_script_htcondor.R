@@ -445,9 +445,9 @@ for (i in whichIndependentPrevRun){
 			)
 			#
 			# save analysisSetup
-			saveRDS(analysisSetup,
-				file = saveSetupName
-			)
+			# saveRDS(analysisSetup,
+			# 	file = saveSetupName
+			# )
 
 		#################
 		# now doRun!
