@@ -453,11 +453,11 @@ for (i in whichIndependentPrevRun){
 		# now doRun!
 		#
 
-		save(list=ls(), file=paste0("Data_",analysesNames[i],".rda"))
+		save(list=ls(), file=paste0("Data_",analysesNames[i],"_",Sys.Date(),".rda"))
 
 		cat(paste0('library(ape)
 		library(TreEvo)
-		load("Data_',analysesNames[i],'.rda")
+		load("Data_',analysesNames[i],"_",Sys.Date(),'.rda")
 
 		# get package versions
 		if(packageVersion("TreEvo") < "0.21.0"){
@@ -496,30 +496,30 @@ for (i in whichIndependentPrevRun){
 			saveData = saveData,
 			verboseParticles = verboseParticles
 		)
-		save(result, file="Results_', analysesNames[i], '.rda")
-		'), file=paste0("Run_",analysesNames[i],".R"))
+		save(result, file="Results_', analysesNames[i],"_",Sys.Date(), '.rda")
+		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".R"))
 
 		cat(paste0('#!/bin/bash
 
-		Rscript Run_',analysesNames[i],'.R
-		'), file=paste0("Run_",analysesNames[i],".sh"))
+		Rscript Run_',analysesNames[i],"_",Sys.Date(),'.R
+		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".sh"))
 
-		system(paste0("chmod u+x Run_",analysesNames[i],".sh"))
+		system(paste0("chmod u+x Run_",analysesNames[i],"_",Sys.Date(),".sh"))
 
-		cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i], '.log
-error = run_$(Cluster)_$(Process)_', analysesNames[i], '.err
-output = run_$(Cluster)_$(Process)_', analysesNames[i], '.out
+		cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.log
+error = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.err
+output = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.out
 
-executable = Run_',analysesNames[i],'.sh
+executable = Run_',analysesNames[i],"_",Sys.Date(),'.sh
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-transfer_input_files = Data_',analysesNames[i],'.rda,Run_',analysesNames[i],'.R,Run_',analysesNames[i],'.sh
-
+transfer_input_files = Data_',analysesNames[i],"_",Sys.Date(),'.rda,Run_',analysesNames[i],"_",Sys.Date(),'.R,Run_',analysesNames[i],"_",Sys.Date(),'.sh
+request_cpus = 24
 queue 1
-		'), file=paste0("Run_",analysesNames[i],".qsub"))
+		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".qsub"))
 
-		system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],".qsub"))
+		system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],"_",Sys.Date(),".qsub"))
 	}
 }
 
