@@ -450,78 +450,203 @@ for (i in whichIndependentPrevRun){
 			# )
 
 		#################
-		# now doRun!
 		#
+		# description of framework for sending jobs to htcondor
+		# taken from gitter chat with Brian
+		#
+		#
+		# So, line 422 of the htcondor.R file
+		# I'm doing your loop, but always doing a new setup file 
+			# I save this at line 456
+		# line 458, I write a new R script 
+			# which ends at line 500
+		# line 502, I make a new bash script
+		# line 507, I make it executable
+		# line 502-520, I make a condor submit script
+		# and line 522, submit the job
+			# so, the submit script has to call a program. 
+			# That's the sh script, which just says to run Rscript with the given arguments
+			# The submit script has to know what files to copy over and those files must exist
+			# thus the line 500 file and the line 456 file
+		# so condor submits the submit script, which says, "hey, I need 24 cores" 
+			# and gets assigned a machine, then it copies over the files, 
+			# calls the bash script, which calls Rscript, which then runs. 
+			# When done (or dead), condor takes any files the script has made and 
+			# copies them over to the original directory		
+
 
 		save(list=ls(), file=paste0("Data_",analysesNames[i],"_",Sys.Date(),".rda"))
 
-		cat(paste0('library(ape)
-		library(TreEvo)
-		load("Data_',analysesNames[i],"_",Sys.Date(),'.rda")
+		###################################################
+		# make the R script
+		#
+		cat(
+			paste0(
+#############################################		
+'
+library(ape)
+library(TreEvo)
+load("Data_',
+	analysesNames[i],
+	"_",
+	Sys.Date(),
+	'.rda")
 
-		# get package versions
-		if(packageVersion("TreEvo") < "0.21.0"){
-			stop("Update TreEvo first!")
-		}
+# get package versions
+if(packageVersion("TreEvo") < "0.21.0"){
+	stop("Update TreEvo first!")
+}
 
-		message(paste0(
-			"TreEvo Version Used: ",
-			packageVersion("TreEvo")
-		))
-		message(paste0(
-			"ape Version Used: ",
-			packageVersion("ape")
-		))
+message(paste0(
+	"TreEvo Version Used: ",
+	packageVersion("TreEvo")
+))
+message(paste0(
+	"ape Version Used: ",
+	packageVersion("ape")
+))
 
+# now doRun!
+result <- doRunAnalysis(
+	treeList = analysisSetup$treeList,
+	traitDataList = analysisSetup$traitDataList,
+	runLabel = analysisSetup$runLabel,
+	nDoRun = analysisSetup$nDoRun,
+	intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
+	extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
+	intrinsicArgList = analysisSetup$intrinsicArgList,
+	extrinsicArgList = analysisSetup$extrinsicArgList,
+	#
+	# presets
+	generation.time = generation.time,
+	multicore = multicore,
+	coreLimit = coreLimit,
+	nRuns = nRuns,
+	nStepsPRC = nStepsPRC,
+	numParticles = numParticles,
+	nInitialSimsPerParam = nInitialSimsPerParam,
+	nInitialSims = nInitialSims,
+	saveData = saveData,
+	verboseParticles = verboseParticles
+)
+save(result, file="Results_', 
+	analysesNames[i],
+	"_",
+	Sys.Date(), 
+	'.rda")
+'
+#######################################
+				), 
+			file = paste0(
+				"Run_",
+				analysesNames[i],
+				"_",
+				Sys.Date(),
+				".R"
+			))
 
-		result <- doRunAnalysis(
-			treeList = analysisSetup$treeList,
-			traitDataList = analysisSetup$traitDataList,
-			runLabel = analysisSetup$runLabel,
-			nDoRun = analysisSetup$nDoRun,
-			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
-			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
-			intrinsicArgList = analysisSetup$intrinsicArgList,
-			extrinsicArgList = analysisSetup$extrinsicArgList,
-			#
-			# presets
-			generation.time = generation.time,
-			multicore = multicore,
-			coreLimit = coreLimit,
-			nRuns = nRuns,
-			nStepsPRC = nStepsPRC,
-			numParticles = numParticles,
-			nInitialSimsPerParam = nInitialSimsPerParam,
-			nInitialSims = nInitialSims,
-			saveData = saveData,
-			verboseParticles = verboseParticles
-		)
-		save(result, file="Results_', analysesNames[i],"_",Sys.Date(), '.rda")
-		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".R"))
+		###########################################
+		# make the sh file 
+		#
+		cat(
+			paste0(
+##################################		
+'#!/bin/bash
 
-		cat(paste0('#!/bin/bash
+Rscript Run_',
+analysesNames[i],"_",Sys.Date(),'.R'
+#####################################
+				), 
+			file=paste0(
+				"Run_",
+				analysesNames[i],
+				"_",
+				Sys.Date(),
+				".sh"
+				))
+				
+		##############################################
+		#
 
-		Rscript Run_',analysesNames[i],"_",Sys.Date(),'.R
-		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".sh"))
+		system(paste0(
+			"chmod u+x Run_",
+			analysesNames[i],
+			"_",
+			Sys.Date(),
+			".sh"
+			))
+			
+		#####################################################
+		#
 
-		system(paste0("chmod u+x Run_",analysesNames[i],"_",Sys.Date(),".sh"))
-
-		cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.log
-error = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.err
-output = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.out
-
-executable = Run_',analysesNames[i],"_",Sys.Date(),'.sh
-
+		cat(
+			paste0(
+#####################################################
+'log = run_$(Cluster)_$(Process)_', 
+	analysesNames[i],
+	"_",
+	Sys.Date(), 
+	'.log/n',
+'error = run_$(Cluster)_$(Process)_', 
+	analysesNames[i],
+	"_",
+	Sys.Date(), 
+	'.err/n',
+'output = run_$(Cluster)_$(Process)_', 
+	analysesNames[i],
+	"_",
+	Sys.Date(), 
+	'.out/n',
+'\n,'
+'executable = Run_',
+	analysesNames[i],
+	"_",
+	Sys.Date(),
+	'.sh/n',
+'
 should_transfer_files = YES
-when_to_transfer_output = ON_EXIT
-transfer_input_files = Data_',analysesNames[i],"_",Sys.Date(),'.rda,Run_',analysesNames[i],"_",Sys.Date(),'.R,Run_',analysesNames[i],"_",Sys.Date(),'.sh
+when_to_transfer_output = ON_EXIT/n',
+'
+transfer_input_files = Data_',
+	analysesNames[i],
+	"_",
+	Sys.Date(),
+	'.rda,Run_',
+	analysesNames[i],
+	"_",
+	Sys.Date(),
+	'.R,Run_',
+	analysesNames[i],
+	"_",
+	Sys.Date(),
+	'.sh/n',
+'
 request_cpus = 24
 queue 1
-		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".qsub"))
+'
+###############################################
+				), 
+			file=paste0(
+				"Run_",
+				analysesNames[i],
+				"_",
+				Sys.Date(),
+				".qsub"
+				))
 
-		system(paste0("/usr/bin/condor_submit Run_",analysesNames[i],"_",Sys.Date(),".qsub"))
+		#####################################
+		#
+		#
+
+		system(paste0(
+			"/usr/bin/condor_submit Run_",
+			analysesNames[i],
+			"_",
+			Sys.Date(),
+			".qsub"
+			))
+		}
 	}
-}
 
 
 # commenting out below here; redo for dependent run and processing the above runs.
