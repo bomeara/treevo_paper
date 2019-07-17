@@ -42,12 +42,6 @@ saveData <- FALSE
 # print out progress to terminal?
 verboseParticles <- FALSE
 
-###########################
-# FOR CONTINUING FROM A PREVIOUS TEST
-# (...if output from previous analyses exist at all)
-continueFromPrevious <- FALSE
-
-
 library(ape)
 library(TreEvo)
 
@@ -314,107 +308,11 @@ names(analysisOutput) <- analysesNames
 analysisSetup <- list()
 loadAnalysisSetup <- FALSE
 #
-#
-############################################
-#
-#
-# if(continueFromPrevious){
-# 	#
-# 	# output
-# 	outFiles <- file.info(list.files(
-# 		"./saved_output/", full.names = TRUE
-# 		))
-# 	outFiles <- rownames(outFiles)[which.max(outFiles$mtime)]
-# 	# if there are any files...
-# 	if(length(outFiles) > 0){
-# 		# replace analysisOutput
-# 		analysisOutputOld <- readRDS(file=outFiles)
-# 		if(analysisOutputOld == "analysisOutput"){
-# 			stop("Somehow the old output is just the string 'analysisOutput'...?")
-# 			}
-# 		if((length(analysisOutputOld) == length(analysesNames))
-# 				& identical(analysesNames,names(analysisOutput))){
-# 			message("Loading output file from previous run...")
-# 			analysisOutput <- analysisOutputOld
-# 			#
-# 			# also load old analysisSetup
-# 			loadAnalysisSetup <- TRUE
-# 		}else{
-# 			warning(paste0(
-# 				"Format of previous output file does not match current script expectations\n",
-# 				"Beginning analyses without loading previous output file..."
-# 				))
-# 			if(any(sapply(analysisOutput,length) > 1)){
-# 				stop("How did analysisOutput get non-fresh data without restarting from old?")
-# 				}
-# 			}
-# 	}else{
-# 		message(paste0(
-# 			"No output files from previous runs found\n",
-# 			"Beginning analyses without loading any previous output file..."
-# 			))
-# 		}
-# 	}
+#####################################################
+# Let's run all independent analyses
+###################################################
 #
 #
-# also load old analysisSetup if loading old output
-# if(loadAnalysisSetup){
-# 	# output
-# 	outFiles <- file.info(list.files(
-# 		"./saved_setup/", full.names = TRUE
-# 		))
-# 	outFiles <- rownames(outFiles)[which.max(outFiles$mtime)]
-# 	# if there are any files...
-# 	if(length(outFiles) > 0){
-# 		# replace analysisOutput
-# 		analysisSetup <- readRDS(file=outFiles)
-# 		#
-# 		message("Loading analysis setup from previous run...")
-# 	}else{
-# 		message("No previous analysis setup found.")
-# 		}
-# 	}
-# #
-# ################################################################
-# # test that analysis output is useable
-# if(!identical(analysesNames, names(analysisOutput))){
-# 	stop(
-# 		"analysisOutput seems to be corrupt - names do not match analysesNames"
-# 		)
-# 	}
-# #
-##############################################
-# make a new save file name for output
-# saveFileName <- paste0(
-# 	".//saved_output//",
-# 	"analysisOutput_saved_",
-# 	format(Sys.time(), "%m-%d-%y"),
-# 	".rds"
-# 	)
-# #
-# # save initial file
-# saveRDS(analysisOutput,
-# 	file = saveFileName
-# 	)
-# #
-# # do the same for the setup file
-# saveSetupName <- paste0(
-# 	".//saved_setup//",
-# 	"analysisSetup_saved_",
-# 	format(Sys.time(), "%m-%d-%y"),
-# 	".rds"
-# 	)
-# #
-# # save initial file
-# saveRDS(analysisSetup,
-# 	file = saveSetupName
-# 	)
-#
-######################################
-#
-# Let's runs the analyses!
-#
-# run all independent analyses
 message("###############################################")
 message("#########  Independent Analyses  ##############")
 #
