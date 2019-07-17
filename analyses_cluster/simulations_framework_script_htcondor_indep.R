@@ -1,5 +1,4 @@
 # simulation framework
-# (shouldn't need to be changed)
 
 ##################################################
 # Control Box
@@ -340,50 +339,101 @@ for (i in whichIndependentPrevRun){
 				#
 				indepAnalyses_intrinsicOut = NULL,
 				indepAnalyses_extrinsicOut = NULL
-			)
+				)
 			#
-			# save analysisSetup
-			# saveRDS(analysisSetup,
-			# 	file = saveSetupName
-			# )
-
-		#################
-		#
-		# description of framework for sending jobs to htcondor
-		# taken from gitter chat with Brian
-		#
-		#
-		# So, line 422 of the htcondor.R file
-		# I'm doing your loop, but always doing a new setup file 
-			# I save this at line 456
-		# line 458, I write a new R script 
-			# which ends at line 500
-		# line 502, I make a new bash script
-		# line 507, I make it executable
-		# line 502-520, I make a condor submit script
-		# and line 522, submit the job
-			# so, the submit script has to call a program. 
-			# That's the sh script, which just says to run Rscript with the given arguments
-			# The submit script has to know what files to copy over and those files must exist
-			# thus the line 500 file and the line 456 file
-		# so condor submits the submit script, which says, "hey, I need 24 cores" 
-			# and gets assigned a machine, then it copies over the files, 
-			# calls the bash script, which calls Rscript, which then runs. 
-			# When done (or dead), condor takes any files the script has made and 
-			# copies them over to the original directory		
-
-		# I'm doing your loop, but always doing a new setup file 
-			# I save this at line 456
-		save(list=ls(), 
-			file=paste0(
-				"Data_",
+			##################################################################################
+			#
+			# description of framework for sending jobs to htcondor
+			# taken from gitter chat with Brian
+			#
+			#
+			# So, line 422 of the htcondor.R file
+			# I'm doing your loop, but always doing a new setup file 
+				# I save this at line 456
+			# line 458, I write a new R script 
+				# which ends at line 500
+			# line 502, I make a new bash script
+			# line 507, I make it executable
+			# line 502-520, I make a condor submit script
+			# and line 522, submit the job
+				# so, the submit script has to call a program. 
+				# That's the sh script, which just says to run Rscript with the given arguments
+				# The submit script has to know what files to copy over and those files must exist
+				# thus the line 500 file and the line 456 file
+			# so condor submits the submit script, which says, "hey, I need 24 cores" 
+				# and gets assigned a machine, then it copies over the files, 
+				# calls the bash script, which calls Rscript, which then runs. 
+				# When done (or dead), condor takes any files the script has made and 
+				# copies them over to the original directory		
+			#
+			######################################################################
+			#
+			# get file names
+			# 	
+			analysisName <- analysesNames[i]
+			#
+			# core file name
+			run_file_name_generic <- paste0(
 				analysesNames[i],
 				"_",
-				Sys.Date(),
+				Sys.Date()
+				)
+			#
+			# RDA file
+			run_workspace_file <- paste0(
+				"Data_",
+				run_file_name_generic,
 				".rda"
 				)
-			)
-
+			# file for saved results
+			run_saved_results_file <- paste0(
+				"Results_", 
+				run_file_name_generic, 
+				".rda"
+				)
+			# R file
+			run_R_script <- paste0(
+				"Run_",
+				run_file_name_generic,
+				".R"
+				)
+			# sh file
+			run_sh_script <- paste0(
+				'Run_',
+				run_file_name_generic,
+				'.sh'
+				)	
+			# condor submission script (qsub)
+			run_submission_script <- paste0(
+					"Run_",
+					run_file_name_generic,
+					".qsub"
+					)
+			# generic condor file name
+			run_condor_generic_name <- paste0(
+				'run_$(Cluster)_$(Process)_',
+				run_file_name_generic
+				)
+			# error file
+			run_error_condor <- paste0(
+				run_condor_generic_name, 
+				'.err'
+				)
+			# log file
+			run_log_condor <- paste0(
+				run_condor_generic_name, 
+				'.log'
+				)
+			# output file
+			run_output_condor <- paste0(
+				run_condor_generic_name, 
+				'.out'
+				)
+		#####################################################################
+		# I'm doing your loop, but always doing a new setup file 
+			# I save this at line 456
+		save(list=ls(), file= run_workspace_file)
+		#
 		###################################################
 		# make the R script
 		#
@@ -396,25 +446,21 @@ for (i in whichIndependentPrevRun){
 '
 library(ape)
 library(TreEvo)
-load("Data_',
-	analysesNames[i],
-	"_",
-	Sys.Date(),
-	'.rda")
+load(run_workspace_file_name)
 
 # get package versions
 if(packageVersion("TreEvo") < "0.21.0"){
 	stop("Update TreEvo first!")
-}
+	}
 
 message(paste0(
 	"TreEvo Version Used: ",
 	packageVersion("TreEvo")
-))
+	))
 message(paste0(
 	"ape Version Used: ",
 	packageVersion("ape")
-))
+	))
 
 # now doRun!
 result <- doRunAnalysis(
@@ -438,69 +484,40 @@ result <- doRunAnalysis(
 	nInitialSims = nInitialSims,
 	saveData = saveData,
 	verboseParticles = verboseParticles
-)
-save(result, file="Results_', 
-	analysesNames[i],
-	"_",
-	Sys.Date(), 
-	'.rda")
-'
-#######################################
+	)
+save(result, file=',run_saved_results_file,')'
+####################################################
 				), 
-			file = paste0(
-				"Run_",
-				analysesNames[i],
-				"_",
-				Sys.Date(),
-				".R"
-			))
+			file = run_R_script
+			)
 
-		###########################################
+		###########################################################
 		# make the sh file 
 			# line 502, I make a new bash script
 			#
-			# That's the sh script, which just says to run Rscript with the given arguments
+			# That's the sh script,
+				# which just says to run Rscript with the given arguments
 			#
 		#########	
 		cat(
 			paste0(
-##################################		
-'#!/bin/bash
-
-Rscript Run_',
-	analysesNames[i],
-	"_",
-	Sys.Date(),
-	'.R'
-#####################################
+				"#!/bin/bash\n,"
+				"Rscript ",run_R_script
 				), 
-			file=paste0(
-				"Run_",
-				analysesNames[i],
-				"_",
-				Sys.Date(),
-				".sh"
-				))
-				
+			file = run_sh_script
+			)
+		#		
 		##############################################
 		#
-		
-		
-		
-		# line 502-520, I make a condor submit script		
-
-# line 507, I make the sh file executable
-
-		system(paste0(
-			"chmod u+x Run_",
-			analysesNames[i],
-			"_",
-			Sys.Date(),
-			".sh"
-			))
-			
+		# line 507, I make the sh file executable
+			# you mean you execute the sh file?
+		#
+		system(paste0("chmod u+x",run_sh_script))
+		#	
 		#####################################################
 		# Make a qsub file - SUBMIT SCRIPT
+		#
+		# line 502-520, I make a condor submit script		
 		#
 		# The submit script has to know what files to copy over and those files must exist
 			# thus specifying the line 500 file and the line 456 file		
@@ -508,57 +525,23 @@ Rscript Run_',
 		cat(
 			paste0(
 #####################################################
-'log = run_$(Cluster)_$(Process)_', 
-	analysesNames[i],
-	"_",
-	Sys.Date(), 
-	'.log/n',
-'error = run_$(Cluster)_$(Process)_', 
-	analysesNames[i],
-	"_",
-	Sys.Date(), 
-	'.err/n',
-'output = run_$(Cluster)_$(Process)_', 
-	analysesNames[i],
-	"_",
-	Sys.Date(), 
-	'.out/n',
-'\n,'
-'executable = Run_',
-	analysesNames[i],
-	"_",
-	Sys.Date(),
-	'.sh/n',
-'
+'log = ',run_log_condor,'
+error = ',run_error_condor,'
+output = ', run_output_condor,'
+executable = ', run_sh_script,'
 should_transfer_files = YES
-when_to_transfer_output = ON_EXIT/n',
-'
-transfer_input_files = Data_',
-	analysesNames[i],
-	"_",
-	Sys.Date(),
-	'.rda,Run_',
-	analysesNames[i],
-	"_",
-	Sys.Date(),
-	'.R,Run_',
-	analysesNames[i],
-	"_",
-	Sys.Date(),
-	'.sh/n',
-'
+when_to_transfer_output = ON_EXIT,
+transfer_input_files = ',
+	run_workspace_file,",",
+	run_R_script,",",
+	run_sh_script,'
 request_cpus = 24
 queue 1
 '
 ###############################################
 				), 
-			file=paste0(
-				"Run_",
-				analysesNames[i],
-				"_",
-				Sys.Date(),
-				".qsub"
-				))
+			file=run_submission_script
+			)
 
 		#####################################
 		# SUBMITTING THE JOB
@@ -575,11 +558,8 @@ queue 1
 			# copies them over to the original directory		
 		######
 		system(paste0(
-			"/usr/bin/condor_submit Run_",
-			analysesNames[i],
-			"_",
-			Sys.Date(),
-			".qsub"
+			"/usr/bin/condor_submit ",
+			run_submission_script
 			))
 		}
 	}
