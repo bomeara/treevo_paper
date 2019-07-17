@@ -474,11 +474,23 @@ for (i in whichIndependentPrevRun){
 			# When done (or dead), condor takes any files the script has made and 
 			# copies them over to the original directory		
 
-
-		save(list=ls(), file=paste0("Data_",analysesNames[i],"_",Sys.Date(),".rda"))
+		# I'm doing your loop, but always doing a new setup file 
+			# I save this at line 456
+		save(list=ls(), 
+			file=paste0(
+				"Data_",
+				analysesNames[i],
+				"_",
+				Sys.Date(),
+				".rda"
+				)
+			)
 
 		###################################################
 		# make the R script
+		#
+		# line 458, I write a new R script 
+			# which ends at line 500
 		#
 		cat(
 			paste0(
@@ -547,14 +559,21 @@ save(result, file="Results_',
 
 		###########################################
 		# make the sh file 
-		#
+			# line 502, I make a new bash script
+			#
+			# That's the sh script, which just says to run Rscript with the given arguments
+			#
+		#########	
 		cat(
 			paste0(
 ##################################		
 '#!/bin/bash
 
 Rscript Run_',
-analysesNames[i],"_",Sys.Date(),'.R'
+	analysesNames[i],
+	"_",
+	Sys.Date(),
+	'.R'
 #####################################
 				), 
 			file=paste0(
@@ -567,6 +586,12 @@ analysesNames[i],"_",Sys.Date(),'.R'
 				
 		##############################################
 		#
+		
+		
+		
+		# line 502-520, I make a condor submit script		
+
+# line 507, I make the sh file executable
 
 		system(paste0(
 			"chmod u+x Run_",
@@ -577,8 +602,11 @@ analysesNames[i],"_",Sys.Date(),'.R'
 			))
 			
 		#####################################################
+		# Make a qsub file - SUBMIT SCRIPT
 		#
-
+		# The submit script has to know what files to copy over and those files must exist
+			# thus specifying the line 500 file and the line 456 file		
+		#
 		cat(
 			paste0(
 #####################################################
@@ -635,9 +663,19 @@ queue 1
 				))
 
 		#####################################
+		# SUBMITTING THE JOB
 		#
-		#
-
+		# and line 522, submit the job
+			# so, the submit script has to call a program. 
+			# That's the sh script, which just says to run Rscript with the given arguments
+			# The submit script has to know what files to copy over and those files must exist
+			# thus the line 500 file and the line 456 file		
+		# so condor submits the submit script, which says, "hey, I need 24 cores" 
+			# and gets assigned a machine, then it copies over the files, 
+			# calls the bash script, which calls Rscript, which then runs. 
+			# When done (or dead), condor takes any files the script has made and 
+			# copies them over to the original directory		
+		######
 		system(paste0(
 			"/usr/bin/condor_submit Run_",
 			analysesNames[i],
@@ -647,232 +685,3 @@ queue 1
 			))
 		}
 	}
-
-
-# commenting out below here; redo for dependent run and processing the above runs.
-#
-# 		analysisOutput[[i]] <-	doRunAnalysis(
-# 			treeList = analysisSetup$treeList,
-# 			traitDataList = analysisSetup$traitDataList,
-# 			runLabel = analysisSetup$runLabel,
-# 			nDoRun = analysisSetup$nDoRun,
-# 			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
-# 			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
-# 			intrinsicArgList = analysisSetup$intrinsicArgList,
-# 			extrinsicArgList = analysisSetup$extrinsicArgList,
-# 			#
-# 			# presets
-# 			generation.time = generation.time,
-# 			multicore = multicore,
-# 			coreLimit = coreLimit,
-# 			nRuns = nRuns,
-# 			nStepsPRC = nStepsPRC,
-# 			numParticles = numParticles,
-# 			nInitialSimsPerParam = nInitialSimsPerParam,
-# 			nInitialSims = nInitialSims,
-# 			saveData = saveData,
-# 			verboseParticles = verboseParticles
-# 			)
-# 		#
-# 		# test that analysis output is useable
-# 		if(!identical(analysesNames,names(analysisOutput))){
-# 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
-# 			}
-# 		#
-# 		saveRDS(analysisOutput,
-# 			file = saveFileName
-# 			)
-# 		# delete analysisSetup
-# 		analysisSetup <- list()
-# 		# and save empty analysisSetup
-# 		saveRDS(analysisSetup,
-# 			file = saveSetupName
-# 			)
-# 		}
-# 	}
-# #############################
-# # dependent analyses
-# ########################################
-# #indep runs that dep runs depend on :
-# #
-# # INTRINSIC
-# 	# An_Emp_BrownMotion
-# 	# An_Emp_Disp
-# 	# An_Emp_Bound
-# 	# An_Emp_DispBound
-# 	# An_Emp_Bound_BoundByStartingState
-# 	# An_Emp_Bound_BoundByMinValue
-# 	# An_Emp_Bound_BoundOneRangeAway
-# 	# An_Emp_TimeReg
-# 	# Aq_Emp_3Opt2Bound
-# 	# Aq_Emp_BrownMotion
-# # EXTRINSIC
-# 	# An_Emp_DispBound
-# 	# An_Emp_Disp
-# #
-# # BUT NOTICE THAT SOME OF THESE DO NOT HAVE
-# 	# CORRESPONDING INDEP ANALYSES !
-# #
-# # actual indep analyses performed:
-# 	# An_Emp_DispBound
-# 	# An_Emp_Bound
-# 	# An_Emp_BrownMotion
-# 	# An_Emp_Disp
-# 	# An_Emp_TimeReg
-# 	# Aq_Emp_3Opt2Bound
-# 	# Aq_Emp_BrownMotion
-# #
-# # ones not covered by indep analyses
-# 	# An_Emp_Bound_BoundByStartingState
-# 	# An_Emp_Bound_BoundByMinValue
-# 	# An_Emp_Bound_BoundOneRangeAway
-# #
-# #############################
-# # get the stuff necessary for doing the dependent analyses
-# #
-# # get model parameters from runs
-# 	# that will be used for dependent simulations
-# # use extract on all indep analyses now
-# 	# then can call these later for dependent analyses
-# 	# without have to extract same data many times
-# #
-# # Note that following functions will only look at first analysis
-# 	# this doesn't matter - all indep analyses should only have one analysis
-# 	# one empirical tree, one empirical trait, thus only one analysis to examine
-# #
-# indepAnalyses_intrinsicOut <- lapply(
-# 	analysisOutput[whichIndependentPrevRun],
-# 	extractIntrinsic_from_prcOut
-# 	)
-# #
-# indepAnalyses_extrinsicOut <- lapply(
-# 	analysisOutput[whichIndependentPrevRun],
-# 	extractExtrinsic_from_prcOut
-# 	)
-# #
-# # make sure named correctly
-# names(indepAnalyses_intrinsicOut) <- analysesNames[whichIndependentPrevRun]
-# names(indepAnalyses_extrinsicOut) <- analysesNames[whichIndependentPrevRun]
-# #
-# # add intrinsic models not included
-# 	# An_Emp_Bound_BoundByStartingState
-# 	# An_Emp_Bound_BoundByMinValue
-# 	# An_Emp_Bound_BoundOneRangeAway
-# #
-# # all of these are based on An_Emp_Bound
-# boundInt <- indepAnalyses_intrinsicOut$An_Emp_Bound
-# #
-# # An_Emp_Bound_BoundByStartingState
-# 	# bound is right by the starting state, leading to
-# 	# diffusion away from left-hand wall dynamics
-# boundIntStarting <- boundInt
-# # set bound equal to starting state
-# boundIntStarting$intrinsicValues['intrinsic_2'] <- boundIntStarting$startingValues[1]
-# indepAnalyses_intrinsicOut$An_Emp_Bound_BoundByStartingState <- boundIntStarting
-# #
-# # An_Emp_Bound_BoundByMinValue
-# 	# bound is at the minimum value observed for anolisSize
-# boundIntMin <- boundInt
-# # set bound equal to minimum size observed
-# boundIntMin$intrinsicValues['intrinsic_2'] <- min(anolisSize)
-# indepAnalyses_intrinsicOut$An_Emp_Bound_BoundByMinValue <- boundIntMin
-# #
-# # An_Emp_Bound_BoundOneRangeAway
-# 	# what if the bound was very distant -
-# 		# i.e. one range (max-min) away from the min
-# oneRange <- max(anolisSize) - min(anolisSize)
-# oneRangeAway <- min(anolisSize) - oneRange
-# boundOneR <- boundInt
-# # set bound equal to minimum size observed
-# boundOneR$intrinsicValues['intrinsic_2'] <- oneRangeAway
-# indepAnalyses_intrinsicOut$An_Emp_Bound_BoundOneRangeAway<- boundOneR
-# #
-# ################################################################
-#
-# # run all dependent analyses
-# #
-# message("#############################################")
-# message("#########  Dependent Analyses  ##############")
-# #
-# for (i in whichDependentPrevRun){
-# 	if(analysisOutput[[i]] == analysesNames[i]){
-# 		#
-# 		message("#####################################")
-# 		message("######   Now running -- ", analysesNames[i], "  ##########")
-# 		#
-# 		runParameters <- simRunTable[i, , drop = FALSE]
-# 		#
-# 		if(identical(analysisSetup, list())){
-# 			analysisSetup <- setupRunAnalysis(
-# 				runParameters = runParameters,
-# 				#
-# 				# inputs needed from script	above
-# 				nSimTrait = nSimTrait,
-# 				ratePriorError = ratePriorError,
-# 				#
-# 				anolisTreeList = anolisTreeList,
-# 				anolisSize = anolisSize,
-# 				aquilegiaTreeList = aquilegiaTreeList,
-# 				aquilegiaSpurLength = aquilegiaSpurLength,
-# 				idealTrees = idealTrees,
-# 				#
-# 				indepAnalyses_intrinsicOut =
-# 					indepAnalyses_intrinsicOut,
-# 				indepAnalyses_extrinsicOut =
-# 					indepAnalyses_extrinsicOut
-# 				)
-# 			#
-# 			# save analysisSetup
-# 			saveRDS(analysisSetup,
-# 				file = saveSetupName
-# 				)
-# 		}else{
-# 			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
-# 				stop(paste0(
-# 					"Loaded analysisSetup does not match expected run label.\n",
-# 					"Maybe delete old files?"
-# 					))
-# 				}
-# 			}
-# 		#################
-# 		# now doRun!
-# 		#
-# 		analysisOutput[[i]] <-	doRunAnalysis(
-# 			treeList = analysisSetup$treeList,
-# 			traitDataList = analysisSetup$traitDataList,
-# 			runLabel = analysisSetup$runLabel,
-# 			nDoRun = analysisSetup$nDoRun,
-# 			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
-# 			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
-# 			intrinsicArgList = analysisSetup$intrinsicArgList,
-# 			extrinsicArgList = analysisSetup$extrinsicArgList,
-# 			#
-# 			# presets
-# 			generation.time = generation.time,
-# 			multicore = multicore,
-# 			coreLimit = coreLimit,
-# 			nRuns = nRuns,
-# 			nStepsPRC = nStepsPRC,
-# 			numParticles = numParticles,
-# 			nInitialSimsPerParam = nInitialSimsPerParam,
-# 			nInitialSims = nInitialSims,
-# 			saveData = saveData,
-# 			verboseParticles = verboseParticles
-# 			)
-# 		#
-# 		# test that analysis output is useable
-# 		if(!identical(analysesNames,names(analysisOutput))){
-# 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
-# 			}
-# 		#
-# 		saveRDS(analysisOutput,
-# 			file = saveFileName
-# 			)
-# 		# delete analysisSetup
-# 		analysisSetup <- list()
-# 		# and save empty analysisSetup
-# 		saveRDS(analysisSetup,
-# 			file = saveSetupName
-# 			)
-# 		}
-# 	}
