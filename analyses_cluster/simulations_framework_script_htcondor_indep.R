@@ -59,6 +59,8 @@ message(paste0(
 ))
 
 #setwd("/share/bomeara/treevo_paper//")
+#setwd("~//treevo_paper//analyses_cluster")
+
 source("functions_for_analysis.R")
 source("functions_for_aquilegia_models.R")
 
@@ -181,23 +183,6 @@ if(any(anyMatchesNA)){
 # make into a multiPhylo list
 aquilegiaTreeList <- list(aquilegiaTree = aquilegiaTree)
 class(aquilegiaTreeList) <- "multiPhylo"
-#
-###############################################
-# legacy aquilegia code from Brian O'Meara:
-#
-# assume generation time of 10 years (its a perennial plant),
-# following Cooper et al. Plos ONe 2010
-# Genetic Variation at Nuclear loci fails to distinguish group is about 3 MY,
-# So =>> phy height is 3.
-# Thus each unit = 1,000,000 years or 100,000 generations
-#
-# TreeYears=100000
-# timeStep <- 1/TreeYears
-# totalTreeLength=TreeYears*sum(phy$edge.length) #how many generations are represented
-# number of expected polinator shifts based on parsimony is 7:
-# parsimonyShifts=7
-# pollinatorShiftRate=parsimonyShifts/totalTreeLength
-#
 #
 ###############################################################################
 # generate sets of ideal trees for doing simulations on
@@ -324,111 +309,111 @@ for (i in whichIndependentPrevRun){
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#
-			analysisSetup <- setupRunAnalysis(
-				runParameters = runParameters,
-				#
-				# inputs needed from script	above
-				nSimTrait = nSimTrait,
-				ratePriorError = ratePriorError,
-				#
-				anolisTreeList = anolisTreeList,
-				anolisSize = anolisSize,
-				aquilegiaTreeList = aquilegiaTreeList,
-				aquilegiaSpurLength = aquilegiaSpurLength,
-				idealTrees = idealTrees,
-				#
-				indepAnalyses_intrinsicOut = NULL,
-				indepAnalyses_extrinsicOut = NULL
-				)
+		analysisSetup <- setupRunAnalysis(
+			runParameters = runParameters,
 			#
-			##################################################################################
+			# inputs needed from script	above
+			nSimTrait = nSimTrait,
+			ratePriorError = ratePriorError,
 			#
-			# description of framework for sending jobs to htcondor
-			# taken from gitter chat with Brian
+			anolisTreeList = anolisTreeList,
+			anolisSize = anolisSize,
+			aquilegiaTreeList = aquilegiaTreeList,
+			aquilegiaSpurLength = aquilegiaSpurLength,
+			idealTrees = idealTrees,
 			#
-			#
-			# So, line 422 of the htcondor.R file
-			# I'm doing your loop, but always doing a new setup file 
-				# I save this at line 456
-			# line 458, I write a new R script 
-				# which ends at line 500
-			# line 502, I make a new bash script
-			# line 507, I make it executable
-			# line 502-520, I make a condor submit script
-			# and line 522, submit the job
-				# so, the submit script has to call a program. 
-				# That's the sh script, which just says to run Rscript with the given arguments
-				# The submit script has to know what files to copy over and those files must exist
-				# thus the line 500 file and the line 456 file
-			# so condor submits the submit script, which says, "hey, I need 24 cores" 
-				# and gets assigned a machine, then it copies over the files, 
-				# calls the bash script, which calls Rscript, which then runs. 
-				# When done (or dead), condor takes any files the script has made and 
-				# copies them over to the original directory		
-			#
-			######################################################################
-			#
-			# get file names
-			# 	
-			analysisName <- analysesNames[i]
-			#
-			# core file name
-			run_file_name_generic <- paste0(
-				analysesNames[i],
-				"_",
-				Sys.Date()
-				)
-			#
-			# RDA file
-			run_workspace_file <- paste0(
-				"Data_",
-				run_file_name_generic,
-				".rda"
-				)
-			# file for saved results
-			run_saved_results_file <- paste0(
-				"Results_", 
-				run_file_name_generic, 
-				".rda"
-				)
-			# R file
-			run_R_script <- paste0(
+			indepAnalyses_intrinsicOut = NULL,
+			indepAnalyses_extrinsicOut = NULL
+			)
+		#
+		##################################################################################
+		#
+		# description of framework for sending jobs to htcondor
+		# taken from gitter chat with Brian
+		#
+		#
+		# So, line 422 of the htcondor.R file
+		# I'm doing your loop, but always doing a new setup file 
+			# I save this at line 456
+		# line 458, I write a new R script 
+			# which ends at line 500
+		# line 502, I make a new bash script
+		# line 507, I make it executable
+		# line 502-520, I make a condor submit script
+		# and line 522, submit the job
+			# so, the submit script has to call a program. 
+			# That's the sh script, which just says to run Rscript with the given arguments
+			# The submit script has to know what files to copy over and those files must exist
+			# thus the line 500 file and the line 456 file
+		# so condor submits the submit script, which says, "hey, I need 24 cores" 
+			# and gets assigned a machine, then it copies over the files, 
+			# calls the bash script, which calls Rscript, which then runs. 
+			# When done (or dead), condor takes any files the script has made and 
+			# copies them over to the original directory		
+		#
+		######################################################################
+		#
+		# get file names
+		# 	
+		analysisName <- analysesNames[i]
+		#
+		# core file name
+		run_file_name_generic <- paste0(
+			analysesNames[i],
+			"_",
+			Sys.Date()
+			)
+		#
+		# RDA file
+		run_workspace_file <- paste0(
+			"Data_",
+			run_file_name_generic,
+			".rda"
+			)
+		# file for saved results
+		run_saved_results_file <- paste0(
+			"Results_", 
+			run_file_name_generic, 
+			".rda"
+			)
+		# R file
+		run_R_script <- paste0(
+			"Run_",
+			run_file_name_generic,
+			".R"
+			)
+		# sh file
+		run_sh_script <- paste0(
+			'Run_',
+			run_file_name_generic,
+			'.sh'
+			)	
+		# condor submission script (qsub)
+		run_submission_script <- paste0(
 				"Run_",
 				run_file_name_generic,
-				".R"
+				".qsub"
 				)
-			# sh file
-			run_sh_script <- paste0(
-				'Run_',
-				run_file_name_generic,
-				'.sh'
-				)	
-			# condor submission script (qsub)
-			run_submission_script <- paste0(
-					"Run_",
-					run_file_name_generic,
-					".qsub"
-					)
-			# generic condor file name
-			run_condor_generic_name <- paste0(
-				'run_$(Cluster)_$(Process)_',
-				run_file_name_generic
-				)
-			# error file
-			run_error_condor <- paste0(
-				run_condor_generic_name, 
-				'.err'
-				)
-			# log file
-			run_log_condor <- paste0(
-				run_condor_generic_name, 
-				'.log'
-				)
-			# output file
-			run_output_condor <- paste0(
-				run_condor_generic_name, 
-				'.out'
-				)
+		# generic condor file name
+		run_condor_generic_name <- paste0(
+			'run_$(Cluster)_$(Process)_',
+			run_file_name_generic
+			)
+		# error file
+		run_error_condor <- paste0(
+			run_condor_generic_name, 
+			'.err'
+			)
+		# log file
+		run_log_condor <- paste0(
+			run_condor_generic_name, 
+			'.log'
+			)
+		# output file
+		run_output_condor <- paste0(
+			run_condor_generic_name, 
+			'.out'
+			)
 		#####################################################################
 		# I'm doing your loop, but always doing a new setup file 
 			# I save this at line 456

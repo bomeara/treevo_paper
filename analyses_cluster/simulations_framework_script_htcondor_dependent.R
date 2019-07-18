@@ -18,26 +18,33 @@ message(paste0(
 	packageVersion("ape")
 	))
 
-setwd("/share/bomeara/treevo_paper//")
+#setwd("/share/bomeara/treevo_paper/")
+#setwd("~//treevo_paper//analyses_cluster")
 
 ############################################
-
-# load everything 
-
-
-
-
+# for parellelized cluster runs!
+# 
+# see all files in working directory
 files <- list.files()
+# identify all .rda files
+filesRDA <- files[grep(pattern=".rda",files)]
+#
+# identify all data files
+	# only need to load one of these to get workspace
+	# this should be arbitrary
+filesData <- filesRDA[grep(pattern="Data_",filesRDA)]
+# load first one
+load(filesData[1])
+#
+# get all results files
+filesResults <- filesRDA[grep(pattern="Results_",filesRDA)]
+# 
+# need to load results sequentially
+	# place as a sub-object in a list (analysisOutput)
 
 
-# find all the old workspaces
 
-# find the original saved workspace
-
-# load things to get analysisOutput
-	# a list that contains all dependent run data
-
-
+# check that analysisOutput contains all indep runs
 
 
 
@@ -155,7 +162,6 @@ for (i in whichDependentPrevRun){
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#
-
 		analysisSetup <- setupRunAnalysis(
 			runParameters = runParameters,
 			#
@@ -174,136 +180,98 @@ for (i in whichDependentPrevRun){
 			indepAnalyses_extrinsicOut = 
 				indepAnalyses_extrinsicOut
 			)	
-			
-
-
-		#################
-		# now doRun! 
+		##################################################################################
 		#
-		analysisOutput[[i]] <-	doRunAnalysis(
-			treeList = analysisSetup$treeList,
-			traitDataList = analysisSetup$traitDataList,
-			runLabel = analysisSetup$runLabel,
-			nDoRun = analysisSetup$nDoRun,
-			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
-			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
-			intrinsicArgList = analysisSetup$intrinsicArgList,
-			extrinsicArgList = analysisSetup$extrinsicArgList,
-			#
-			# presets
-			generation.time = generation.time,
-			multicore = multicore,
-			coreLimit = coreLimit,				
-			nRuns = nRuns, 
-			nStepsPRC = nStepsPRC, 
-			numParticles = numParticles, 
-			nInitialSimsPerParam = nInitialSimsPerParam, 
-			nInitialSims = nInitialSims,
-			saveData = saveData,
-			verboseParticles = verboseParticles
+		# description of framework for sending jobs to htcondor
+		# taken from gitter chat with Brian
+		#
+		#
+		# So, line 422 of the htcondor.R file
+		# I'm doing your loop, but always doing a new setup file 
+			# I save this at line 456
+		# line 458, I write a new R script 
+			# which ends at line 500
+		# line 502, I make a new bash script
+		# line 507, I make it executable
+		# line 502-520, I make a condor submit script
+		# and line 522, submit the job
+			# so, the submit script has to call a program. 
+			# That's the sh script, which just says to run Rscript with the given arguments
+			# The submit script has to know what files to copy over and those files must exist
+			# thus the line 500 file and the line 456 file
+		# so condor submits the submit script, which says, "hey, I need 24 cores" 
+			# and gets assigned a machine, then it copies over the files, 
+			# calls the bash script, which calls Rscript, which then runs. 
+			# When done (or dead), condor takes any files the script has made and 
+			# copies them over to the original directory		
+		#
+		######################################################################
+		#
+		# get file names
+		# 	
+		analysisName <- analysesNames[i]
+		#
+		# core file name
+		run_file_name_generic <- paste0(
+			analysesNames[i],
+			"_",
+			Sys.Date()
 			)
-		
-
-
-
-		}
-	}
-
-
-
-
-			##################################################################################
-			#
-			# description of framework for sending jobs to htcondor
-			# taken from gitter chat with Brian
-			#
-			#
-			# So, line 422 of the htcondor.R file
-			# I'm doing your loop, but always doing a new setup file 
-				# I save this at line 456
-			# line 458, I write a new R script 
-				# which ends at line 500
-			# line 502, I make a new bash script
-			# line 507, I make it executable
-			# line 502-520, I make a condor submit script
-			# and line 522, submit the job
-				# so, the submit script has to call a program. 
-				# That's the sh script, which just says to run Rscript with the given arguments
-				# The submit script has to know what files to copy over and those files must exist
-				# thus the line 500 file and the line 456 file
-			# so condor submits the submit script, which says, "hey, I need 24 cores" 
-				# and gets assigned a machine, then it copies over the files, 
-				# calls the bash script, which calls Rscript, which then runs. 
-				# When done (or dead), condor takes any files the script has made and 
-				# copies them over to the original directory		
-			#
-			######################################################################
-			#
-			# get file names
-			# 	
-			analysisName <- analysesNames[i]
-			#
-			# core file name
-			run_file_name_generic <- paste0(
-				analysesNames[i],
-				"_",
-				Sys.Date()
-				)
-			#
-			# RDA file
-			run_workspace_file <- paste0(
-				"Data_",
-				run_file_name_generic,
-				".rda"
-				)
-			# file for saved results
-			run_saved_results_file <- paste0(
-				"Results_", 
-				run_file_name_generic, 
-				".rda"
-				)
-			# R file
-			run_R_script <- paste0(
+		#
+		# RDA file
+		run_workspace_file <- paste0(
+			"Data_",
+			run_file_name_generic,
+			".rda"
+			)
+		# file for saved results
+		run_saved_results_file <- paste0(
+			"Results_", 
+			run_file_name_generic, 
+			".rda"
+			)
+		# R file
+		run_R_script <- paste0(
+			"Run_",
+			run_file_name_generic,
+			".R"
+			)
+		# sh file
+		run_sh_script <- paste0(
+			'Run_',
+			run_file_name_generic,
+			'.sh'
+			)	
+		# condor submission script (qsub)
+		run_submission_script <- paste0(
 				"Run_",
 				run_file_name_generic,
-				".R"
+				".qsub"
 				)
-			# sh file
-			run_sh_script <- paste0(
-				'Run_',
-				run_file_name_generic,
-				'.sh'
-				)	
-			# condor submission script (qsub)
-			run_submission_script <- paste0(
-					"Run_",
-					run_file_name_generic,
-					".qsub"
-					)
-			# generic condor file name
-			run_condor_generic_name <- paste0(
-				'run_$(Cluster)_$(Process)_',
-				run_file_name_generic
-				)
-			# error file
-			run_error_condor <- paste0(
-				run_condor_generic_name, 
-				'.err'
-				)
-			# log file
-			run_log_condor <- paste0(
-				run_condor_generic_name, 
-				'.log'
-				)
-			# output file
-			run_output_condor <- paste0(
-				run_condor_generic_name, 
-				'.out'
-				)
+		# generic condor file name
+		run_condor_generic_name <- paste0(
+			'run_$(Cluster)_$(Process)_',
+			run_file_name_generic
+			)
+		# error file
+		run_error_condor <- paste0(
+			run_condor_generic_name, 
+			'.err'
+			)
+		# log file
+		run_log_condor <- paste0(
+			run_condor_generic_name, 
+			'.log'
+			)
+		# output file
+		run_output_condor <- paste0(
+			run_condor_generic_name, 
+			'.out'
+			)
 		#####################################################################
 		# I'm doing your loop, but always doing a new setup file 
 			# I save this at line 456
-		save(list=ls(), file= run_workspace_file)
+		save(list=ls(), file= run_workspace_file)			
 		#
 		###################################################
 		# make the R script
