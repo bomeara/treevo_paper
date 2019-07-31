@@ -1,0 +1,88 @@
+000 (041.000.000) 07/13 13:55:58 Job submitted from host: <160.36.155.106:9618?addrs=160.36.155.106-9618&noUDP&sock=27742_4872_4>
+...
+001 (041.000.000) 07/13 13:56:00 Job executing on host: <10.129.169.104:9618?addrs=10.129.169.104-9618&noUDP&sock=60687_d010_4>
+...
+006 (041.000.000) 07/13 13:56:09 Image size of job updated: 1990088
+	1944  -  MemoryUsage of job (MB)
+	1990088  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 14:01:10 Image size of job updated: 2698004
+	2635  -  MemoryUsage of job (MB)
+	2698004  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 14:06:11 Image size of job updated: 2702620
+	2640  -  MemoryUsage of job (MB)
+	2702620  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 14:11:11 Image size of job updated: 2744648
+	2681  -  MemoryUsage of job (MB)
+	2744648  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 17:51:34 Image size of job updated: 2757744
+	2694  -  MemoryUsage of job (MB)
+	2757744  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 17:56:34 Image size of job updated: 2761112
+	2697  -  MemoryUsage of job (MB)
+	2761112  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 21:51:58 Image size of job updated: 2762348
+	2698  -  MemoryUsage of job (MB)
+	2762348  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 21:56:59 Image size of job updated: 2762576
+	2698  -  MemoryUsage of job (MB)
+	2762576  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/13 22:01:59 Image size of job updated: 2762952
+	2699  -  MemoryUsage of job (MB)
+	2762952  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/14 01:47:23 Image size of job updated: 2763508
+	2699  -  MemoryUsage of job (MB)
+	2763508  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/14 01:52:24 Image size of job updated: 2764008
+	2700  -  MemoryUsage of job (MB)
+	2764008  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/14 05:37:46 Image size of job updated: 2766384
+	2702  -  MemoryUsage of job (MB)
+	2766384  -  ResidentSetSize of job (KB)
+...
+006 (041.000.000) 07/14 05:42:47 Image size of job updated: 2772184
+	2708  -  MemoryUsage of job (MB)
+	2772184  -  ResidentSetSize of job (KB)
+...
+022 (041.000.000) 07/14 09:09:47 Job disconnected, attempting to reconnect
+    Socket between submit and execute hosts closed unexpectedly
+    Trying to reconnect to slot1_2@omearalab22 <10.129.169.104:9618?addrs=10.129.169.104-9618&noUDP&sock=60687_d010_4>
+...
+023 (041.000.000) 07/14 09:25:31 Job reconnected to slot1_2@omearalab22
+    startd address: <10.129.169.104:9618?addrs=10.129.169.104-9618&noUDP&sock=60687_d010_4>
+    starter address: <10.129.169.104:9618?addrs=10.129.169.104-9618&noUDP&sock=60784_93a1_140>
+...
+022 (041.000.000) 07/14 09:32:10 Job disconnected, attempting to reconnect
+    Socket between submit and execute hosts closed unexpectedly
+    Trying to reconnect to slot1_2@omearalab22 <10.129.169.104:9618?addrs=10.129.169.104-9618&noUDP&sock=60687_d010_4>
+...
+024 (041.000.000) 07/14 10:12:31 Job reconnection failed
+    Job disconnected too long: JobLeaseDuration (2400 seconds) expired
+    Can not reconnect to slot1_2@omearalab22, rescheduling job
+...
+001 (041.000.000) 07/14 10:26:48 Job executing on host: <160.36.154.249:9618?addrs=160.36.154.249-9618&noUDP&sock=66431_b80f_4>
+...
+004 (041.000.000) 07/14 12:34:34 Job was evicted.
+	(0) Job was not checkpointed.
+		Usr 0 05:29:01, Sys 0 00:00:05  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	86674  -  Run Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     2.40        1         1 
+	   Disk (KB)            :   101         125    202517 
+	   Memory (MB)          :  2930        2930      2944 
+...
+009 (041.000.000) 07/14 12:34:34 Job was aborted by the user.
+	via condor_rm (by user bomeara)
+...
