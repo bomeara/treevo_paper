@@ -1,0 +1,12 @@
+log = run_$(Cluster)_$(Process)_An_Emp_Disp.log
+error = run_$(Cluster)_$(Process)_An_Emp_Disp.err
+output = run_$(Cluster)_$(Process)_An_Emp_Disp.out
+
+executable = Run_An_Emp_Disp.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = Data_An_Emp_Disp.rda,Run_An_Emp_Disp.R,Run_An_Emp_Disp.sh
+
+queue 1
+		

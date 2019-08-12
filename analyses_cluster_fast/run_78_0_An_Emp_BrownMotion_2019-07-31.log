@@ -1,0 +1,120 @@
+000 (078.000.000) 07/31 22:38:52 Job submitted from host: <160.36.155.106:9618?addrs=160.36.155.106-9618&noUDP&sock=27742_4872_4>
+...
+033 (078.000.000) 07/31 22:39:25 Changing job attribute JobPrio from 0 to 1
+...
+033 (078.000.000) 08/02 14:17:31 Changing job attribute JobPrio from 1 to 1
+...
+012 (078.000.000) 08/03 14:17:31 Job was held.
+	via condor_hold (by user bomeara)
+	Code 1 Subcode 0
+...
+013 (078.000.000) 08/03 15:02:11 Job was released.
+	via condor_release (by user bomeara)
+...
+001 (078.000.000) 08/07 07:58:54 Job executing on host: <10.129.167.211:9618?addrs=10.129.167.211-9618&noUDP&sock=2348_1c76_4>
+...
+006 (078.000.000) 08/07 07:59:03 Image size of job updated: 3796964
+	3701  -  MemoryUsage of job (MB)
+	3788904  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 08:04:04 Image size of job updated: 5460600
+	5325  -  MemoryUsage of job (MB)
+	5452540  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 08:14:05 Image size of job updated: 5475152
+	5339  -  MemoryUsage of job (MB)
+	5467048  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 08:24:07 Image size of job updated: 5502224
+	5366  -  MemoryUsage of job (MB)
+	5494120  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 08:34:07 Image size of job updated: 5515648
+	5379  -  MemoryUsage of job (MB)
+	5507544  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 08:54:10 Image size of job updated: 5524524
+	5388  -  MemoryUsage of job (MB)
+	5516404  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 08:59:11 Image size of job updated: 5524612
+	5388  -  MemoryUsage of job (MB)
+	5516492  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:04:11 Image size of job updated: 5594316
+	5456  -  MemoryUsage of job (MB)
+	5586152  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:14:13 Image size of job updated: 5607920
+	5469  -  MemoryUsage of job (MB)
+	5599756  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:19:13 Image size of job updated: 5607964
+	5469  -  MemoryUsage of job (MB)
+	5599800  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:24:13 Image size of job updated: 5608000
+	5469  -  MemoryUsage of job (MB)
+	5599836  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:29:14 Image size of job updated: 5608680
+	5470  -  MemoryUsage of job (MB)
+	5600516  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:39:15 Image size of job updated: 5610848
+	5472  -  MemoryUsage of job (MB)
+	5602684  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:49:16 Image size of job updated: 5612904
+	5474  -  MemoryUsage of job (MB)
+	5604740  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 09:59:16 Image size of job updated: 5614544
+	5475  -  MemoryUsage of job (MB)
+	5606380  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 10:04:18 Image size of job updated: 5614828
+	5476  -  MemoryUsage of job (MB)
+	5606664  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 10:09:18 Image size of job updated: 5615380
+	5476  -  MemoryUsage of job (MB)
+	5607216  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 10:14:18 Image size of job updated: 5615740
+	5477  -  MemoryUsage of job (MB)
+	5607576  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 10:19:19 Image size of job updated: 5615744
+	5477  -  MemoryUsage of job (MB)
+	5607580  -  ResidentSetSize of job (KB)
+...
+006 (078.000.000) 08/07 10:24:20 Image size of job updated: 5616588
+	5477  -  MemoryUsage of job (MB)
+	5608424  -  ResidentSetSize of job (KB)
+...
+022 (078.000.000) 08/07 11:31:05 Job disconnected, attempting to reconnect
+    Socket between submit and execute hosts closed unexpectedly
+    Trying to reconnect to slot1_1@omearaclusterc <10.129.167.211:9618?addrs=10.129.167.211-9618&noUDP&sock=2348_1c76_4>
+...
+024 (078.000.000) 08/07 12:11:06 Job reconnection failed
+    Job disconnected too long: JobLeaseDuration (2400 seconds) expired
+    Can not reconnect to slot1_1@omearaclusterc, rescheduling job
+...
+001 (078.000.000) 08/09 10:05:09 Job executing on host: <10.129.167.211:9618?addrs=10.129.167.211-9618&noUDP&sock=2331_7359_4>
+...
+005 (078.000.000) 08/11 06:59:23 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 40 18:56:10, Sys 0 00:10:22  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 40 18:56:10, Sys 0 00:10:22  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	154865  -  Run Bytes Sent By Job
+	39764  -  Run Bytes Received By Job
+	154865  -  Total Bytes Sent By Job
+	79528  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     7.99       24        24 
+	   Disk (KB)            :   206          75    891902 
+	   Memory (MB)          :  7325        7325      7424 
+...

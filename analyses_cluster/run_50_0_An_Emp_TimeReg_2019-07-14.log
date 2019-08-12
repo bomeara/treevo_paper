@@ -36,3 +36,18 @@
     startd address: <10.129.213.175:9618?addrs=10.129.213.175-9618&noUDP&sock=21324_119e_4>
     starter address: <10.129.213.175:9618?addrs=10.129.213.175-9618&noUDP&sock=21411_bc80_100>
 ...
+022 (050.000.000) 08/01 10:00:03 Job disconnected, attempting to reconnect
+    Socket between submit and execute hosts closed unexpectedly
+    Trying to reconnect to slot1_1@omearalab9 <10.129.213.175:9618?addrs=10.129.213.175-9618&noUDP&sock=21324_119e_4>
+...
+024 (050.000.000) 08/01 10:40:23 Job reconnection failed
+    Job disconnected too long: JobLeaseDuration (2400 seconds) expired
+    Can not reconnect to slot1_1@omearalab9, rescheduling job
+...
+012 (050.000.000) 08/03 14:17:31 Job was held.
+	via condor_hold (by user bomeara)
+	Code 1 Subcode 0
+...
+009 (050.000.000) 08/09 10:23:15 Job was aborted by the user.
+	via condor_rm (by user bomeara)
+...

@@ -1,0 +1,12 @@
+log = run_$(Cluster)_$(Process)_Aq_Emp_BrownMotion.log
+error = run_$(Cluster)_$(Process)_Aq_Emp_BrownMotion.err
+output = run_$(Cluster)_$(Process)_Aq_Emp_BrownMotion.out
+
+executable = Run_Aq_Emp_BrownMotion.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = Data_Aq_Emp_BrownMotion.rda,Run_Aq_Emp_BrownMotion.R,Run_Aq_Emp_BrownMotion.sh
+
+queue 1
+		

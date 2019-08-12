@@ -1,0 +1,12 @@
+log = run_$(Cluster)_$(Process)_Aq_Emp_3Opt2Bound.log
+error = run_$(Cluster)_$(Process)_Aq_Emp_3Opt2Bound.err
+output = run_$(Cluster)_$(Process)_Aq_Emp_3Opt2Bound.out
+
+executable = Run_Aq_Emp_3Opt2Bound.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = Data_Aq_Emp_3Opt2Bound.rda,Run_Aq_Emp_3Opt2Bound.R,Run_Aq_Emp_3Opt2Bound.sh
+
+queue 1
+		

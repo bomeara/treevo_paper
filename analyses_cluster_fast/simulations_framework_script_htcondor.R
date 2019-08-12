@@ -29,7 +29,7 @@ nRuns <- 2            		  # use 2 - recc default is 2
 #(for testing, use 1)
 nStepsPRC <- 5        		  # use 5 - recc default is 5
 #(for testing, use 2)
-numParticles <- 300 			  # use 300 - recc default is 300
+numParticles <- 100 			  # use 300 - recc default is 300
 #(for testing, use 5)
 nInitialSimsPerParam <- 100 	  # use 100 - recc default is 100
 #(for testing, use 10)

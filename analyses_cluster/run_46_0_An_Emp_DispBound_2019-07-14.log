@@ -374,3 +374,18 @@
 	5864  -  MemoryUsage of job (MB)
 	6004356  -  ResidentSetSize of job (KB)
 ...
+022 (046.000.000) 08/01 09:59:14 Job disconnected, attempting to reconnect
+    Socket between submit and execute hosts closed unexpectedly
+    Trying to reconnect to slot1_1@omearaclusterd <10.130.28.84:9618?addrs=10.130.28.84-9618&noUDP&sock=69176_8f87_4>
+...
+024 (046.000.000) 08/01 10:39:34 Job reconnection failed
+    Job disconnected too long: JobLeaseDuration (2400 seconds) expired
+    Can not reconnect to slot1_1@omearaclusterd, rescheduling job
+...
+012 (046.000.000) 08/03 14:17:31 Job was held.
+	via condor_hold (by user bomeara)
+	Code 1 Subcode 0
+...
+009 (046.000.000) 08/09 10:22:51 Job was aborted by the user.
+	via condor_rm (by user bomeara)
+...

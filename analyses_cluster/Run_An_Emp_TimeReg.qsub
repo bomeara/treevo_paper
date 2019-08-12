@@ -1,0 +1,12 @@
+log = run_$(Cluster)_$(Process)_An_Emp_TimeReg.log
+error = run_$(Cluster)_$(Process)_An_Emp_TimeReg.err
+output = run_$(Cluster)_$(Process)_An_Emp_TimeReg.out
+
+executable = Run_An_Emp_TimeReg.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = Data_An_Emp_TimeReg.rda,Run_An_Emp_TimeReg.R,Run_An_Emp_TimeReg.sh
+
+queue 1
+		
