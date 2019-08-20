@@ -49,17 +49,20 @@ Remove
 files <- list.files(dir)
 # identify all .rda files
 filesRDA <- files[grep(pattern=".rda",files)]
-#
+
+
 # identify all data files
 	# only need to load one of these to get workspace
 	# this should be arbitrary
 filesData <- filesRDA[grep(pattern="Data_",filesRDA)]
 # load first one
-load(filesData[1])
-#
+load(paste0(dir,filesData[1]))
+
+
 # get all results files
 filesResults <- filesRDA[grep(pattern="Results_",filesRDA)]
-# 
+ 
+
 # get names of the analyses
 analysisNames_Results <- sapply(filesResults,
                                 function(x){
@@ -69,26 +72,21 @@ analysisNames_Results <- sapply(filesResults,
                                   substr(x, start = 1, stop = nchar(x)-11)
                                   }
                                 )
+
 # for now, just crash if there's duplicates
-if(length(analysisNames_Results) > length(unique(analysisNames_Results)){
+if(length(analysisNames_Results) > length(unique(analysisNames_Results))){
 	stop("There's duplicate results files")
 	}
-# for now, just crash if the analyses names don't perfectly lineup with 
-	# the full list of independent analyses
-matchedAnalysisNames <- match(analysesNames[whichIndependentPrevRun], 
-	analysisNames_Results)
-if(any(is.na(matchedAnalysisNames))){
-	stop("Result files not found for all indep analyses")
-	}
+
 # need to load results sequentially
 	# place as a sub-object in the pre-existing list: analysisOutput
-for(indepName in analysesNames[whichIndependentPrevRun]){
-	load(filesResults[analysisNames_Results == indepName])
-	analysisOutput[[indepName]] <- results
+
+for(i in 1:length(analysisNames_Results)){
+  fileLoc <- paste0(dir, filesResults[i])
+  #print(fileLoc)
+	load(fileLoc)
+	analysisOutput[[ analysisNames_Results[i] ]] <- results
 	}
-
-
-
 
 ```
 
@@ -96,12 +94,14 @@ for(indepName in analysesNames[whichIndependentPrevRun]){
 
 
 
+ This function calculates Effective Sample Size (ESS) on results.  
+
+ Performs the best when results are from multiple runs.
+
 ```{r}
 
-# This function calculates Effective Sample Size (ESS) on results.  
-# Performs the best when results are from multiple runs.
-
 pairwiseESS(results$particleDataFrame)
+```
 
 # bayesCoverageProb
 	# for comparing true / generating parameter values to the posteriors of analyses done on that data
@@ -111,11 +111,17 @@ pairwiseESS(results$particleDataFrame)
 	
 
 # examples of getting density coordinates and summary statistics from distributions
+
+```{r}
 priorKernal<-getUnivariatePriorCurve(priorFn="normal", priorVariables=c(28,2),
 	nPoints=100000, from=NULL, to=NULL, prob=0.95)
 postKernal<-getUnivariatePosteriorCurve(acceptedValues=results$particleDataFrame$starting_1,
 	from=NULL, to=NULL, prob=0.95)
+```
+
 # let's compare this (supposed) prior against the posterior in a plot
+
+```{r}
 plotUnivariatePosteriorVsPrior(posteriorCurve=postKernal, priorCurve=priorKernal,
 	label="parameter", trueValue=NULL, prob=0.95)
 ```
