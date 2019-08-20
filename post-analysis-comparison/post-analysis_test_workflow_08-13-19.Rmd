@@ -5,10 +5,93 @@ date: "August 13, 2019"
 output: pdf_document
 ---
 
+Our 
 
-Expect data from parallel/cluster set of analyses
+
+
+
+
+
+
+```{r collapse=TRUE}
+library(ape)
+library(TreEvo)
+
+# get package versions
+if(packageVersion("TreEvo") < "0.21.0"){
+	stop("Update TreEvo first!")
+	}
+	
+message(paste0(
+	"TreEvo Version Used: ", 
+	packageVersion("TreEvo")
+	))
+message(paste0(
+	"ape Version Used: ", 
+	packageVersion("ape")
+	))
+
+```
+
+
+First thing first, what directory do we want to get data files from?
+
+```{r}
+dir <- "~//treevo_paper//analyses_cluster_fast//"
+```
 
 Remove 
+
+
+```{r}
+
+# see all files in working directory
+files <- list.files(dir)
+# identify all .rda files
+filesRDA <- files[grep(pattern=".rda",files)]
+#
+# identify all data files
+	# only need to load one of these to get workspace
+	# this should be arbitrary
+filesData <- filesRDA[grep(pattern="Data_",filesRDA)]
+# load first one
+load(filesData[1])
+#
+# get all results files
+filesResults <- filesRDA[grep(pattern="Results_",filesRDA)]
+# 
+# get names of the analyses
+analysisNames_Results <- sapply(filesResults,
+                                function(x){
+                                  x <- gsub(x, pattern="Results_", replacement="")
+                                  x <- gsub(x, pattern=".rda", replacement="")
+                                  # remove date and last '_'
+                                  substr(x, start = 1, stop = nchar(x)-11)
+                                  }
+                                )
+# for now, just crash if there's duplicates
+if(length(analysisNames_Results) > length(unique(analysisNames_Results)){
+	stop("There's duplicate results files")
+	}
+# for now, just crash if the analyses names don't perfectly lineup with 
+	# the full list of independent analyses
+matchedAnalysisNames <- match(analysesNames[whichIndependentPrevRun], 
+	analysisNames_Results)
+if(any(is.na(matchedAnalysisNames))){
+	stop("Result files not found for all indep analyses")
+	}
+# need to load results sequentially
+	# place as a sub-object in the pre-existing list: analysisOutput
+for(indepName in analysesNames[whichIndependentPrevRun]){
+	load(filesResults[analysisNames_Results == indepName])
+	analysisOutput[[indepName]] <- results
+	}
+
+
+
+
+```
+
 
 
 
