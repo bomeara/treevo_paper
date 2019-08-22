@@ -196,7 +196,7 @@ highestPostDens(results$particleDataFrame, percent=0.95, returnData=FALSE)
 
 This function plots posterior density distribution for each generation in a three-dimensional plot window. Unfortunately, due to `gpclib` not being available on Windows machines, it isn't available for the author of this document at this very moment.
 
-```{r eval = FALSE}
+```{r eval = FALSE, echo=FALSE}
 for(i in 1:length(analysisOutput)){
   nTree <- length(analysisOutput[[i]])
   for(j in nTree){
