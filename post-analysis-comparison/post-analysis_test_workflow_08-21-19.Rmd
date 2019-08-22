@@ -111,25 +111,6 @@ for(i in 1:length(analysisOutput)){
 
 ```
 
-
-# testMultivarOutlierHDR
-
-This tests if an 'outlier' (some sample) is within a multivariate cloud of particles at some alpha
-
-Very useful for testing if the generating parameters are within the particles for a simulation for dependant analyses - not so useful for indep analyses though!
-
-```{r eval = FALSE}
-particleMatrix <- NA
-generatingParams <- NA
-
-testMultivarOutlierHDR(
-  dataMatrix = particleMatrix, 
-  outlier = generatingParams, 
-  alpha = 0.8, 
-  pca = TRUE
-  )
-```
-
 # plotUnivariatePosteriorVsPrior 
 
 This function plots priors versus their posteriors - this will be useful for runs with bad prior on BM.
@@ -179,22 +160,6 @@ for(i in 1:length(analysisOutput)){
 ```
 	
 
-```{r}
-
-```
-
-# let's compare this (supposed) prior against the posterior in a plot
-
-```{r}
-
-```
-	
-# plotPosteriors
-	# for each free parameter in the posterior, a plot is made of the distribution of values estimate in the last generation
-	# can also be used to visually compare against true (generating) parameter values in a simulation.
-	
-plotPosteriors(particleDataFrame=resultsBM$particleDataFrame,
-   priorsMat=resultsBM$PriorMatrix)
 
 # highestPostDens 
 	# get weighted mean, standard deviation, upper and lower highest posterior density (HPD) for each free parameter in posterior. 
@@ -254,5 +219,36 @@ highestPostDens(results$particleDataFrame, percent=0.95, returnData=FALSE)
 #(where A is usually BM)
 
 
+```
+
+
+
+
+# Methods for comparing Results of Analyses Based on Simulated Data To True Values
+
+## plotPosteriors
+
+For each free parameter in the posterior, a plot is made of the distribution of values estimate in the last generation. This can also be used to visually compare against true (generating) parameter values in a simulation.
+
+```{r eval = FALSE}
+plotPosteriors(particleDataFrame=resultsBM$particleDataFrame,
+   priorsMat=resultsBM$PriorMatrix)
+
+# testMultivarOutlierHDR
+
+This tests if an 'outlier' (some sample) is within a multivariate cloud of particles at some alpha
+
+Very useful for testing if the generating parameters are within the particles for a simulation for dependant analyses - not so useful for indep analyses though!
+
+```{r eval = FALSE}
+particleMatrix <- NA
+generatingParams <- NA
+
+testMultivarOutlierHDR(
+  dataMatrix = particleMatrix, 
+  outlier = generatingParams, 
+  alpha = 0.8, 
+  pca = TRUE
+  )
 ```
 
