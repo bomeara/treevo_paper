@@ -666,88 +666,117 @@ queue 1
 #
 # # run all dependent analyses
 # #
-# message("#############################################")
-# message("#########  Dependent Analyses  ##############")
-# #
-# for (i in whichDependentPrevRun){
-# 	if(analysisOutput[[i]] == analysesNames[i]){
-# 		#
-# 		message("#####################################")
-# 		message("######   Now running -- ", analysesNames[i], "  ##########")
-# 		#
-# 		runParameters <- simRunTable[i, , drop = FALSE]
-# 		#
-# 		if(identical(analysisSetup, list())){
-# 			analysisSetup <- setupRunAnalysis(
-# 				runParameters = runParameters,
-# 				#
-# 				# inputs needed from script	above
-# 				nSimTrait = nSimTrait,
-# 				ratePriorError = ratePriorError,
-# 				#
-# 				anolisTreeList = anolisTreeList,
-# 				anolisSize = anolisSize,
-# 				aquilegiaTreeList = aquilegiaTreeList,
-# 				aquilegiaSpurLength = aquilegiaSpurLength,
-# 				idealTrees = idealTrees,
-# 				#
-# 				indepAnalyses_intrinsicOut =
-# 					indepAnalyses_intrinsicOut,
-# 				indepAnalyses_extrinsicOut =
-# 					indepAnalyses_extrinsicOut
-# 				)
-# 			#
-# 			# save analysisSetup
-# 			saveRDS(analysisSetup,
-# 				file = saveSetupName
-# 				)
-# 		}else{
-# 			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
-# 				stop(paste0(
-# 					"Loaded analysisSetup does not match expected run label.\n",
-# 					"Maybe delete old files?"
-# 					))
-# 				}
-# 			}
-# 		#################
-# 		# now doRun!
-# 		#
-# 		analysisOutput[[i]] <-	doRunAnalysis(
-# 			treeList = analysisSetup$treeList,
-# 			traitDataList = analysisSetup$traitDataList,
-# 			runLabel = analysisSetup$runLabel,
-# 			nDoRun = analysisSetup$nDoRun,
-# 			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
-# 			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
-# 			intrinsicArgList = analysisSetup$intrinsicArgList,
-# 			extrinsicArgList = analysisSetup$extrinsicArgList,
-# 			#
-# 			# presets
-# 			generation.time = generation.time,
-# 			multicore = multicore,
-# 			coreLimit = coreLimit,
-# 			nRuns = nRuns,
-# 			nStepsPRC = nStepsPRC,
-# 			numParticles = numParticles,
-# 			nInitialSimsPerParam = nInitialSimsPerParam,
-# 			nInitialSims = nInitialSims,
-# 			saveData = saveData,
-# 			verboseParticles = verboseParticles
-# 			)
-# 		#
-# 		# test that analysis output is useable
-# 		if(!identical(analysesNames,names(analysisOutput))){
-# 			stop("analysisOutput seems to be corrupt - names do not match analysesNames")
-# 			}
-# 		#
-# 		saveRDS(analysisOutput,
-# 			file = saveFileName
-# 			)
-# 		# delete analysisSetup
-# 		analysisSetup <- list()
-# 		# and save empty analysisSetup
-# 		saveRDS(analysisSetup,
-# 			file = saveSetupName
-# 			)
-# 		}
-# 	}
+message("#############################################")
+message("#########  Dependent Analyses  ##############")
+#
+for (i in whichDependentPrevRun){
+	if(analysisOutput[[i]] == analysesNames[i]){
+		#
+		message("#####################################")
+		message("######   Now running -- ", analysesNames[i], "  ##########")
+		#
+		runParameters <- simRunTable[i, , drop = FALSE]
+		#
+		if(identical(analysisSetup, list())){
+			analysisSetup <- setupRunAnalysis(
+				runParameters = runParameters,
+				#
+				# inputs needed from script	above
+				nSimTrait = nSimTrait,
+				ratePriorError = ratePriorError,
+				#
+				anolisTreeList = anolisTreeList,
+				anolisSize = anolisSize,
+				aquilegiaTreeList = aquilegiaTreeList,
+				aquilegiaSpurLength = aquilegiaSpurLength,
+				idealTrees = idealTrees,
+				#
+				indepAnalyses_intrinsicOut =
+					indepAnalyses_intrinsicOut,
+				indepAnalyses_extrinsicOut =
+					indepAnalyses_extrinsicOut
+				)
+			#
+			# save analysisSetup
+			saveRDS(analysisSetup,
+				file = saveSetupName
+				)
+		}else{
+			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
+				stop(paste0(
+					"Loaded analysisSetup does not match expected run label.\n",
+					"Maybe delete old files?"
+					))
+				}
+			}
+		#################
+		# now doRun!
+		#
+
+		save(list=ls(), file=paste0("Data_",analysesNames[i],"_",Sys.Date(),".rda"))
+
+		cat(paste0('library(ape)
+		library(TreEvo)
+		load("Data_',analysesNames[i],"_",Sys.Date(),'.rda")
+
+		# get package versions
+		if(packageVersion("TreEvo") < "0.21.0"){
+			stop("Update TreEvo first!")
+		}
+
+		message(paste0(
+			"TreEvo Version Used: ",
+			packageVersion("TreEvo")
+		))
+		message(paste0(
+			"ape Version Used: ",
+			packageVersion("ape")
+		))
+
+
+		result <- doRunAnalysis(
+			treeList = analysisSetup$treeList,
+			traitDataList = analysisSetup$traitDataList,
+			runLabel = analysisSetup$runLabel,
+			nDoRun = analysisSetup$nDoRun,
+			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
+			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
+			intrinsicArgList = analysisSetup$intrinsicArgList,
+			extrinsicArgList = analysisSetup$extrinsicArgList,
+			#
+			# presets
+			generation.time = generation.time,
+			multicore = multicore,
+			coreLimit = coreLimit,
+			nRuns = nRuns,
+			nStepsPRC = nStepsPRC,
+			numParticles = numParticles,
+			nInitialSimsPerParam = nInitialSimsPerParam,
+			nInitialSims = nInitialSims,
+			saveData = saveData,
+			verboseParticles = verboseParticles
+		)
+		save(result, file="Results_', analysesNames[i],"_",Sys.Date(), '.rda")
+		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".R"))
+
+		cat(paste0('#!/bin/bash
+
+		Rscript Run_',analysesNames[i],"_",Sys.Date(),'.R
+		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".sh"))
+
+		system(paste0("chmod u+x Run_",analysesNames[i],"_",Sys.Date(),".sh"))
+
+		cat(paste0('log = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.log
+error = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.err
+output = run_$(Cluster)_$(Process)_', analysesNames[i],"_",Sys.Date(), '.out
+
+executable = Run_',analysesNames[i],"_",Sys.Date(),'.sh
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = Data_',analysesNames[i],"_",Sys.Date(),'.rda,Run_',analysesNames[i],"_",Sys.Date(),'.R,Run_',analysesNames[i],"_",Sys.Date(),'.sh
+request_cpus = 24
+queue 1
+		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".qsub"))	
+		}
+	}
