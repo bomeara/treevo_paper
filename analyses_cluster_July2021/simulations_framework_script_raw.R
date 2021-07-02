@@ -677,7 +677,7 @@ for (i in whichDependentPrevRun){
 		#
 		runParameters <- simRunTable[i, , drop = FALSE]
 		#
-		if(identical(analysisSetup, list())){
+		#if(identical(analysisSetup, list())){
 			analysisSetup <- setupRunAnalysis(
 				runParameters = runParameters,
 				#
@@ -701,14 +701,14 @@ for (i in whichDependentPrevRun){
 			saveRDS(analysisSetup,
 				file = saveSetupName
 				)
-		}else{
-			if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
-				stop(paste0(
-					"Loaded analysisSetup does not match expected run label.\n",
-					"Maybe delete old files?"
-					))
-				}
-			}
+		# }else{
+		# 	if(!identical(analysisSetup$runLabel, runParameters$runLabel)){
+		# 		stop(paste0(
+		# 			"Loaded analysisSetup does not match expected run label.\n",
+		# 			"Maybe delete old files?"
+		# 			))
+		# 		}
+		# 	}
 		#################
 		# now doRun!
 		#
@@ -779,4 +779,4 @@ request_cpus = 24
 queue 1
 		'), file=paste0("Run_",analysesNames[i],"_",Sys.Date(),".qsub"))	
 		}
-	}
+	#}
