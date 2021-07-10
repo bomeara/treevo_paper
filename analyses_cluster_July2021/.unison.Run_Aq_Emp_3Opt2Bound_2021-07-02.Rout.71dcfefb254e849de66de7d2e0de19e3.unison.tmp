@@ -1,0 +1,86 @@
+
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(ape)
+> 		library(TreEvo)
+> 		load("Data_Aq_Emp_3Opt2Bound_2021-07-02.rda")
+> 
+> 		# get package versions
+> 		if(packageVersion("TreEvo") < "0.21.0"){
++ 			stop("Update TreEvo first!")
++ 		}
+> 
+> 		message(paste0(
++ 			"TreEvo Version Used: ",
++ 			packageVersion("TreEvo")
++ 		))
+TreEvo Version Used: 0.22.0
+> 		message(paste0(
++ 			"ape Version Used: ",
++ 			packageVersion("ape")
++ 		))
+ape Version Used: 5.5
+> 
+> 
+> 		result <- doRunAnalysis(
++ 			treeList = analysisSetup$treeList,
++ 			traitDataList = analysisSetup$traitDataList,
++ 			runLabel = analysisSetup$runLabel,
++ 			nDoRun = analysisSetup$nDoRun,
++ 			intrinsicFunctionToFit = analysisSetup$intrinsicFunctionToFit,
++ 			extrinsicFunctionToFit = analysisSetup$extrinsicFunctionToFit,
++ 			intrinsicArgList = analysisSetup$intrinsicArgList,
++ 			extrinsicArgList = analysisSetup$extrinsicArgList,
++ 			#
++ 			# presets
++ 			generation.time = generation.time,
++ 			multicore = multicore,
++ 			coreLimit = coreLimit,
++ 			nRuns = nRuns,
++ 			nStepsPRC = nStepsPRC,
++ 			numParticles = numParticles,
++ 			nInitialSimsPerParam = nInitialSimsPerParam,
++ 			nInitialSims = nInitialSims,
++ 			saveData = saveData,
++ 			verboseParticles = verboseParticles
++ 		)
+###############################
+Now doing doRun analyses...
+####################
+Analyzing tree 1...
+####################
+Analyzing Aq_Emp_3Opt2Bound_tree_1_trait_1_07-02-21...
+The effective timeStep for this tree will be 0.00033,
+     as a proportion of tree height (root to furthest tip)...
+Rescaling edge lengths relative to maximum tip-to-root distance...
+The smallest edge length on the input tree is 0.0043
+   (This is 13000 in the same TreeYears units
+      as used for the input generation.time ( = 1000))
+Given generation time, a total of 51027 generations are
+     expected to occur over this tree
+Beginning PRC Run 1 out of a total of 2...
+Number of initial simulations set to 100
+Doing initial simulations...
+Initial simulations took 85.287 seconds
+Finding distribution of distances...
+Beginning partial rejection control algorithm...
+
+STARTING DATA GENERATION STEP 1
+
+Successes   Attempts   Distance   starting_1  intrinsic_1  intrinsic_2  intrinsic_3  intrinsic_4  intrinsic_5  intrinsic_6  intrinsic_7  intrinsic_8  
